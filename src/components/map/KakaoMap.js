@@ -9,7 +9,7 @@ function KakaoMap(props) {
   return (
     <Map
       center={{ lat: 37.48197988243028, lng: 126.89814204687781 }}
-      style={{ width: '1000px', height: '400px' }}
+      style={{ width: '918px', height: '329px' }}
       level={3}
     />  
   );

@@ -13,7 +13,6 @@ import NonUserReserve from "../reservation/NonUserReserve.js"
 import Footer from "../common/Footer.js";
 import Header from "../common/Header.js";
 import GlobalStyle from "../style/GlobalStyle.js";
-import AdminUserList from "../admin/user/AdminUserList.js";
 import AdminHome from "../admin/AdminHome.js";
 
 function  Router(){

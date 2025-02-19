@@ -12,7 +12,7 @@ import searchIcon from "./imgs/header_search.png";
 
 const HeaderContainer = styled.div`
   display: block;
-  width: 100%;
+  width: 100%;s
   height: 122px;
   border-bottom: 1px solid #111111;
   @font-face {

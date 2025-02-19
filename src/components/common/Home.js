@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Youtube from "react-youtube";
 import KakaoMap from "../map/KakaoMap";
 import styled from "styled-components";
-import GlobalStyle from "../style/GlobalStyle";
+
 
 import main_banner_01 from './imgs/main_banner_01.png';
 import main_banner_02 from './imgs/main_banner_02.png';
@@ -17,6 +17,9 @@ import b_192_124 from './imgs/b_192_124.png';
 import c_192_124 from './imgs/c_192_124.png';
 import more from './imgs/more.png';
 import youtube from './imgs/youtube.png';
+import main_body_bg from './imgs/main_body_bg.png';
+import kakaomap from './imgs/kakaomap.png';
+import directions from './imgs/directions.png';
 
 
 
@@ -25,7 +28,7 @@ import youtube from './imgs/youtube.png';
 const Container = styled.div`
   width: 100%;
   max-width: 1920px;
-
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,6 +41,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
 `;
 
 //  슬라이드 섹션
@@ -207,6 +211,8 @@ const BoardContentTitle = styled.p`
   color: #111;
   margin:0px;
   padding-top:10px;
+  padding-left: 10px;
+
 `
 const BoardContent = styled.p`
   font-weight: Normal;
@@ -214,26 +220,139 @@ const BoardContent = styled.p`
     margin:0px;
   line-height: 24px;
   color: #868686;
+  padding-left: 10px;
+
 
 `
 const VideoTitle = styled.div`
-  width:100%;
+  width: 100%;
   max-width: 1920px;
-  diplay: flex;
-  justify-content: space-between;
-  align-items: start;
+  height: 94px;
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 `
 
+const VideoTitleBox = styled.div`
+  
+  width: 1280px;
+  height: 94px;
 
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  .VideoImg{
+    margin-top: 52px;
+  }
+
+  .title{
+    font-weight: Normal;
+    font-size: 34px;
+    color: #111;
+  }
+  .content{
+    font-weight: Medium;
+    font-size: 16px;
+    line-height: 42px;
+    color: #6d6d6d;
+  }
+`
+const VideoBox = styled.div`
+  width:100%;
+  max-width: 1280px;
+  height: 474px;
+  margin-top:40px;
+  margin-bottom:78px;
+`
+
+const MapContainer = styled.div`
+  width:100%;
+  max-width:1920px;
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+`
+const SectionD = styled.div`
+  width: 1280px;
+  height: 490px;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  margin-top: 82px;
+  top:0;
+`;
+
+const MapBox = styled.div`
+  width: 918px;
+  height: 329px;
+  margin-right: 40px;
+`;
+
+const MapContentBox = styled.div`
+  width: 198px;
+  height: 286px;
+  margin-top: 20px;
+  margin-left: 20px;
+  .title{
+    font-weight: Medium;
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .content{
+    font-weight: Medium;
+    font-size: 15px;
+    line-height: 25px;
+    color: #fff;
+  }
+  .directionBox{
+    margin-top:50px;
+  }
+
+`;
+const Directions = styled.div`
+  width: 198px;
+  height: 32px;
+  border: 1px solid #fff;
+    display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  
+  .content{
+    margin-top: 4px;
+    margin-right: 8px;
+    font-weight: Medium;
+    font-size: 15px;
+    line-height: 25px;
+    color: #fff;
+  }
+
+`
+const MapImg = styled.img`
+  width:67px;
+  height:16px;
+  margin-top: 8px;
+  margin-left: 8px;
+  
+`
+const LoadImg = styled.img`
+  width:37px;
+  height:24px;
+  margin-top: 4px;
+  margin-left: 8px;
+`
 function Home() {
-  const onPlayerReady = (e) => {
-    e.target.pauseVideo();
-  };
+  // const onPlayerReady = (e) => {
+  //   e.target.pauseVideo();
+  // };
 
   const opts = {
-    width: "640",
-    height: "400",
+    width: "1280",
+    height: "474",
   };
 
   const settings = {
@@ -322,13 +441,14 @@ function Home() {
 
 
         <SectionB>
+        <Link to='/Introduce'>
           <LinkBox>
               <div>
                 <div className="title">
                   <span>진료과 소개</span>
-                  <Link to='/Introduce'>
+                  
                   <LinkImg src={body_01_arrow} alt="body_01_arrow" />
-                  </Link>
+                  
                  </div>
                 <div className="text">
                   <p>
@@ -344,15 +464,15 @@ function Home() {
                 <img src={a_192_124} alt="a_192_124"></img>
               </div>            
           </LinkBox>
+        </Link>
           
+        <Link to='/userreserv'>
           
           <LinkBox>
               <div>
                 <div className="title">
                   <span>회원 예약</span>
-                  <Link to='/userreserv'>
                   <LinkImg src={body_01_arrow} alt="body_01_arrow" />
-                  </Link>
                  </div>
                 <div className="text">
                   <p>
@@ -364,17 +484,18 @@ function Home() {
                   </p>
                 </div>
               </div>            
-              <div className="img">
+              <div>
                 <img src={b_192_124} alt="b_192_124"></img>
               </div>                
-          </LinkBox>
+            </LinkBox>
+        </Link>
+        <Link to='/nonuserreserv'>
+            
           <LinkBox>
               <div>
                 <div className="title">
                   <span>비회원 예약</span>
-                  <Link to='/nonuserreserv'>
                   <LinkImg src={body_01_arrow} alt="body_01_arrow" />
-                  </Link>
                  </div>
                 <div className="text">
                   <p>
@@ -386,13 +507,15 @@ function Home() {
                   </p>
                 </div>
               </div>            
-              <div className="img">
+              <div >
                 <img src={c_192_124} alt="c_192_124"></img>
               </div>                
           </LinkBox>
+        </Link>
+            
         </SectionB>
 
-<ContentWrapper>
+      <ContentWrapper>
         <SectionC>
             <BoardBox>
               <BoardTitleBox>
@@ -466,15 +589,51 @@ function Home() {
 
 
         <VideoTitle>
-            <div>
-              <p>하이펫, 동물의료센터</p>
-              <p>수의사가 알려주는 반려동물 건강상식과 병원 안내영상들이 담겨있는 유튜브 채널</p>
+          <VideoTitleBox>
+            <div className="videoTitle">
+              <p className="title">하이펫, 동물의료센터</p>
+              <p className="content">수의사가 알려주는 반려동물 건강상식과 병원 안내영상들이 담겨있는 유튜브 채널</p>
             </div>
-            <div>
+            <div className="VideoImg">
               <img src={youtube} alt="youtube"></img>
             </div>
+          </VideoTitleBox>
         
         </VideoTitle>
+        <VideoBox>
+          <Youtube videoId="cxnVFId-1Qw" opts={opts} ></Youtube>
+        </VideoBox>
+        <MapContainer>
+          <img src={main_body_bg} alt="main_body_bg"></img>
+          <SectionD>
+            <MapContentBox>
+              <div>
+                <p className="title">하이펫 동물의료센터</p>
+                <p className="content">(우)04401</p>
+                <p className="content">서울특별시 구로구 시흥대로</p>
+                <p className="content">안내전화 : 02. 837. 9922</p>
+              </div>
+              <div className="directionBox">
+                <Directions>
+                  <MapImg src={kakaomap} alt="kakaomap"></MapImg>
+
+                  <span className="content">지도 보기</span>
+                </Directions>
+                <Directions>
+                  <LoadImg  src={directions} alt="directions"></LoadImg>
+
+                  <span className="content">오시는 길</span>
+                </Directions>
+
+              </div>
+            </MapContentBox>
+            <MapBox>
+              <KakaoMap></KakaoMap>
+
+            </MapBox>
+          </SectionD>
+        
+        </MapContainer>  
 
       </Container>
       </>

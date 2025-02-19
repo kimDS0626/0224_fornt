@@ -99,14 +99,16 @@
 .reviewmini{
     width: 100%;
     border: 1px solid black;
-    
+    justify-content: space-between;
+    align-items:
 }
 
 .notice{
     width: 40px;
     height: 40px;
         background-color: aqua;
-    
+    position: absolute;
+    object-fit: contain;
 }
 
 
@@ -114,6 +116,7 @@
     width: 40px;
     height: 40px;
         background-color: aqua;
+        
 
 }
 .home-MapBox{
