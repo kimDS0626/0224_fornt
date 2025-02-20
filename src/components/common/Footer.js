@@ -8,123 +8,11 @@ import media_icon_youtube from "./imgs/media_icon_youtube.png";
 import media_icon_appstore from "./imgs/media_icon_appstore.png";
 import media_icon_googleplay from "./imgs/media_icon_googleplay.png";
 
-const FooterContainer = styled.div` 
-  display: flex;
-  width: 100%
-  height: 265px;
-  background-color: #0E0E0E;
-  @font-face {
-  font-family: "NotoSansKR";
-  src: url("./NotoSansKR-Black.ttf");
-  }
-  @font-face {
-  font-family: "Montserrat_Bold";
-  src: url("./Montserrat-Bold.otf");
-  }
-  @font-face {
-  font-family: "Montserrat-Regular";
-  src: url("./Montserrat-Regular.otf");
-  }
- `;
-
-const FooterSection = styled.div`
-  margin: auto;
-  width: 1280px;
-  height: 265px;
-  position: relative;
-   display: flex;
-`;
-const FooterBoxA = styled.div`
-  float: left;
-  width: 239px;
-  height: 265px;
-  position: relative;
-
-  display: block;
-`;
-
-const FooterLogo = styled.div`
-  padding-top: 67px;
-  padding-left: 18px;
-  width: 221px;
-  height: 62px;
-  position: relative;
-  top: 0px;
-`;
-const Footertel = styled.div`
-  position: relative;
-  width: 206px;
-  height: 58px;
-  color: #f4f4f4;
-  padding-top: 29px;
-  padding-left: 18px;
-  p:first-child {
-    font-family: "Montserrat_Bold";
-    font-size: 15px;
-  }
-  p {
-    font-family: "NotoSansKR_Black";
-    font-weight: 700;
-    margin: 0px;
-    font-size: 32px;
-  }
-`;
-// -------------------------------------------------------------------------
-const FooterBoxB = styled.div`
-  float: left;
-  width: 1000px;
-  height: 265px;
-  display: block;
-`;
-const FooterText = styled.div`
-display: block;
-  font-family: "NotoSansKR";
-  padding-top: 67px;
-  padding-bottom: 18px;
-  padding-left: 214px;
-  position: relative;
-  font-size: 14px;
-  color: #f4f4f4;
-  width: 610px;
-  height: 48px;
-  line-height: 24px;
-  td:first-child {
-    font-weight: 800;
-  }
-`;
-const FooterIcon = styled.div`
-display: block;
-  padding-bottom: 31px;
-  padding-left: 214px;
-  position: relative;
-  width: 180px;
-  height: 30px;
-  a {
-    padding: 0px 15px 0px 0px;
-  }
-  img {
-  }
-`;
-
-const Copy = styled.div`
-display: block;
-  font-family: "Montserrat-Regular";
-  padding-bottom: 47px;
-  padding-left: 214px;
-  position: relative;
-  font-size: 12px;
-  color: #f4f4f4;
-  width: 300px;
-  height: 100px;
-  p {
-  }
-`;
-
 function Footer() {
   const location = useLocation();
   const [isHidden, setIsHidden] = useState(false);
 
-  const excludedPaths = ["/login", "/findId", "/findPw"];
+  const excludedPaths = ["/signIn", "/findId", "/indPw", "/signUp"];
 
   useEffect(() => {
     setIsHidden(excludedPaths.includes(location.pathname));
@@ -189,5 +77,118 @@ function Footer() {
     </FooterContainer>
   );
 }
+
+const FooterContainer = styled.div`
+    position: relative;
+
+  width: 100%
+  height: 265px;
+  background-color: #0E0E0E;
+
+ `;
+
+const FooterSection = styled.div`
+  margin: auto;
+  width: 1280px;
+  height: 265px;
+  position: relative;
+  display: flex;
+`;
+const FooterBoxA = styled.div`
+  float: left;
+  width: 239px;
+  height: 265px;
+  position: relative;
+
+  display: block;
+`;
+
+const FooterLogo = styled.div`
+  margin-top: 67px;
+  margin-left: 18px;
+  width: 221px;
+  height: 62px;
+  display: flex;
+  position: relative;
+  top: 0px;
+`;
+const Footertel = styled.div`
+  position: relative;
+  width: 206px;
+  height: 58px;
+
+  color: #f4f4f4;
+  margin-top: 29px;
+  margin-left: 18px;
+  p:first-child {
+    line-height: 1.5;
+    font-family: "Noto Sans KR", serif;
+    font-size: 13px;
+    font-weight: medium;
+  }
+  p {
+    font-family: "Montserrat", serif;
+    font-weight: bold;
+    margin: 0px;
+    font-size: 30px;
+  }
+`;
+// -------------------------------------------------------------------------
+const FooterBoxB = styled.div`
+  float: left;
+  width: 1000px;
+  height: 265px;
+  display: block;
+`;
+const FooterText = styled.div`
+  display: block;
+
+  margin-top: 67px;
+  margin-bottom: 18px;
+  margin-left: 214px;
+  position: relative;
+  font-size: 14px;
+  color: #f4f4f4;
+  width: 750px;
+  height: 48px;
+  line-height: 24px;
+  td:first-child {
+    padding-right: 10px;
+    font-weight: 800;
+  }
+  td {
+    font-family: "Noto Sans KR", serif;
+    font-weight: medium;
+  }
+`;
+const FooterIcon = styled.div`
+  margin-bottom: 31px;
+  margin-left: 214px;
+  position: relative;
+  width: 180px;
+  height: 30px;
+  a {
+    padding: 0px 15px 0px 0px;
+  }
+  img {
+  }
+`;
+
+const Copy = styled.div`
+  display: block;
+  width: 300px;
+  height: 15px;
+  margin-bottom: 47px;
+  margin-left: 214px;
+  position: relative;
+  font-size: 12px;
+  color: #f4f4f4;
+  width: 300px;
+  height: 15px;
+  p {
+    font-weight: reqular;
+    font-family: "Montserrat", serif;
+  }
+`;
 
 export default Footer;

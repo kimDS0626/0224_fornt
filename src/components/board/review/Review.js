@@ -2,6 +2,54 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+
+
+function Review() {
+  return (
+    <Container>
+      <ContentWrapper>
+        <Title>
+          <h1>후기</h1>
+        </Title>
+
+        <TableBox>
+          <Table>
+            <thead>
+              <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일자</th>
+                <th>조회수</th>
+                <th>좋아요</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </Table>
+        </TableBox>
+
+        <SearchBox>
+          <div>
+            <select>
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="writer">작성자</option>
+            </select>
+            <SearchField type="text" placeholder="검색어" />
+            <SearchButton>검색</SearchButton>
+          </div>
+
+          <WriteBox>
+            <WriteButton to="/reviewUpdate">수정</WriteButton>
+            <WriteButton to="/reviewWrite">작성</WriteButton>
+          </WriteBox>
+        </SearchBox>
+      </ContentWrapper>
+    </Container>
+  );
+}
+
+
 // 컨테이너
 const Container = styled.div`
   width: 100%;
@@ -93,50 +141,5 @@ const WriteButton = styled(Link)`
     background-color: #218838;
   }
 `;
-
-function Review() {
-  return (
-    <Container>
-      <ContentWrapper>
-        <Title>
-          <h1>후기</h1>
-        </Title>
-
-        <TableBox>
-          <Table>
-            <thead>
-              <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일자</th>
-                <th>조회수</th>
-                <th>좋아요</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </Table>
-        </TableBox>
-
-        <SearchBox>
-          <div>
-            <select>
-              <option value="title">제목</option>
-              <option value="content">내용</option>
-              <option value="writer">작성자</option>
-            </select>
-            <SearchField type="text" placeholder="검색어" />
-            <SearchButton>검색</SearchButton>
-          </div>
-
-          <WriteBox>
-            <WriteButton to="/reviewUpdate">수정</WriteButton>
-            <WriteButton to="/reviewWrite">작성</WriteButton>
-          </WriteBox>
-        </SearchBox>
-      </ContentWrapper>
-    </Container>
-  );
-}
 
 export default Review;

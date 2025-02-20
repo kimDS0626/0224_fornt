@@ -2,6 +2,50 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+
+
+function OnlineCounselWrite() {
+  return (
+    <Container>
+      <ContentWrapper>
+
+        <Title>
+          <h1>온라인 상담</h1>
+        </Title>
+
+
+        <TableBox>
+          <Table>
+            <tbody>
+              <tr>
+                <td>
+                  <TableTitle type="text" placeholder="제목" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <TableContent placeholder="내용" />
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </TableBox>
+        
+
+        <BottomBox>
+          <PasswordInput type="password" placeholder="비밀번호" />
+          <div>
+            <Button>등록</Button>
+            <Link to="/OnlineCounsel">
+              <Button>취소</Button>
+            </Link>
+          </div>
+        </BottomBox>
+      </ContentWrapper>
+    </Container>
+  );
+}
+
 //  컨테이너
 const Container = styled.div`
   width: 100%;
@@ -87,47 +131,5 @@ const PasswordInput = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
 `;
-
-function OnlineCounselWrite() {
-  return (
-    <Container>
-      <ContentWrapper>
-
-        <Title>
-          <h1>온라인 상담</h1>
-        </Title>
-
-
-        <TableBox>
-          <Table>
-            <tbody>
-              <tr>
-                <td>
-                  <TableTitle type="text" placeholder="제목" />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <TableContent placeholder="내용" />
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </TableBox>
-        
-
-        <BottomBox>
-          <PasswordInput type="password" placeholder="비밀번호" />
-          <div>
-            <Button>등록</Button>
-            <Link to="/OnlineCounsel">
-              <Button>취소</Button>
-            </Link>
-          </div>
-        </BottomBox>
-      </ContentWrapper>
-    </Container>
-  );
-}
 
 export default OnlineCounselWrite;

@@ -1,51 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProfileContainer = styled.div`
-  width: 100%;
-  max-width: 1920px; /* 최대 너비 1920px */
-  height: 600px;
-  border: 1px solid black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-`;
-
-const ProfileUserBox = styled.div`
-  width: 100%;
-  max-width: 1280px; /* 최대 너비 1280px */
-  height: 200px;
-  margin-top: 20px;
-margin-left: 20%;
-  paddig 
-`;
-
-const ProfileUserTable = styled.table`
-  width: 80%;
-  border: 1px solid black;
-  text-align: left;
-  border-collapse: collapse;
-`;
-
-const ProfileAnimalBox = styled.div`
-  width: 100%;
-  max-width: 1280px; /* 최대 너비 1280px */
-  height: 200px;
-
-margin-left: 20%;
-
-  margin-top: 20px;
-
-  
-`;
-
-const ProfileAnimalTable = styled.table`
-  width: 80%;
-  border: 1px solid black;
-  text-align: left;
-  border-collapse: collapse;
-`;
 
 function UserProfile() {
   return (
@@ -108,5 +63,53 @@ function UserProfile() {
     </ProfileContainer>
   );
 }
+
+
+const ProfileContainer = styled.div`
+  width: 100%;
+  max-width: 1920px; /* 최대 너비 1920px */
+  height: 600px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+`;
+
+const ProfileUserBox = styled.div`
+  width: 100%;
+  max-width: 1280px; /* 최대 너비 1280px */
+  height: 200px;
+  margin-top: 20px;
+margin-left: 20%;
+  paddig 
+`;
+
+const ProfileUserTable = styled.table`
+  width: 80%;
+  border: 1px solid black;
+  text-align: left;
+  border-collapse: collapse;
+`;
+
+const ProfileAnimalBox = styled.div`
+  width: 100%;
+  max-width: 1280px; /* 최대 너비 1280px */
+  height: 200px;
+
+margin-left: 20%;
+
+  margin-top: 20px;
+
+  
+`;
+
+const ProfileAnimalTable = styled.table`
+  width: 80%;
+  border: 1px solid black;
+  text-align: left;
+  border-collapse: collapse;
+`;
+
 
 export default UserProfile;

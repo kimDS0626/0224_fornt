@@ -24,327 +24,7 @@ import directions from './imgs/directions.png';
 
 
 
-// 컨테이너
-const Container = styled.div`
-  width: 100%;
-  max-width: 1920px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
-// 내부 콘텐츠
-const ContentWrapper = styled.div`
-  width: 100%;
-  max-width: 1280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-`;
-
-//  슬라이드 섹션
-const SectionA = styled.div`
-  width: 100%;
-  
-  height: 694px;
-`;
-
-const SlidImg = styled.img`
-  width: 1920px;
-  height: 694px;
-  position: relative;
-`;
-const SlidText = styled.div`
-  width: 470px;
-  height: 284px;
-  display:block;
-  position: absolute;
-  top: 0px;
-  margin-top: 205px;
-  margin-left: 99px;
-  margin-bottom: 205px;
-  .eng{
-    margin:0;
-    display: block;
-    font-weight: Bold;
-    font-size: 32px;
-    color: #fff;
-  }
-  .title{
-    margin:0;
-    display: block;
-    font-weight: Bold;
-    font-size: 62px;
-    line-height: 72px;
-    color: #fff;
-
-  }
-  .ko{
-    margin:0;
-    margin-top: 30px;
-    display: block;
-    font-weight: Medium;
-    font-size: 22px;
-    line-height: 32px;
-    color: #fff;
-  }
-
-`
-
-
-const SectionB = styled.div`
-  width: 100%;
-  max-width: 1920px;
-  height: 264px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f6f9ff;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  gap: 20px;
-`;
-
-const LinkBox = styled.div`
-  width: 428px;
-  height: 164px;
-  background-color: #ffffff;
-  display:flex;
-  justify-content: center;
-  gap:30px;
-  padding-top: 20px;
-  .title{
-    font-weight: Bold;
-    font-size: 26px;
-    color: #111;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-
-  }
-  .text{
-    font-weight: Medium;
-    font-size: 12px;
-    line-height: 18px;
-    color: #a3a3a3;
-  }
-  
-`;
-
-const LinkImg = styled.img`
-   margin-top: 8px;
-`
-
-
-
-const SectionC = styled.div`
-  width: 100%;
-  max-width: 1280px;
-  height: 562px;
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  margin-top: 80px;
-  margin-bottom: 80px;
-
-`;
-
-const BoardBox = styled.div`
-  width: 600px;
-  height: 562px;
-  diplay: flex;
-  justify-content: center;
-    align-items: start;
-
-
-`;
-const BoardTitle = styled.p`
-  font-weight: normal;
-  font-size: 34px;
-  color: #111;
-  margin: 0;
-  margin-bottom: 18px;
-
- 
-`
-const BoardText = styled.p`
-  font-weight: Medium;
-  font-size: 16px;
-  color: #6d6d6d
-  line-height:42px;
-  margin:0;
-
-`
-const BoardTitleBox = styled.div`
-  width: 600px;
-  height: 92px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 70px;
-  .titleBox{
-    width:600px;
-    height:92px;
-  }
-  .reviewLink{
-    width: 80px;
-    display: flex;
-    justify-content: space-between;  
-  }
-`
-
-const ReviewLink = styled.span`
-  font-weight: Normal;
-  font-size: 14px;
-  color: #111;
-`
-const BoardContentBox = styled.div`
-  width:596px;
-  height:70px;
-  margin-top: 40px;
-  background-color: #f4f4f4;
-`
-const BoardContentTitle = styled.p`
-  font-weight: Normal;
-  font-size:16px;
-  color: #111;
-  margin:0px;
-  padding-top:10px;
-  padding-left: 10px;
-
-`
-const BoardContent = styled.p`
-  font-weight: Normal;
-  font-size:12px;
-    margin:0px;
-  line-height: 24px;
-  color: #868686;
-  padding-left: 10px;
-
-
-`
-const VideoTitle = styled.div`
-  width: 100%;
-  max-width: 1920px;
-  height: 94px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-`
-
-const VideoTitleBox = styled.div`
-  
-  width: 1280px;
-  height: 94px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: start;
-  .VideoImg{
-    margin-top: 52px;
-  }
-
-  .title{
-    font-weight: Normal;
-    font-size: 34px;
-    color: #111;
-  }
-  .content{
-    font-weight: Medium;
-    font-size: 16px;
-    line-height: 42px;
-    color: #6d6d6d;
-  }
-`
-const VideoBox = styled.div`
-  width:100%;
-  max-width: 1280px;
-  height: 474px;
-  margin-top:40px;
-  margin-bottom:78px;
-`
-
-const MapContainer = styled.div`
-  width:100%;
-  max-width:1920px;
-   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  position: relative;
-`
-const SectionD = styled.div`
-  width: 1280px;
-  height: 490px;
-  display: flex;
-  justify-content: space-between;
-  position: absolute;
-  margin-top: 82px;
-  top:0;
-`;
-
-const MapBox = styled.div`
-  width: 918px;
-  height: 329px;
-  margin-right: 40px;
-`;
-
-const MapContentBox = styled.div`
-  width: 198px;
-  height: 286px;
-  margin-top: 20px;
-  margin-left: 20px;
-  .title{
-    font-weight: Medium;
-    font-size: 22px;
-    color: #fff;
-    margin-bottom: 16px;
-  }
-  .content{
-    font-weight: Medium;
-    font-size: 15px;
-    line-height: 25px;
-    color: #fff;
-  }
-  .directionBox{
-    margin-top:50px;
-  }
-
-`;
-const Directions = styled.div`
-  width: 198px;
-  height: 32px;
-  border: 1px solid #fff;
-    display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  
-  .content{
-    margin-top: 4px;
-    margin-right: 8px;
-    font-weight: Medium;
-    font-size: 15px;
-    line-height: 25px;
-    color: #fff;
-  }
-
-`
-const MapImg = styled.img`
-  width:67px;
-  height:16px;
-  margin-top: 8px;
-  margin-left: 8px;
-  
-`
-const LoadImg = styled.img`
-  width:37px;
-  height:24px;
-  margin-top: 4px;
-  margin-left: 8px;
-`
 function Home() {
   // const onPlayerReady = (e) => {
   //   e.target.pauseVideo();
@@ -443,15 +123,15 @@ function Home() {
         <SectionB>
         <Link to='/Introduce'>
           <LinkBox>
-              <div>
+              <div className="totalBox">
                 <div className="title">
-                  <span>진료과 소개</span>
+                  <span className="title" >진료과 소개</span>
                   
-                  <LinkImg src={body_01_arrow} alt="body_01_arrow" />
+                  <img src={body_01_arrow} alt="body_01_arrow" />
                   
                  </div>
-                <div className="text">
-                  <p>
+                <div>
+                  <p className="text">
                     최고의 실력을 가진 전문인력들로
                     <br/>
                     국내 최고수준의 병원이 되도록
@@ -469,13 +149,13 @@ function Home() {
         <Link to='/userreserv'>
           
           <LinkBox>
-              <div>
+              <div className="totalBox">
                 <div className="title">
-                  <span>회원 예약</span>
-                  <LinkImg src={body_01_arrow} alt="body_01_arrow" />
+                  <span className="title">회원 예약</span>
+                  <img src={body_01_arrow} alt="body_01_arrow" />
                  </div>
-                <div className="text">
-                  <p>
+                <div >
+                  <p className="text">
                     회원이 본인 예약을 할 경우
                     <br/>
                     로그인 후 본인의 진료예약 및
@@ -492,13 +172,13 @@ function Home() {
         <Link to='/nonuserreserv'>
             
           <LinkBox>
-              <div>
+              <div className="totalBox">
                 <div className="title">
-                  <span>비회원 예약</span>
-                  <LinkImg src={body_01_arrow} alt="body_01_arrow" />
-                 </div>
+                  <span className="title">비회원 예약</span>
+                  <img src={body_01_arrow} alt="body_01_arrow" />
+                </div>
                 <div className="text">
-                  <p>
+                  <p className="text">
                     비회원이 본인 예약을 할 경우
                     <br/>
                     이름과 연락처를 남겨주시면
@@ -614,17 +294,20 @@ function Home() {
                 <p className="content">안내전화 : 02. 837. 9922</p>
               </div>
               <div className="directionBox">
+                <Link to='/'>
                 <Directions>
                   <MapImg src={kakaomap} alt="kakaomap"></MapImg>
 
                   <span className="content">지도 보기</span>
                 </Directions>
+                </Link>
+                <Link to='/'>
                 <Directions>
                   <LoadImg  src={directions} alt="directions"></LoadImg>
 
                   <span className="content">오시는 길</span>
                 </Directions>
-
+                </Link>
               </div>
             </MapContentBox>
             <MapBox>
@@ -639,5 +322,342 @@ function Home() {
       </>
   );
 }
+
+// 컨테이너
+const Container = styled.div`
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+// 내부 콘텐츠
+const ContentWrapper = styled.div`
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+`;
+
+//  슬라이드 섹션
+const SectionA = styled.div`
+  width: 100%;
+  
+  height: 694px;
+`;
+
+const SlidImg = styled.img`
+  width: 1920px;
+  height: 694px;
+  position: relative;
+`;
+const SlidText = styled.div`
+  width: 470px;
+  height: 284px;
+  display:block;
+  position: absolute;
+  top: 0px;
+  margin-top: 205px;
+  margin-left: 99px;
+  margin-bottom: 205px;
+  .eng{
+    margin:0;
+    display: block;
+    font-family: "Noto Sans KR", serif;
+    font-weight: bold;
+    font-size: 32px;
+    color: #fff;
+  }
+  .title{
+    margin:0;
+    display: block;
+    font-family: "Noto Sans KR", serif;
+    font-weight: bold;
+    font-size: 62px;
+    line-height: 72px;
+    color: #fff;
+
+  }
+  .ko{
+    margin:0;
+    margin-top: 30px;
+    display: block;
+    font-family: "Noto Sans KR", serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 32px;
+    color: #fff;
+  }
+
+`
+
+
+const SectionB = styled.div`
+  width: 100%;
+  max-width: 1920px;
+  height: 264px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f6f9ff;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  gap: 20px;
+`;
+
+const LinkBox = styled.div`
+  width: 428px;
+  height: 164px;
+  background-color: #ffffff;
+  display:flex;
+  justify-content: center;
+  gap:30px;
+  padding-top: 20px;
+  .title{
+    font-family: "Noto Sans KR", serif;
+    font-weight: bold;
+    font-size: 26px;
+    color: #111;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+  }
+  .text{
+    font-family: "Noto Sans KR", serif;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: #a3a3a3;
+  }
+
+  
+`;
+
+
+
+
+
+const SectionC = styled.div`
+  width: 100%;
+  max-width: 1280px;
+  height: 562px;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 80px;
+  margin-bottom: 80px;
+
+`;
+
+const BoardBox = styled.div`
+  width: 600px;
+  height: 562px;
+  diplay: flex;
+  justify-content: center;
+    align-items: start;
+
+
+`;
+const BoardTitle = styled.p`
+  font-family: "Noto Sans KR", serif;
+  font-weight: 300;
+  font-size: 34px;
+  color: #111;
+  margin: 0;
+  margin-bottom: 18px;
+
+ 
+`
+const BoardText = styled.p`
+  font-family: "Noto Sans KR", serif;  
+  font-weight: 400;
+  font-size: 16px;
+  color: #6d6d6d
+  line-height:42px;
+  margin:0;
+
+`
+const BoardTitleBox = styled.div`
+  width: 600px;
+  height: 92px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 70px;
+  .titleBox{
+    width:600px;
+    height:92px;
+  }
+  .reviewLink{
+    width: 80px;
+    display: flex;
+    justify-content: space-between;  
+  }
+`
+
+const ReviewLink = styled.span`
+  font-family: "Noto Sans KR", serif;  
+  font-weight: 400;
+  font-size: 14px;
+  color: #111;
+`
+const BoardContentBox = styled.div`
+  width:596px;
+  height:70px;
+  margin-top: 40px;
+  background-color: #f4f4f4;
+`
+const BoardContentTitle = styled.p`
+  font-family: "Noto Sans KR", serif;
+  font-weight: 300;
+  font-size:16px;
+  color: #111;
+  margin:0px;
+  padding-top:10px;
+  padding-left: 10px;
+
+`
+const BoardContent = styled.p`
+  font-family: "Noto Sans KR", serif;
+  font-weight: 300;
+  font-size:12px;
+    margin:0px;
+  line-height: 24px;
+  color: #868686;
+  padding-left: 10px;
+
+
+`
+const VideoTitle = styled.div`
+  width: 100%;
+  max-width: 1920px;
+  height: 94px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+`
+
+const VideoTitleBox = styled.div`
+  
+  width: 1280px;
+  height: 94px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  .VideoImg{
+    margin-top: 52px;
+  }
+
+  .title{
+    font-family: "Noto Sans KR", serif;
+    font-weight: 300;
+    font-size: 34px;
+    color: #111;
+  }
+  .content{
+    font-family: "Noto Sans KR", serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 42px;
+    color: #6d6d6d;
+  }
+`
+const VideoBox = styled.div`
+  width:100%;
+  max-width: 1280px;
+  height: 474px;
+  margin-top:40px;
+  margin-bottom:78px;
+`
+
+const MapContainer = styled.div`
+  width:100%;
+  max-width:1920px;
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+`
+const SectionD = styled.div`
+  width: 1280px;
+  height: 490px;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  margin-top: 82px;
+  top:0;
+`;
+
+const MapBox = styled.div`
+  width: 918px;
+  height: 329px;
+  margin-right: 40px;
+`;
+
+const MapContentBox = styled.div`
+  width: 198px;
+  height: 286px;
+  margin-top: 20px;
+  margin-left: 20px;
+  .title{
+    font-family: "Noto Sans KR", serif;
+    font-weight: 400;
+    font-size: 22px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .content{
+    font-family: "Noto Sans KR", serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 25px;
+    color: #fff;
+  }
+  .directionBox{
+    margin-top:50px;
+  }
+
+`;
+const Directions = styled.div`
+  width: 198px;
+  height: 32px;
+  border: 1px solid #fff;
+    display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  
+  .content{
+    margin-top: 4px;
+    margin-right: 8px;
+    font-family: "Noto Sans KR", serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 25px;
+    color: #fff;
+  }
+
+`
+const MapImg = styled.img`
+  width:67px;
+  height:16px;
+  margin-top: 8px;
+  margin-left: 8px;
+  
+`
+const LoadImg = styled.img`
+  width:37px;
+  height:24px;
+  margin-top: 4px;
+  margin-left: 8px;
+`
 
 export default Home;

@@ -2,6 +2,44 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+
+
+function OnlineCounselUpdate() {
+  return (
+    <Container>
+      <ContentWrapper>
+        <Title>
+          <h1>온라인 상담</h1>
+        </Title>
+
+        <TableBox>
+          <Table>
+            <tbody>
+              <tr>
+                <td>
+                  <TableTitle type="text" placeholder="제목" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <TableContent placeholder="내용" />
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </TableBox>
+
+        <BottomBox>
+          <Button>수정</Button>
+          <Link to="/OnlineCounsel">
+            <Button>취소</Button>
+          </Link>
+        </BottomBox>
+      </ContentWrapper>
+    </Container>
+  );
+}
+
 // 컨테이너
 const Container = styled.div`
   width: 100%;
@@ -82,41 +120,5 @@ const Button = styled.button`
     background-color: #0056b3;
   }
 `;
-
-function OnlineCounselUpdate() {
-  return (
-    <Container>
-      <ContentWrapper>
-        <Title>
-          <h1>온라인 상담</h1>
-        </Title>
-
-        <TableBox>
-          <Table>
-            <tbody>
-              <tr>
-                <td>
-                  <TableTitle type="text" placeholder="제목" />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <TableContent placeholder="내용" />
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </TableBox>
-
-        <BottomBox>
-          <Button>수정</Button>
-          <Link to="/OnlineCounsel">
-            <Button>취소</Button>
-          </Link>
-        </BottomBox>
-      </ContentWrapper>
-    </Container>
-  );
-}
 
 export default OnlineCounselUpdate;

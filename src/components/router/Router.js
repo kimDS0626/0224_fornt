@@ -29,7 +29,7 @@ function  Router(){
                 <Route path="/onlienCounselUpdate" element={<OnlineCounselUpdate />}></Route>
                 <Route path="/review" element={<Review />}></Route> 
                 <Route path="/mypage" element={<MyPage />}></Route>    
-
+                
 
                 <Route path="/userreserv" element={<UserReserv />}></Route>  
                 <Route path="/nonuserreserve" element={<NonUserReserve />}></Route>
@@ -43,4 +43,6 @@ function  Router(){
 
     );
 }
-export  default Router;
+export default Router;
+
+

@@ -5,6 +5,37 @@ import ReservationCheck from "./ReservationCheck";
 import UserProfile from "./UserProfile";
 import UserUpdate from "./UserUpdate";
 
+
+
+function MyPage() {
+  const [page, setPage] = useState('1');
+
+  return (
+    <MyPageContainer>
+      <MyPageTitle>
+        <TitleH1>마이페이지</TitleH1>
+      </MyPageTitle>
+
+      <ButtonTable>
+        <tbody>
+          <TableRow>
+            <TableCell><MyPageButton onClick={() => setPage('1')}>프로필</MyPageButton></TableCell>
+            <TableCell><MyPageButton onClick={() => setPage('2')}>회원정보수정</MyPageButton></TableCell>
+            <TableCell><MyPageButton onClick={() => setPage('3')}>예약확인</MyPageButton></TableCell>
+          </TableRow>
+        </tbody>
+      </ButtonTable>
+
+      <MyPageContentBox>
+        {page === '1' && <UserProfile />}
+        {page === '2' && <UserUpdate />}
+        {page === '3' && <ReservationCheck />}
+      </MyPageContentBox>
+    </MyPageContainer>
+  );
+}
+
+
 const MyPageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -50,33 +81,5 @@ const MyPageContentBox = styled.div`
   max-width: 1280px;
   margin-bottom: 30px;
 `;
-
-function MyPage() {
-  const [page, setPage] = useState('1');
-
-  return (
-    <MyPageContainer>
-      <MyPageTitle>
-        <TitleH1>마이페이지</TitleH1>
-      </MyPageTitle>
-
-      <ButtonTable>
-        <tbody>
-          <TableRow>
-            <TableCell><MyPageButton onClick={() => setPage('1')}>프로필</MyPageButton></TableCell>
-            <TableCell><MyPageButton onClick={() => setPage('2')}>회원정보수정</MyPageButton></TableCell>
-            <TableCell><MyPageButton onClick={() => setPage('3')}>예약확인</MyPageButton></TableCell>
-          </TableRow>
-        </tbody>
-      </ButtonTable>
-
-      <MyPageContentBox>
-        {page === '1' && <UserProfile />}
-        {page === '2' && <UserUpdate />}
-        {page === '3' && <ReservationCheck />}
-      </MyPageContentBox>
-    </MyPageContainer>
-  );
-}
 
 export default MyPage;

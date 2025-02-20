@@ -1,6 +1,34 @@
 import React from "react";
 import styled from "styled-components";
 
+
+
+function ReservationCheck() {
+    return (
+        <ReservCheckContainer>
+            <ReservCheckTableBox>
+                <ReservCheckTable>
+                    <thead>
+                        <tr>
+                            <TableHeader>예약번호</TableHeader>
+                            <TableHeader>진료과</TableHeader>
+                            <TableHeader>날짜</TableHeader>
+                            <TableHeader>시간</TableHeader>
+                            <TableHeader>반려동물이름</TableHeader>
+                            <TableHeader>생성시간</TableHeader>
+                            <TableHeader>예약삭제</TableHeader>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* 데이터 */}
+                    </tbody>
+                </ReservCheckTable>
+            </ReservCheckTableBox>
+        </ReservCheckContainer>
+    );
+}
+
+
 const ReservCheckContainer = styled.div`
   width: 100%;
   max-width: 1920px;
@@ -29,30 +57,5 @@ const ReservCheckTable = styled.table`
 const TableHeader = styled.th`
   padding: 10px;
 `;
-
-function ReservationCheck() {
-    return (
-        <ReservCheckContainer>
-            <ReservCheckTableBox>
-                <ReservCheckTable>
-                    <thead>
-                        <tr>
-                            <TableHeader>예약번호</TableHeader>
-                            <TableHeader>진료과</TableHeader>
-                            <TableHeader>날짜</TableHeader>
-                            <TableHeader>시간</TableHeader>
-                            <TableHeader>반려동물이름</TableHeader>
-                            <TableHeader>생성시간</TableHeader>
-                            <TableHeader>예약삭제</TableHeader>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* 데이터 */}
-                    </tbody>
-                </ReservCheckTable>
-            </ReservCheckTableBox>
-        </ReservCheckContainer>
-    );
-}
 
 export default ReservationCheck;
