@@ -91,6 +91,8 @@ function UserReserv() {
         <p className="content">고양이</p>
         <p className="content">5.2kg</p>
       </AnimalInfoBox>
+
+      <ReserveBtn>예약하기</ReserveBtn>
     </Container>
   );
 }
@@ -113,8 +115,8 @@ const Title = styled.h1`
   font-size: 36px;
   font-weight: bold;
   font-family: "Noto Sans KR", serif;
-  
-  
+
+
 `;
 
 // 진료과목 버튼 그룹
@@ -122,7 +124,7 @@ const DepartmentWrapper = styled.div`
   display: flex;
   gap: 15px;
   margin-bottom: 50px;
-  
+
 `;
 
 const DepartmentButton = styled.button`
@@ -199,8 +201,8 @@ const AnimalInfoBox = styled.div`
   border-radius: 10px;
   text-align: center;
   width: 300px;
-  margin-top: 20px;
-  margin-bottom: 100px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   font-family: "Noto Sans KR", serif;
   .title{
     font-size:20px;
@@ -210,9 +212,31 @@ const AnimalInfoBox = styled.div`
   .content{
     font-size:16px;
     font-weight:300;
-    
-  }  
-  
+
+  }
+
+
 `;
+
+const ReserveBtn = styled.button`
+  width:200px;
+  height:100px;
+  margin-bottom: 100px;
+  background-color: ${(props) => (props.disabled ? "#f4f4f4" : "#fff")};
+  color: ${(props) => (props.disabled ? "#111" : "#111")};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  font-size: 20px;
+  font-family: "Noto Sans KR", serif;
+
+  &:hover {
+    background-color: ${(props) => (props.disabled ? "#f4f4f4" : "#111111")};
+    color: ${(props) => (props.disabled ? "#111111" : "#fff")};
+  }
+  border:1px solid #111111;
+  border-radius:5px;
+  margin-top: 20px;
+
+
+`
 
 export default UserReserv;
