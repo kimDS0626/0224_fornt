@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 import footer_logo from "./imgs/footer_logo.png";
 import media_icon_instagram from "./imgs/media_icon_instagram.png";
 import media_icon_youtube from "./imgs/media_icon_youtube.png";
 import media_icon_appstore from "./imgs/media_icon_appstore.png";
 import media_icon_googleplay from "./imgs/media_icon_googleplay.png";
+import styled from "styled-components";
 
 function Footer() {
-  const location = useLocation();
-  const [isHidden, setIsHidden] = useState(false);
-
-  const excludedPaths = ["/signIn", "/findId", "/indPw", "/signUp"];
-
-  useEffect(() => {
-    setIsHidden(excludedPaths.includes(location.pathname));
-  }, [location.pathname, excludedPaths]);
-
-  if (isHidden) {
-    return null;
-  }
   return (
     <FooterContainer>
       <FooterSection>
@@ -79,7 +67,7 @@ function Footer() {
 }
 
 const FooterContainer = styled.div`
-    position: relative;
+     position: sticky;
 
   width: 100%
   height: 265px;

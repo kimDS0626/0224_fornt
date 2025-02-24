@@ -5,8 +5,6 @@ import ReservationCheck from "./ReservationCheck";
 import UserProfile from "./UserProfile";
 import UserUpdate from "./UserUpdate";
 
-
-
 function MyPage() {
   const [page, setPage] = useState('1');
 
@@ -16,15 +14,11 @@ function MyPage() {
         <TitleH1>마이페이지</TitleH1>
       </MyPageTitle>
 
-      <ButtonTable>
-        <tbody>
-          <TableRow>
-            <TableCell><MyPageButton onClick={() => setPage('1')}>프로필</MyPageButton></TableCell>
-            <TableCell><MyPageButton onClick={() => setPage('2')}>회원정보수정</MyPageButton></TableCell>
-            <TableCell><MyPageButton onClick={() => setPage('3')}>예약확인</MyPageButton></TableCell>
-          </TableRow>
-        </tbody>
-      </ButtonTable>
+      <ButtonContainer>
+        <MyPageButton onClick={() => setPage('1')}>프로필</MyPageButton>
+        <MyPageButton onClick={() => setPage('2')}>회원정보수정</MyPageButton>
+        <MyPageButton onClick={() => setPage('3')}>예약확인</MyPageButton>
+      </ButtonContainer>
 
       <MyPageContentBox>
         {page === '1' && <UserProfile />}
@@ -34,7 +28,6 @@ function MyPage() {
     </MyPageContainer>
   );
 }
-
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -53,27 +46,19 @@ const TitleH1 = styled.h1`
   margin-left: 0;
 `;
 
-const ButtonTable = styled.table`
-  width: 100%;
-  max-width: 1280px; /* 최대 너비를 설정 */
-  text-align: center;
-  table-layout: fixed; /* 고정된 레이아웃 */
-`;
-
-const TableRow = styled.tr``;
-
-const TableCell = styled.td`
-  width: 60px; /* td의 width를 60px로 설정 */
-  padding: 0; /* 버튼 간격을 줄이기 위해 padding 제거 */
+// 버튼들을 가운데 수평정렬하기 위해 flex 컨테이너로 변경
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  
 `;
 
 const MyPageButton = styled.button`
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 40px;
   background-color: white;
   border: 1px solid #ccc;
   cursor: pointer;
-  padding: 0;
 `;
 
 const MyPageContentBox = styled.div`

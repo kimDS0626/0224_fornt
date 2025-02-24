@@ -72,6 +72,7 @@ function Notice() {
 
 // 컨테이너
 const Container = styled.div`
+  height: 100%;
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
@@ -84,7 +85,7 @@ const Container = styled.div`
 const ContentWrapper = styled.div`
   width: 100%;
   max-width: 1280px;
-  height: 1510px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -92,7 +93,7 @@ const ContentWrapper = styled.div`
 
 //  공지사항 제목
 const NoticeTitle = styled.div`
-  width: 1280px;
+  width: 1000px;
   height: 50px;
   margin-top: 100px;
   text-align: left;
@@ -105,12 +106,27 @@ const NoticeTitle = styled.div`
 
 //페이지네이션
 const PaginationBox = styled.div`
+  padding: 10px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   display: flex;
-  justify-content: center;
-  width: 1280px;
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center;
+  width: 1000px;
   height: 50px;
   background-color: #ffffff;
-  align-items: center;
-`;
+  flex-direction: row;
 
+  /* Pagination 스타일 */
+  .pagination {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .pagination li {
+    display: inline-block;
+    margin: 0 5px;
+  }
+`;
 export default Notice;

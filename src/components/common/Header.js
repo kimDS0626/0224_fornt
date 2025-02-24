@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
+
 import { Link } from "react-router-dom";
 import header_logo from "./imgs/header_logo.png";
 import header_menu_stroke from "./imgs/header_menu_stroke.png";
@@ -9,7 +9,7 @@ import userIcon from "./imgs/header_user.png";
 import searchIcon from "./imgs/header_search.png";
 import { useNavigate } from "react-router-dom";
 // import AdminHome from "../admin/adminHome";
-
+import styled from "styled-components";
 // --------------------------------------------------------------------------------------------------------------------
 
 function Header() {
@@ -41,15 +41,6 @@ function Header() {
     { name: "고객 리뷰", submenu: [{ path: "/review", name: "리뷰" }] },
   ];
 
-  const location = useLocation();
-  const [isHidden, setIsHidden] = useState(false);
-
-  const excludedPaths = ["/signIn", "/findId", "/indPw", "/signUp"];
-
-  useEffect(() => {
-    setIsHidden(excludedPaths.includes(location.pathname));
-  }, [location.pathname, excludedPaths]);
-
   const [showBox, setShowBox] = useState(true);
 
   useEffect(() => {
@@ -68,9 +59,6 @@ function Header() {
     };
   }, []);
 
-  if (isHidden) {
-    return null;
-  }
   return (
     <HeaderContainer>
       <HeaderSection>
@@ -139,10 +127,8 @@ const HeaderContainer = styled.div`
   width: 100%;
   height: 122px;
   border-bottom: 1px solid #111111;
-  
-}
-
 `;
+
 const HeaderSection = styled.div`
   display: flex;
   align-items: center;
@@ -185,8 +171,9 @@ const Navigation = styled.nav`
     padding: 50px 50px 20px 50px;
 
   }
-  a{   font-family: "Nanum Gothic", serif;
-   font-weight: 700;
+  a{   
+  font-family: "Nanum Gothic", serif;
+  font-weight: 600;
   }
   ul li {
   
@@ -211,7 +198,7 @@ const Navigation = styled.nav`
 
     li{
     border-bottom:1px solid black;
-    font-family: "Nanum Gothic", serif;
+    //font-family: "Nanum Gothic", serif;
     text-align: left;
     right:-15px;
     position: relative;
@@ -277,21 +264,24 @@ const LoginBox = styled.div`
   font-size: 12ppx;
   float: right;
   position: relative;
+  color: #111111;
   lineheight: 16;
   a:first-child {
-    padding: 15px;
+    padding: 16px;
   }
+
   a:nth-child(2) img {
     top: 3px;
     position: relative;
   }
 `;
-
+// ---------------------------------------------------------------
 const LoginButton = styled.button`
   font-family: "Nanum Gothic", serif;
+  margin-left: 20px;
   background-color: transparent;
   border: none;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   lineheight: 16;
 `;

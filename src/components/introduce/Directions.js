@@ -1,5 +1,3 @@
-import "../../css/directions.css";
-
 function Directions() {
   return (
     <div className="directionsContainer">

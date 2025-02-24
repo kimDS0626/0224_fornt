@@ -4,6 +4,7 @@ import axios from "axios";
 import Pagination from "react-js-pagination";
 import search from "./imgs/search.png";
 
+
 function NoticeTable() {
   //BbsList
   const [bbsList, setBbsList] = useState([]);
@@ -45,15 +46,15 @@ function NoticeTable() {
   };
 
   const notices = [
-    { id: 1, title: "제목", date: "2025-02-20", views: 11 },
-    { id: 2, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 2, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 3, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 4, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 5, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 6, title: "제목", date: "2025-02-20", views: 11 },
-    { id: 7, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 8, title: "제목", date: "2025-02-20", views: 10 },
+    { id: 1, title: "제목", date: "2025-02-20", views: 11, answer: 'Y' },
+    { id: 2, title: "제목", date: "2025-02-20", views: 10, answer: 'Y' },
+    { id: 2, title: "제목", date: "2025-02-20", views: 10, answer: 'Y' },
+    { id: 3, title: "제목", date: "2025-02-20", views: 10, answer: 'Y' },
+    { id: 4, title: "제목", date: "2025-02-20", views: 10, answer: 'Y' },
+    { id: 5, title: "제목", date: "2025-02-20", views: 10, answer: 'Y' },
+    { id: 6, title: "제목", date: "2025-02-20", views: 11, answer: 'Y' },
+    { id: 7, title: "제목", date: "2025-02-20", views: 10, answer: 'Y' },
+    { id: 8, title: "제목", date: "2025-02-20", views: 10, answer: 'Y' },
   ];
   const addEmptyRows = (data) => {
     const rowsWithEmpty = [];
@@ -68,7 +69,7 @@ function NoticeTable() {
   return (
     <Container>
       <NoticeSearchBox>
-        <img src={search} />
+        <img src={search} alt="search" />
         <SearchField type="text" placeholder="검색 할 것을 적어보세요." />
       </NoticeSearchBox>
 
@@ -80,6 +81,7 @@ function NoticeTable() {
               <th>제목</th>
               <th>등록일</th>
               <th>조회수</th>
+              <th>답변여부</th>
             </tr>
           </thead>
 
@@ -93,11 +95,12 @@ function NoticeTable() {
                     <td>{notice.title}</td>
                     <td>{notice.date}</td>
                     <td>{notice.views}</td>
+                    <td>{notice.answer}</td>
                   </>
                 ) : (
                   // 빈 데이터 행일 때 (공백 행)
                   <>
-                    <td colSpan={4}>&nbsp;</td>
+                    <td colSpan={5}>&nbsp;</td>
                   </>
                 )}
               </tr>
@@ -111,26 +114,27 @@ function NoticeTable() {
 
 // 컨테이너
 const Container = styled.div`
-  width:100%
+  width:100%;
   max-width: 1920px;
 `;
 
 //  검색 박스
 const NoticeSearchBox = styled.div`
   display: flex;
-  width:100%;
-  max-width: 1280px;
+    width:100%;
+  max-width: 1000px;
   height: 90px;
   justify-content: center;
   position: relative;
   img {
-   
-    width:30px;
-        height:30px;
-        margin-top:25px;
+    position: absolute;
+    left: 40px;
+    top: 35px;
+    width: 30px;
+    height: 30px;
   }
   input {
-    padding-left: 30px;
+    padding-left: 50px;
     padding-bottom: 10px;
   }
   input:focus {
@@ -152,19 +156,19 @@ const SearchField = styled.input`
 
 //  공지사항 테이블 박스
 const NoticeTableBox = styled.div`
-  width:100%;
-  max-width: 1280px;
+
+    width:100%;
+  max-width: 1000px;
   margin-top: 20px;
   display: flex;
   justify-content: center;
   overflow-x: auto;
-  padding-left:140px;
-  padding-right:140px;
 `;
 
 //  공지사항 테이블
 const NoticeTabled = styled.table`
-  width: 100%;
+    width:100%;
+  max-width: 1000px;
   
   border-collapse: collapse;
   
@@ -191,7 +195,7 @@ const NoticeTabled = styled.table`
       border-bottom: 1px solid #111111;
       height: 70px;
     }
-    width: 1280px;
+    
   }
 
   tbody td {
@@ -216,6 +220,10 @@ const NoticeTabled = styled.table`
 
   &:nth-of-type(4) {  /* 네 번째 <td> */
     width: 100px;
+    text-align: center;
+  }
+    &:nth-of-type(5) {  /* 네 번째 <td> */
+    width: 150px;
     text-align: center;
   }
 `;

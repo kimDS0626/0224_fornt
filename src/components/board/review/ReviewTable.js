@@ -4,6 +4,7 @@ import axios from "axios";
 import Pagination from "react-js-pagination";
 import search from "./imgs/search.png";
 
+
 function NoticeTable() {
   //BbsList
   const [bbsList, setBbsList] = useState([]);
@@ -110,27 +111,24 @@ function NoticeTable() {
 }
 
 // 컨테이너
-const Container = styled.div`
-  width:100%
-  max-width: 1920px;
-`;
+const Container = styled.div``;
 
 //  검색 박스
 const NoticeSearchBox = styled.div`
   display: flex;
-  width:100%;
-  max-width: 1280px;
+  width: 1000px;
   height: 90px;
   justify-content: center;
   position: relative;
   img {
-   
-    width:30px;
-        height:30px;
-        margin-top:25px;
+    position: absolute;
+    left: 40px;
+    top: 35px;
+    width: 30px;
+    height: 30px;
   }
   input {
-    padding-left: 30px;
+    padding-left: 50px;
     padding-bottom: 10px;
   }
   input:focus {
@@ -152,14 +150,12 @@ const SearchField = styled.input`
 
 //  공지사항 테이블 박스
 const NoticeTableBox = styled.div`
-  width:100%;
-  max-width: 1280px;
+  width: 1000px;
+  height: 1220px;
   margin-top: 20px;
   display: flex;
   justify-content: center;
   overflow-x: auto;
-  padding-left:140px;
-  padding-right:140px;
 `;
 
 //  공지사항 테이블
