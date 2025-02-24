@@ -201,7 +201,7 @@ const AnimalInfoBox = styled.div`
   border-radius: 10px;
   text-align: center;
   width: 300px;
-  margin-top: 40px;
+  margin-top: 50px;
   margin-bottom: 40px;
   font-family: "Noto Sans KR", serif;
   .title{
