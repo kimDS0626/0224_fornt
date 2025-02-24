@@ -5,7 +5,7 @@ import { AuthContext, HttpHeadersContext } from "../../../context";
 import axios from "axios";
 
 
-
+//관리자 공지작성으로
 
 function OnlineCounselWrite() {
   const { auth, setAuth } = useContext(AuthContext);
@@ -39,7 +39,7 @@ function OnlineCounselWrite() {
     };
 
     await axios
-      .post("/api/admin/question/write", req, { headers: headers })
+      .post("/api/admin/notice/write", req, { headers: headers })
       .then((resp) => {
         console.log("[onlineCounselWrite.js] createBbs() success :D");
         console.log(resp.data);

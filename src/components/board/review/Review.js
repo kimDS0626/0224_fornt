@@ -1,11 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import ReviewTable from "./ReviewTable";
 import { Link } from "react-router-dom";
 import ReviewPagination from "./ReviewPagination";
+import axios from "axios";
 
 function Review() {
+  const [bbsList, setBbsList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalCnt, setTotalCnt] = useState(0);
+
+  const getBbsList = async (page) => {
+    try {
+      const response = await axios.get("/api/member/question/list", {
+        params: { page: page - 1 },
+      });
+
+      setBbsList(response.data.content);
+      setPageSize(response.data.pageSize);
+      setTotalCnt(response.data.totalElements);
+      console.log("onlineCounselList success")
+    } catch (error) {
+      console.log("Error fetching board data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getBbsList(page);
+  }, [page]);
+
+
   return (
     <Container>
       <ContentWrapper>
@@ -21,7 +47,12 @@ function Review() {
           </Link>
         </WriteBtnBox>
         <PaginationBox>
-          <ReviewPagination />
+          <ReviewPagination
+          page={page}
+          setPage={setPage}
+          pageSize={pageSize}
+          totalCnt={totalCnt}
+        />
         </PaginationBox>
       </ContentWrapper>
     </Container>

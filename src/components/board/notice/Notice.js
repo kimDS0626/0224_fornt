@@ -1,9 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NoticeTable from "./NoticeTable";
 import NoticePagination from "./NoticePagination";
+import axios from "axios";
 
 function Notice() {
+  const [bbsList, setBbsList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalCnt, setTotalCnt] = useState(0);
+
+  const getBbsList = async (page) => {
+    try {
+      const response = await axios.get("/api/member/notice/list", {
+        params: { page: page - 1 },
+      });
+      console.log(response.data.content);
+      setBbsList(response.data.content);
+      setPageSize(response.data.pageSize);
+      setTotalCnt(response.data.totalElements);
+      console.log(response);
+    } catch (error) {
+      console.log("Error fetching board data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getBbsList(page);
+  }, [page]);
+
+
   return (
     <Container>
       <ContentWrapper>
@@ -11,7 +37,9 @@ function Notice() {
           <h1>공지사항</h1>
         </NoticeTitle>
 
-        <NoticeTable />
+        <NoticeTable
+           bbsList={bbsList}
+        />
 
         <PaginationBox>
           <NoticePagination />
