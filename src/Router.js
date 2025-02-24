@@ -28,7 +28,7 @@ import MyPage from "./components/user/mypage/MyPage.js";
 import AdminHome from "./components/admin/AdminHome.js";
 import Footer from "./components/common/Footer.js";
 
-const Router = ()=> {
+const Router = () => {
   return (
     <BrowserRouter>
       <Header />

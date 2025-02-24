@@ -1,78 +1,57 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
-import Pagination from "react-js-pagination";
-import search from "./imgs/search.png";
-import ReviewTable from './ReviewTable';
 
-function Notice() {
-  //BbsList
-  const [bbsList, setBbsList] = useState([]);
 
-  //검색용 Hook
-  //게시글 조회
-  const [choiceVal, setChoiceVal] = useState("");
-  const [searchVal, setSearchVal] = useState("");
 
-  //Paging
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalCnt, setTotalCnt] = useState(0);
-
-  const getBbsList = async (page) => {
-    try {
-      const response = await axios.get("http://localhost:8080/board/list", {
-        params: { page: page - 1 },
-      });
-
-      console.log("[BbsList.js] useEffect() success :D");
-      console.log(response.data);
-
-      setBbsList(response.data.content);
-      setPageSize(response.data.pageSize);
-      setTotalPages(response.data.totalPages);
-      setTotalCnt(response.data.totalElements); //★
-    } catch (error) {
-      console.log("[BbsList.js] useEffect() error :<");
-      console.log(error);
-    }
-  };
-
-  //페이징 보여주기
-  const changePage = (page) => {
-    setPage(page);
-    getBbsList(page);
-  };
-
+function Review() {
   return (
     <Container>
       <ContentWrapper>
-        <NoticeTitle>
-          <h1>고객리뷰</h1>
-        </NoticeTitle>
+        <Title>
+          <h1>후기</h1>
+        </Title>
 
-        <ReviewTable />
+        <TableBox>
+          <Table>
+            <thead>
+              <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일자</th>
+                <th>조회수</th>
+                <th>좋아요</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </Table>
+        </TableBox>
 
-        <PaginationBox>
-          <Pagination
-            className="pagination"
-            activePage={page}
-            itemsCountPerPage={pageSize}
-            totalitemsCount={totalPages}
-            prevPageText={"<"}
-            nextPageText={">"}
-            onChange={changePage}
-          />
-        </PaginationBox>
+        <SearchBox>
+          <div>
+            <select>
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="writer">작성자</option>
+            </select>
+            <SearchField type="text" placeholder="검색어" />
+            <SearchButton>검색</SearchButton>
+          </div>
+
+          <WriteBox>
+            <WriteButton to="/reviewUpdate">수정</WriteButton>
+            <WriteButton to="/reviewWrite">작성</WriteButton>
+          </WriteBox>
+        </SearchBox>
       </ContentWrapper>
     </Container>
   );
 }
 
+
 // 컨테이너
 const Container = styled.div`
-  height: 100%;
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
@@ -81,52 +60,86 @@ const Container = styled.div`
   align-items: center;
 `;
 
-//  내부 콘텐츠
+// 내부 콘텐츠
 const ContentWrapper = styled.div`
   width: 100%;
-  max-width: 1000px;
-  width: 100%;
+  max-width: 1280px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 `;
 
-//  공지사항 제목
-const NoticeTitle = styled.div`
-  width: 1000px;
-  height: 50px;
+// 제목 섹션
+const Title = styled.div`
   margin-top: 100px;
+  width: 100%;
   text-align: left;
-  h1 {
-    font-weight: bold;
-    font-size: 36px;
-    font-family: "Noto Sans KR", serif;
-  }
 `;
 
-//페이지네이션
-const PaginationBox = styled.div`
-  padding: 10px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+// 테이블 박스
+const TableBox = styled.div`
+  width: 100%;
+  margin-top: 20px;
+`;
+
+// 테이블
+const Table = styled.table`
+  width: 100%;
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+`;
+
+//검색 박스
+const SearchBox = styled.div`
   display: flex;
-  justify-content: center; /* 중앙 정렬 */
+  justify-content: space-between;
   align-items: center;
-  width: 1000px;
-  height: 50px;
-  background-color: #ffffff;
-  flex-direction: row;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
 
-  /* Pagination 스타일 */
-  .pagination {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
+//검색 입력 필드
+const SearchField = styled.input`
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
 
-  .pagination li {
-    display: inline-block;
-    margin: 0 5px;
+//검색 버튼
+const SearchButton = styled.button`
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
   }
 `;
-export default Notice;
+
+//작성/수정 버튼 박스
+const WriteBox = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+//작성/수정 버튼 스타일
+const WriteButton = styled(Link)`
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #218838;
+  }
+`;
+
+export default Review;

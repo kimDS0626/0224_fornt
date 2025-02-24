@@ -72,6 +72,8 @@ const FindIdSection = styled.div`
   min-height: 500px;
   background-color: #f4f4f4;
   margin-bottom: 100px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 `;
 const FindLogo = styled.div`
   justify-content: center;
@@ -80,6 +82,7 @@ const FindLogo = styled.div`
   width: 600px;
   height: 40px;
   background-color: #f4f4f4;
+  
   margin-bottom: 30px;
   img {
     width: 145px;
@@ -118,6 +121,7 @@ const FindiIdInput = styled.div`
     margin-bottom: 5px;
   }
   input {
+   font-family: "Noto Sans KR", serif;
     outline: none;
     font-weight: 300;
     border: none;

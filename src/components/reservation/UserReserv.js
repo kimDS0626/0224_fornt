@@ -3,99 +3,7 @@ import axios from "axios";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import styled from "styled-components";
-
-
-
-
-
-function UserReserv() {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [timeSlots, setTimeSlots] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedDepartment, setSelectedDepartment] = useState([]);
-  const [selectedPet, setSelectedPet] = useState([]);
-
-  
-
-  useEffect(() => {
-    if (selectedDate) {
-      setLoading(true);
-      const formattedDate = selectedDate.toISOString().split("T")[0];
-
-      axios
-        .get(`http://백엔드_주소/api/timeslots?date=${formattedDate}`)
-        .then((response) => {
-          setTimeSlots(response.data);
-        })
-        .catch((error) => {
-          console.error("타임슬롯 데이터를 불러오는 중 오류 발생:", error);
-          setTimeSlots([]);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      setTimeSlots([]);
-    }
-  }, [selectedDate]);
-
-  return (
-    <Container>
-      <Title>회원 예약</Title>
-
-      <DepartmentWrapper>
-        {["안과", "내과", "외과", "치과", "정형외과"].map((dept) => (
-          <DepartmentButton
-            key={dept}
-            active={selectedDepartment === dept}
-            onClick={() => setSelectedDepartment(dept)}
-          >
-            {dept}
-          </DepartmentButton>
-        ))}
-      </DepartmentWrapper>
-
-      <CalendarBox>
-        <StyledCalendar
-          onChange={setSelectedDate}
-          value={selectedDate}
-          calendarType="gregory"
-          view="month"
-          prev2Label={null}
-          next2Label={null}
-          showNeighboringMonth={false}
-          locale="ko"
-        />
-      </CalendarBox>
-
-      {selectedDate && (
-        <TimeBox>
-          {loading ? (
-            <p>예약 시간을 불러오는 중...</p>
-          ) : timeSlots.length > 0 ? (
-            timeSlots.map((slot, index) => (
-              <TimeButton key={index} disabled={slot.isBooked}>
-                {slot.time}
-              </TimeButton>
-            ))
-          ) : (
-            <p>예약 가능한 시간이 없습니다.</p>
-          )}
-        </TimeBox>
-      )}
-
-      <AnimalInfoBox>
-        <p className="title"><strong>반려동물 정보</strong></p>
-        <p className="content">구름이</p>
-        <p className="content">7세</p>
-        <p className="content">고양이</p>
-        <p className="content">5.2kg</p>
-      </AnimalInfoBox>
-
-      <ReserveBtn>예약하기</ReserveBtn>
-    </Container>
-  );
-}
+import Timeslot from "./Timeslot";
 
 // 전체 컨테이너
 const Container = styled.div`
@@ -105,138 +13,164 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
 `;
 
-// 제목 스타일
-const Title = styled.h1`
-  margin-top: 100px;
-  margin-bottom: 50px;
-  font-size: 36px;
-  font-weight: bold;
-  font-family: "Noto Sans KR", serif;
-
-
-`;
-
-// 진료과목 버튼 그룹
-const DepartmentWrapper = styled.div`
+// 내부 콘텐츠 (최대 1280px)
+const ContentWrapper = styled.div`
+  width: 100%;
+  max-width: 1280px;
   display: flex;
-  gap: 15px;
-  margin-bottom: 50px;
-
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 `;
 
-const DepartmentButton = styled.button`
-  width:120px;
-  padding: 10px 20px;
-  border: 1px solid #111;
-  background-color: ${(props) => (props.active ? "#000" : "#fff")};
-  color: ${(props) => (props.active ? "#fff" : "#000")};
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 20px;
-  font-family: "Noto Sans KR", serif;
-
-  &:hover {
-    background-color: #000;
-    color: #fff;
-  }
+// 제목 섹션
+const Title = styled.div`
+  margin-top: 100px;
+  width: 100%;
+  text-align: left;
 `;
-
+// 진료과목 박스
+const DepartmentBo = styled.div`
+  
+`
 // 캘린더 박스
 const CalendarBox = styled.div`
+  width: 100%;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
-  margin: 20px 0;
-
 `;
 
 // 캘린더 스타일
 const StyledCalendar = styled(Calendar)`
-  border: none;
-  width: 500px; /* 변경된 가로 크기 */
-  height: 350px; /* 변경된 세로 크기 */
-  font-size: 20px;
-  font-family: "Noto Sans KR", serif;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border: 1px solid black;
+  width: 60%;
+  height: 400px;
+  border-radius: 15px;
 `;
 
-
-// 타임 슬롯 박스
-// 타임 슬롯 박스
+// 예약 시간 박스
 const TimeBox = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start; /* 왼쪽 정렬 */
-  gap: 10px;
-  max-width: 500px;
+  width: 100%;
+  max-width: 1280px;
+  border: 1px solid black;
+  border-radius: 15px;
   margin: 20px 0;
-`;
-
-// 타임 슬롯 버튼
-const TimeButton = styled.button`
   padding: 10px;
-  width: 110px; /* 버튼 크기 변경 */
-  border: 1px solid #f4f4f4;
-  border-radius: 5px;
-  background-color: ${(props) => (props.disabled ? "#f4f4f4" : "#fff")};
-  color: ${(props) => (props.disabled ? "#111" : "#111")};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  font-size: 20px;
-  font-family: "Noto Sans KR", serif;
-
-  &:hover {
-    background-color: ${(props) => (props.disabled ? "#f4f4f4" : "#111111")};
-    color: ${(props) => (props.disabled ? "#111111" : "#fff")};
-  }
+  justify-content: center;
+  align-items: center;
 `;
-
 
 // 반려동물 정보 박스
-const AnimalInfoBox = styled.div`
-  border: 1px solid #f4f4f4;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-  width: 300px;
-  margin-top: 50px;
-  margin-bottom: 40px;
-  font-family: "Noto Sans KR", serif;
-  .title{
-    font-size:20px;
-    font-weight:400;
-
-  }
-  .content{
-    font-size:16px;
-    font-weight:300;
-
-  }
-
-
+const AnimalBox = styled.div`
+  border: 1px solid black;
+  width: 100%;
+  max-width: 1280px; /* 📌 테이블이 1280px을 넘지 않도록 설정 */
+  border-radius: 15px;
+  margin-bottom: 20px;
+  padding: 10px;
 `;
 
-const ReserveBtn = styled.button`
-  width:200px;
-  height:100px;
-  margin-bottom: 100px;
-  background-color: ${(props) => (props.disabled ? "#f4f4f4" : "#fff")};
-  color: ${(props) => (props.disabled ? "#111" : "#111")};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  font-size: 20px;
-  font-family: "Noto Sans KR", serif;
+// 반려동물 정보 테이블
+const AnimalTable = styled.table`
+  width: 100%;
+  max-width: 1280px; /* 📌 테이블 크기를 1280px로 설정 */
+  border: 1px solid black;
+  border-radius: 15px;
+  margin: 20px 0;
+  text-align: center;
+`;
 
-  &:hover {
-    background-color: ${(props) => (props.disabled ? "#f4f4f4" : "#111111")};
-    color: ${(props) => (props.disabled ? "#111111" : "#fff")};
-  }
-  border:1px solid #111111;
-  border-radius:5px;
-  margin-top: 20px;
+function UserReserv() {
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [timeSlots, setTimeSlots] = useState([]); // 백엔드에서 받아올 타임슬롯 데이터
+  const [loading, setLoading] = useState(false); // 데이터 로딩 상태
 
+  // 날짜 선택 시 백엔드에서 해당 날짜의 타임슬롯 데이터를 가져옴
+  useEffect(() => {
+    if (selectedDate) {
+      setLoading(true);
+      const formattedDate = selectedDate.toISOString().split("T")[0]; // YYYY-MM-DD 형식 변환
 
-`
+      axios
+        .get(`http://백엔드_주소/api/timeslots?date=${formattedDate}`)
+        .then((response) => {
+          setTimeSlots(response.data); // 받아온 타임슬롯 데이터 저장
+        })
+        .catch((error) => {
+          console.error("타임슬롯 데이터를 불러오는 중 오류 발생:", error);
+          setTimeSlots([]); // 에러 시 빈 배열로 설정
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setTimeSlots([]); // 날짜가 선택되지 않았을 때는 빈 배열 유지
+    }
+  }, [selectedDate]);
+
+  return (
+    <Container>
+      <ContentWrapper>
+        <Title>
+          <h1>회원 예약</h1>
+        </Title>
+        
+
+        <CalendarBox>
+          <StyledCalendar
+            onChange={setSelectedDate}
+            value={selectedDate}
+            calendarType="gregory"
+            view="month"
+            prev2Label={null}
+            next2Label={null}
+            showNeighboringMonth={false}
+            locale="ko"
+          />
+        </CalendarBox>
+
+        {selectedDate && (
+          <TimeBox>
+            {loading ? (
+              <p>예약 시간을 불러오는 중...</p>
+            ) : timeSlots.length > 0 ? (
+              <Timeslot slots={timeSlots} />
+            ) : (
+              <p>예약 가능한 시간이 없습니다.</p>
+            )}
+          </TimeBox>
+        )}
+
+        <AnimalBox>
+          <AnimalTable>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="checkbox" />
+                </td>
+              </tr>
+              <tr>
+                <th>이름</th>
+              </tr>
+              <tr>
+                <th>종류</th>
+              </tr>
+              <tr>
+                <th>나이</th>
+              </tr>
+              <tr>
+                <th>무게</th>
+              </tr>
+            </tbody>
+          </AnimalTable>
+        </AnimalBox>
+      </ContentWrapper>
+    </Container>
+  );
+}
 
 export default UserReserv;

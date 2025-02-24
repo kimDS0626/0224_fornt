@@ -4,51 +4,42 @@ import styled from "styled-components";
 import logo_b from "./imgs/logo_b.png";
 
 function FindPassword() {
-  const [email, setEmail] = useState(""); // 이메일 상태
-  const [verificationCode, setVerificationCode] = useState(""); // 인증번호 상태
-  const [isCodeSent, setIsCodeSent] = useState(false); // 인증번호가 발송되었는지 확인
-  const [newPassword, setNewPassword] = useState(""); // 새 비밀번호 상태
-  const [confirmPassword, setConfirmPassword] = useState(""); // 새 비밀번호 확인 상태
-  const [isEmailValid, setIsEmailValid] = useState(false); // 이메일 유효성 검사
+  const [email, setEmail] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [isCodeSent, setIsCodeSent] = useState(false);
+  const [isCodeVerified, setIsCodeVerified] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  // 이메일 입력 핸들러
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-  // 인증 버튼 클릭 핸들러
   const handleSendCode = () => {
-    // 여기서 실제 이메일로 인증번호 보내는 로직을 구현
-    setIsCodeSent(true); // 인증번호 발송 완료
+    setIsCodeSent(true);
   };
 
-  // 인증번호 입력 핸들러
   const handleCodeChange = (e) => {
     setVerificationCode(e.target.value);
   };
 
-  // 인증번호 확인 버튼 클릭 핸들러
   const handleVerifyCode = () => {
-    // 실제 인증번호 확인 로직을 여기에 추가
     if (verificationCode === "123456") {
-      // 예시 인증번호
       alert("인증번호가 확인되었습니다.");
+      setIsCodeVerified(true);
     } else {
       alert("인증번호가 잘못되었습니다.");
     }
   };
 
-  // 비밀번호 입력 핸들러
   const handlePasswordChange = (e) => {
     setNewPassword(e.target.value);
   };
 
-  // 비밀번호 확인 핸들러
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
 
-  // 전체 확인 버튼 핸들러
   const handleSubmit = () => {
     if (newPassword === confirmPassword) {
       alert("비밀번호가 변경되었습니다.");
@@ -93,27 +84,30 @@ function FindPassword() {
             </div>
           </VerificationSection>
         )}
+        {isCodeVerified && (
+          <PasswordSection>
+            <div>
+              <input
+                type="password"
+                placeholder="새 비밀번호"
+                value={newPassword}
+                onChange={handlePasswordChange}
+              />
+              <input
+                type="password"
+                placeholder="새 비밀번호 확인"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+              />
+            </div>
+          </PasswordSection>
+        )}
 
-        <PasswordSection>
-          <div>
-            <input
-              type="password"
-              placeholder="새 비밀번호"
-              value={newPassword}
-              onChange={handlePasswordChange}
-            />
-            <input
-              type="password"
-              placeholder="새 비밀번호 확인"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-            />
-          </div>
-        </PasswordSection>
-
-        <CheckBox>
-          <button onClick={handleSubmit}>전체 확인</button>
-        </CheckBox>
+        {isCodeVerified && (
+          <CheckBox>
+            <button onClick={handleSubmit}>확인</button>
+          </CheckBox>
+        )}
       </FindPasswordSection>
     </FindPasswordContainer>
   );
@@ -132,13 +126,18 @@ const FindPasswordContainer = styled.div`
 
 const FindPasswordSection = styled.div`
   margin: auto;
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-top: 130px;
   padding-top: 30px;
   width: 600px;
-  min-height: 500px;
   background-color: #f4f4f4;
-  margin-bottom: 100px;
+  padding-bottom: 40px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+
+  margin-bottom: 200px;
 `;
 
 const FindLogo = styled.div`
@@ -186,6 +185,7 @@ const FindInput = styled.div`
     align-items: center;
   }
   input {
+    font-family: "Noto Sans KR", serif;
     outline: none;
     font-weight: 300;
     border: none;
@@ -209,8 +209,22 @@ const FindInput = styled.div`
 
 const VerificationSection = styled.div`
   width: 600px;
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  justify-content: center;
+  background-color: #f4f4f4;
+  position: relative;
+  div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   input {
+    font-family: "Noto Sans KR", serif;
     outline: none;
     font-weight: 300;
     border: none;
@@ -221,13 +235,14 @@ const VerificationSection = styled.div`
     margin: 0 auto;
   }
   button {
-    background-color: #111111;
-    color: white;
+    right: 90px;
+    position: absolute;
+    background-color: #f4f4f4;
+    color: #111111;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 10px;
     font-size: 16px;
     cursor: pointer;
-    margin-left: 20px;
   }
 `;
 
@@ -240,6 +255,7 @@ const PasswordSection = styled.div`
     gap: 20px;
   }
   input {
+    font-family: "Noto Sans KR", serif;
     outline: none;
     font-weight: 300;
     border: none;

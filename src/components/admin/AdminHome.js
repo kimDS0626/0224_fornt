@@ -1,101 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import AdminUserList from "./user/AdminUserList";
-import Notice from "../board/notice/Notice";
-import Review from "../board/review/Review";
-import AdminReservationList from "./reservation/AdminReservationList";
-import OnlineCounsel from "../board/onlinecounsel/OnlineCounsel";
-import Review_B from "./button/Review_B";
+
+import NoticeTable from "../board/notice/NoticeTable";
 import NoticeList_B from "./button/NoticeList_B";
 
-const HomeContainer = styled.div`
-  margin: auto;
-  display: block;
-  width: 1280px;
-  height: 1000px;
-  position: relative;
-`;
+import AdminReservationList from "./reservation/AdminReservationList";
 
-const Homeva = styled.div`
-margin-top: 50px;
-  background-color: #f0f0f0;
-  float: left;
-  width: 150px;
-  min-height: 30%; 
-  position: absolute;
-  ul {
-    list-style: none;
-    padding: 0; 
-  }
-  button {
-    font-size: 16px;
-    border: none;
-    background: transparent;
-    width: 100%; 
-    text-align: left; /
-    padding: 10px;
-    color: white; 
-    cursor: pointer;
-  }
-`;
+import OnlineCounselTable from "../board/onlinecounsel/OnlineCounselTable";
 
-const VaTitle = styled.div`
-  background-color: #f0f0f0;
-  padding: 20px;
-  text-align: center;
-  height: 30px;
-`;
+import ReviewTable from "../board/review/ReviewTable";
 
-const Vacontent = styled.div`
-  li {
-    background-color: #555;
-  }
-
-  li.active {
-    background-color: #003cd2;
-  }
-`;
-// -----------------------------------------------------------------
-const HomeSectionA = styled.div`
-  top: 50px;
-  position: relative;
-  float: right;
-  margin: auto;
-  background-color: #f0f0f0;
-  display: block;
-  width: 1080px;
-  height: 100px;
-  text-align: center;
-`;
-
-const HomeTitle = styled.div`
-  background-color: #f0f0f0;
-  color: #003CD2
-  padding: 20px;
-
-  display: inline-block;
-`;
-
-const HomeSectionB = styled.div`
-  top: 50px;
-  position: relative;
-  float: right;
-  margin: auto;
-
-  display: block;
-  width: 1080px;
-  min-height: 500px;
-`;
-const HomeSectionC = styled.div`
-  top: 50px;
-  position: relative;
-  float: right;
-  margin: auto;
-
-  display: block;
-  width: 1080px;
-  background-color: #f0f0f0;
-`;
 function AdminHome() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -105,23 +20,25 @@ function AdminHome() {
       content: <AdminUserList />,
     },
     {
-      title: "후기 관리",
-      content: <Review />,
-    },
-    {
-      title: "온라인상담 관리",
-      content: <OnlineCounsel />,
-      button: <Review_B />,
-    },
-    {
       title: "공지사항 관리",
-      content: <Notice />,
+      content: <NoticeTable />,
       button: <NoticeList_B />,
     },
     {
-      title: "예약 관리",
-      content: <AdminReservationList />,
+      title: "온라인예약 관리",
+      content: <OnlineCounselTable />,
     },
+    {
+      title: "온라인상담 관리",
+      content: <OnlineCounselTable />,
+    },
+    {
+      title: "고객 리뷰 관리",
+      content: <ReviewTable />,
+    },
+  
+   
+    
   ];
 
   const handleClick = (index) => {
@@ -134,9 +51,10 @@ function AdminHome() {
 
   return (
     <HomeContainer>
+      <HomeSection>
       <Homeva>
         <VaTitle>
-          <h3>관리자 메뉴</h3>
+          <h3>admin</h3>
         </VaTitle>
         <Vacontent>
           <ul>
@@ -161,8 +79,135 @@ function AdminHome() {
         <div>{data[selectedIndex].content}</div>
       </HomeSectionB>
       <HomeSectionC>{data[selectedIndex].button}</HomeSectionC>
+      </HomeSection>
     </HomeContainer>
   );
 }
+
+const HomeContainer = styled.div`
+  height: 1400px;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const HomeSection = styled.div`
+  width: 1280px;
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 200px 80px 1000px; 
+  grid-template-rows: 50px 100% 150px; 
+
+`;
+
+
+
+const Homeva = styled.div`
+  margin-top: 50px;
+  background-color: #111111;
+  width: 190px;
+   height: 1235px;
+  position: absolute;
+  grid-row: span 3;
+  display: flex;
+  flex-direction: column; /* 세로로 정렬 */
+  align-items: center; /* 가로 중앙 */
+`;
+
+const VaTitle = styled.div`
+  background-color: #111111;
+  color: white;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 80px;
+  font-size: 32px;
+ font-weight: 700;
+`;
+
+const Vacontent = styled.div`
+  display: flex;
+  flex-direction: column; /* 세로로 정렬 */
+  justify-content: center; /* 세로 중앙 정렬 */
+  align-items: center; /* 가로 중앙 정렬 */
+  width: 100%; /* 버튼이 가운데 정렬되도록 넓이 조정 */
+
+  li {
+margin-bottom:1px;
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    background-color: #f0f0f0;
+    width: 155px;
+    height: 80px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+        display: flex;
+  justify-content: center; /* 세로 중앙 정렬 */
+  align-items: center; /* 가로 중앙 정렬 */
+
+  }
+  button{
+   font-family: "Noto Sans KR", serif;    
+  width: 95px;
+  }
+  li.active {
+    border:1px solid  #f0f0f0;
+    color: #f0f0f0;
+     background-color: #111111;
+  }
+`;
+// -----------------------------------------------------------------
+const HomeSectionA = styled.div`
+ background-color: #111111;
+ grid-column: 3;
+  grid-row: 1;
+  top: 50px;
+  position: relative;
+justify-content: center; /* 세로 중앙 정렬 */
+ align-items: center; /* 가로 중앙 정렬 */
+
+ display: flex;
+  width: 1000px;
+  height: 70px;
+`;
+
+const HomeTitle = styled.div`
+  
+  color: #ffffff;
+  padding: 20px;
+ font-size: 32px;
+    font-weight: 700;
+ display: flex;
+`;
+// ------------------------------------------------------------------------
+const HomeSectionB = styled.div`
+ position: relative;
+top:-35px;
+left: -110px;
+  height: 1000px;
+ grid-column: 3;
+  grid-row: 2;
+transform: scale(0.78);
+ display: flex;
+`;
+// ------------------------------------------------------------------------------
+const HomeSectionC = styled.div`
+ position: relative;
+top:-230px;
+background: #111111;
+ height: 65px;
+   width: 1000px;
+ grid-column: 3;
+  grid-row: 3;
+
+`;
+
 
 export default AdminHome;

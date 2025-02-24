@@ -119,7 +119,8 @@ const LoginSection = styled.div`
   align-items: center;
   flex-direction: column;
   margin: auto;
-
+ border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   width: 600px;
   height: 740px;
@@ -152,6 +153,7 @@ const InputBox = styled.div`
 
     text-align: center;
     input {
+     font-family: "Noto Sans KR", serif;
     border:none;
     padding-left:15px;
 
@@ -211,7 +213,7 @@ const SignInButton = styled.div`
     justify-content: center;
   width: 460px;
     height: 60px;
-      background:#111111 ;
+      background: #111111 ;
 
         font-weight: medium ;
       font-size: 20px;

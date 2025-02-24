@@ -4,8 +4,7 @@ import axios from "axios";
 import Pagination from "react-js-pagination";
 import search from "./imgs/search.png";
 
-
-function NoticeTable() {
+function ReviewTable() {
   //BbsList
   const [bbsList, setBbsList] = useState([]);
 
@@ -106,6 +105,18 @@ function NoticeTable() {
           </tbody>
         </NoticeTabled>
       </NoticeTableBox>
+
+      <PaginationBox>
+          <Pagination
+            className="pagination"
+            activePage={page}
+            itemsCountPerPage={pageSize}
+            totalitemsCount={totalPages}
+            prevPageText={"<"}
+            nextPageText={">"}
+            onChange={changePage}
+          />
+        </PaginationBox>
     </Container>
   );
 }
@@ -116,7 +127,7 @@ const Container = styled.div``;
 //  검색 박스
 const NoticeSearchBox = styled.div`
   display: flex;
-  width: 1000px;
+  width: 1280px;
   height: 90px;
   justify-content: center;
   position: relative;
@@ -139,7 +150,7 @@ const NoticeSearchBox = styled.div`
 //  검색 필드 스타일
 const SearchField = styled.input`
   margin-top: 25px;
-  width: 920px;
+  width: 1200px;
   height: 55px;
   border: none;
   border-bottom: 1px solid #ccc;
@@ -150,7 +161,7 @@ const SearchField = styled.input`
 
 //  공지사항 테이블 박스
 const NoticeTableBox = styled.div`
-  width: 1000px;
+  width: 1280px;
   height: 1220px;
   margin-top: 20px;
   display: flex;
@@ -195,6 +206,7 @@ const NoticeTabled = styled.table`
     font-weight: regular;
     font-size: 20px;
     font-family: "Noto Sans KR", serif;
+     vertical-align: middle;
   &:nth-of-type(1) {  /* 첫 번째 <td> */
     width: 80px;
     text-align: center;
@@ -214,6 +226,31 @@ const NoticeTabled = styled.table`
     width: 100px;
     text-align: center;
   }
+
+`
+  //페이지네이션
+const PaginationBox = styled.div`
+  padding: 10px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center;
+  width: 1280px;
+  height: 50px;
+  background-color: #ffffff;
+  flex-direction: row;
+
+  /* Pagination 스타일 */
+  .pagination {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .pagination li {
+    display: inline-block;
+    margin: 0 5px;
+  }
 `;
 
-export default NoticeTable;
+export default ReviewTable;

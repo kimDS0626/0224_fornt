@@ -1,48 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-
-
-function NonUserReserve() {
-  return (
-    <Container>
-      <ContentWrapper>
-        <Title>
-          <h1>비회원 예약</h1>
-        </Title>
-
-        <TableBox>
-          <Table>
-            <tbody>
-              <tr>
-                <td>이름</td>
-              </tr>
-              <tr>
-                <td>
-                  <InputField type="text" placeholder="이름" />
-                </td>
-              </tr>
-              <tr>
-                <td>전화번호</td>
-              </tr>
-              <tr>
-                <td>
-                  <InputField type="text" placeholder="전화번호" />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <SubmitButton>등록</SubmitButton>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </TableBox>
-      </ContentWrapper>
-    </Container>
-  );
-}
-
 // 전체 컨테이너
 const Container = styled.div`
   width: 100%;
@@ -111,5 +69,45 @@ const SubmitButton = styled.button`
     background-color: #0056b3;
   }
 `;
+
+function NonUserReserve() {
+  return (
+    <Container>
+      <ContentWrapper>
+        <Title>
+          <h1>비회원 예약</h1>
+        </Title>
+
+        <TableBox>
+          <Table>
+            <tbody>
+              <tr>
+                <td>이름</td>
+              </tr>
+              <tr>
+                <td>
+                  <InputField type="text" placeholder="이름" />
+                </td>
+              </tr>
+              <tr>
+                <td>전화번호</td>
+              </tr>
+              <tr>
+                <td>
+                  <InputField type="text" placeholder="전화번호" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <SubmitButton>등록</SubmitButton>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </TableBox>
+      </ContentWrapper>
+    </Container>
+  );
+}
 
 export default NonUserReserve;
