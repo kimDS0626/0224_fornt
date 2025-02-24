@@ -1,52 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import Pagination from "react-js-pagination";
+
 import search from "./imgs/search.png";
 
 function NoticeTable() {
-  //BbsList
-  const [bbsList, setBbsList] = useState([]);
-
-  //검색용 Hook
-  //게시글 조회
-  const [choiceVal, setChoiceVal] = useState("");
-  const [searchVal, setSearchVal] = useState("");
-
-  //Paging
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalCnt, setTotalCnt] = useState(0);
-
-  const getBbsList = async (page) => {
-    try {
-      const response = await axios.get("http://localhost:8080/board/list", {
-        params: { page: page - 1 },
-      });
-
-      console.log("[BbsList.js] useEffect() success :D");
-      console.log(response.data);
-
-      setBbsList(response.data.content);
-      setPageSize(response.data.pageSize);
-      setTotalPages(response.data.totalPages);
-      setTotalCnt(response.data.totalElements); //★
-    } catch (error) {
-      console.log("[BbsList.js] useEffect() error :<");
-      console.log(error);
-    }
-  };
-
-  //페이징 보여주기
-  const changePage = (page) => {
-    setPage(page);
-    getBbsList(page);
-  };
-
   const notices = [
     { id: 1, title: "제목", date: "2025-02-20", views: 11 },
-    { id: 2, title: "제목", date: "2025-02-20", views: 10 },
     { id: 2, title: "제목", date: "2025-02-20", views: 10 },
     { id: 3, title: "제목", date: "2025-02-20", views: 10 },
     { id: 4, title: "제목", date: "2025-02-20", views: 10 },
@@ -118,19 +77,19 @@ const Container = styled.div`
 //  검색 박스
 const NoticeSearchBox = styled.div`
   display: flex;
-  width:100%;
-  max-width: 1280px;
+  width: 1280px;
   height: 90px;
   justify-content: center;
   position: relative;
   img {
-   
-    width:30px;
-    height:30px;
-    margin-top:25px;
+    position: absolute;
+    left: 180px;
+    top: 35px;
+    width: 30px;
+    height: 30px;
   }
   input {
-    padding-left: 30px;
+    padding-left: 50px;
     padding-bottom: 10px;
   }
   input:focus {
@@ -152,14 +111,14 @@ const SearchField = styled.input`
 
 //  공지사항 테이블 박스
 const NoticeTableBox = styled.div`
-  width:100%;
+  width: 100%;
   max-width: 1280px;
   margin-top: 20px;
   display: flex;
   justify-content: center;
   overflow-x: auto;
-  padding-left:140px;
-  padding-right:140px;
+  padding-left: 140px;
+  padding-right: 140px;
 `;
 
 //  공지사항 테이블
@@ -199,6 +158,7 @@ const NoticeTabled = styled.table`
     font-weight: regular;
     font-size: 20px;
     font-family: "Noto Sans KR", serif;
+    vertical-align: middle;
   &:nth-of-type(1) {  /* 첫 번째 <td> */
     width: 80px;
     text-align: center;

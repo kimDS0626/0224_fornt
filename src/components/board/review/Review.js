@@ -1,57 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-
+import ReviewTable from "./ReviewTable";
+import { Link } from "react-router-dom";
+import ReviewPagination from "./ReviewPagination";
 
 function Review() {
   return (
     <Container>
       <ContentWrapper>
-        <Title>
-          <h1>후기</h1>
-        </Title>
+        <NoticeTitle>
+          <h1>고객리뷰</h1>
+        </NoticeTitle>
 
-        <TableBox>
-          <Table>
-            <thead>
-              <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일자</th>
-                <th>조회수</th>
-                <th>좋아요</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </Table>
-        </TableBox>
+        <ReviewTable />
 
-        <SearchBox>
-          <div>
-            <select>
-              <option value="title">제목</option>
-              <option value="content">내용</option>
-              <option value="writer">작성자</option>
-            </select>
-            <SearchField type="text" placeholder="검색어" />
-            <SearchButton>검색</SearchButton>
-          </div>
-
-          <WriteBox>
-            <WriteButton to="/reviewUpdate">수정</WriteButton>
-            <WriteButton to="/reviewWrite">작성</WriteButton>
-          </WriteBox>
-        </SearchBox>
+        <WriteBtnBox>
+          <Link to="/ReviewWrite">
+            <WriteBtn>작성</WriteBtn>
+          </Link>
+        </WriteBtnBox>
+        <PaginationBox>
+          <ReviewPagination />
+        </PaginationBox>
       </ContentWrapper>
     </Container>
   );
 }
 
-
 // 컨테이너
 const Container = styled.div`
+  height: 100%;
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
@@ -60,86 +39,68 @@ const Container = styled.div`
   align-items: center;
 `;
 
-// 내부 콘텐츠
+//  내부 콘텐츠
 const ContentWrapper = styled.div`
   width: 100%;
-  max-width: 1280px;
+  max-width: 1000px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
 `;
 
-// 제목 섹션
-const Title = styled.div`
+//  공지사항 제목
+const NoticeTitle = styled.div`
+  width: 1000px;
+  height: 50px;
   margin-top: 100px;
-  width: 100%;
   text-align: left;
+  h1 {
+    font-weight: bold;
+    font-size: 36px;
+    font-family: "Noto Sans KR", serif;
+  }
 `;
 
-// 테이블 박스
-const TableBox = styled.div`
-  width: 100%;
-  margin-top: 20px;
-`;
-
-// 테이블
-const Table = styled.table`
-  width: 100%;
-  border: 1px solid black;
-  border-collapse: collapse;
-  text-align: center;
-`;
-
-//검색 박스
-const SearchBox = styled.div`
+//페이지네이션
+const PaginationBox = styled.div`
+  padding: 10px;
+  margin-bottom: 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* 중앙 정렬 */
   align-items: center;
+  width: 1000px;
+  height: 50px;
+  background-color: #ffffff;
+  flex-direction: row;
+
+  /* Pagination 스타일 */
+  .pagination {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .pagination li {
+    display: inline-block;
+    margin: 0 5px;
+  }
+`;
+
+const WriteBtn = styled.button`
+  width: 50px;
+  height: 30px;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: "Noto Sans KR", serif;
+  background-color: #f4f4f4;
+  border: 1px solid #111111;
+`;
+const WriteBtnBox = styled.div`
   width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
-`;
-
-//검색 입력 필드
-const SearchField = styled.input`
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-`;
-
-//검색 버튼
-const SearchButton = styled.button`
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-//작성/수정 버튼 박스
-const WriteBox = styled.div`
+  max-width: 1000px;
   display: flex;
-  gap: 10px;
+  justify-content: end;
+  margin-top: 30px;
 `;
-
-//작성/수정 버튼 스타일
-const WriteButton = styled(Link)`
-  padding: 5px 10px;
-  background-color: #28a745;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #218838;
-  }
-`;
-
 export default Review;

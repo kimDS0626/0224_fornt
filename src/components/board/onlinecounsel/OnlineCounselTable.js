@@ -1,59 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import Pagination from "react-js-pagination";
+
 import search from "./imgs/search.png";
 
-function NoticeTable() {
-  //BbsList
-  const [bbsList, setBbsList] = useState([]);
-
-  //검색용 Hook
-  //게시글 조회
-  const [choiceVal, setChoiceVal] = useState("");
-  const [searchVal, setSearchVal] = useState("");
-
-  //Paging
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalCnt, setTotalCnt] = useState(0);
-
-  const getBbsList = async (page) => {
-    try {
-      const response = await axios.get("http://localhost:8080/board/list", {
-        params: { page: page - 1 },
-      });
-
-      console.log("[BbsList.js] useEffect() success :D");
-      console.log(response.data);
-
-      setBbsList(response.data.content);
-      setPageSize(response.data.pageSize);
-      setTotalPages(response.data.totalPages);
-      setTotalCnt(response.data.totalElements); //★
-    } catch (error) {
-      console.log("[BbsList.js] useEffect() error :<");
-      console.log(error);
-    }
-  };
-
-  //페이징 보여주기
-  const changePage = (page) => {
-    setPage(page);
-    getBbsList(page);
-  };
-
+function OnlineCounselTable() {
   const notices = [
-    { id: 1, title: "제목", date: "2025-02-20", views: 11 },
-    { id: 2, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 2, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 3, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 4, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 5, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 6, title: "제목", date: "2025-02-20", views: 11 },
-    { id: 7, title: "제목", date: "2025-02-20", views: 10 },
-    { id: 8, title: "제목", date: "2025-02-20", views: 10 },
+    { id: 1, title: "제목", date: "2025-02-20", views: 11, answer: "Y" },
+    { id: 2, title: "제목", date: "2025-02-20", views: 10, answer: "Y" },
+    { id: 3, title: "제목", date: "2025-02-20", views: 10, answer: "Y" },
+    { id: 4, title: "제목", date: "2025-02-20", views: 10, answer: "Y" },
+    { id: 5, title: "제목", date: "2025-02-20", views: 10, answer: "Y" },
+    { id: 6, title: "제목", date: "2025-02-20", views: 11, answer: "Y" },
+    { id: 7, title: "제목", date: "2025-02-20", views: 10, answer: "Y" },
+    { id: 8, title: "제목", date: "2025-02-20", views: 10, answer: "Y" },
   ];
   const addEmptyRows = (data) => {
     const rowsWithEmpty = [];
@@ -68,7 +27,7 @@ function NoticeTable() {
   return (
     <Container>
       <NoticeSearchBox>
-        <img src={search} />
+        <img src={search} alt="search" />
         <SearchField type="text" placeholder="검색 할 것을 적어보세요." />
       </NoticeSearchBox>
 
@@ -80,6 +39,7 @@ function NoticeTable() {
               <th>제목</th>
               <th>등록일</th>
               <th>조회수</th>
+              <th>답변여부</th>
             </tr>
           </thead>
 
@@ -93,11 +53,12 @@ function NoticeTable() {
                     <td>{notice.title}</td>
                     <td>{notice.date}</td>
                     <td>{notice.views}</td>
+                    <td>{notice.answer}</td>
                   </>
                 ) : (
                   // 빈 데이터 행일 때 (공백 행)
                   <>
-                    <td colSpan={4}>&nbsp;</td>
+                    <td colSpan={5}>&nbsp;</td>
                   </>
                 )}
               </tr>
@@ -105,24 +66,15 @@ function NoticeTable() {
           </tbody>
         </NoticeTabled>
       </NoticeTableBox>
-
-      <PaginationBox>
-          <Pagination
-            className="pagination"
-            activePage={page}
-            itemsCountPerPage={pageSize}
-            totalitemsCount={totalPages}
-            prevPageText={"<"}
-            nextPageText={">"}
-            onChange={changePage}
-          />
-        </PaginationBox>
     </Container>
   );
 }
 
 // 컨테이너
-const Container = styled.div``;
+const Container = styled.div`
+  width:100%
+  max-width: 1920px;
+`;
 
 //  검색 박스
 const NoticeSearchBox = styled.div`
@@ -133,7 +85,7 @@ const NoticeSearchBox = styled.div`
   position: relative;
   img {
     position: absolute;
-    left: 40px;
+    left: 180px;
     top: 35px;
     width: 30px;
     height: 30px;
@@ -150,7 +102,7 @@ const NoticeSearchBox = styled.div`
 //  검색 필드 스타일
 const SearchField = styled.input`
   margin-top: 25px;
-  width: 1200px;
+  width: 920px;
   height: 55px;
   border: none;
   border-bottom: 1px solid #ccc;
@@ -161,20 +113,22 @@ const SearchField = styled.input`
 
 //  공지사항 테이블 박스
 const NoticeTableBox = styled.div`
-  width: 1280px;
-  height: 1220px;
+  width: 100%;
+  max-width: 1280px;
   margin-top: 20px;
   display: flex;
   justify-content: center;
   overflow-x: auto;
+  padding-left: 140px;
+  padding-right: 140px;
 `;
 
 //  공지사항 테이블
 const NoticeTabled = styled.table`
-  width: 100%;
-  
+    width:100%;
+  max-width: 1000px;
+
   border-collapse: collapse;
-  
 
   thead {
     background-color: #f4f4f4;
@@ -192,13 +146,14 @@ const NoticeTabled = styled.table`
     &:nth-child(odd) {
       border: none;
       height: 40px;
+
     }
     &:nth-child(even) {
       background-color: #f4f4f4;
       border-bottom: 1px solid #111111;
       height: 70px;
     }
-    width: 1280px;
+
   }
 
   tbody td {
@@ -206,7 +161,7 @@ const NoticeTabled = styled.table`
     font-weight: regular;
     font-size: 20px;
     font-family: "Noto Sans KR", serif;
-     vertical-align: middle;
+    vertical-align: middle;
   &:nth-of-type(1) {  /* 첫 번째 <td> */
     width: 80px;
     text-align: center;
@@ -226,31 +181,10 @@ const NoticeTabled = styled.table`
     width: 100px;
     text-align: center;
   }
-
-`
-  //페이지네이션
-const PaginationBox = styled.div`
-  padding: 10px;
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center;
-  width: 1280px;
-  height: 50px;
-  background-color: #ffffff;
-  flex-direction: row;
-
-  /* Pagination 스타일 */
-  .pagination {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
-
-  .pagination li {
-    display: inline-block;
-    margin: 0 5px;
+    &:nth-of-type(5) {  /* 네 번째 <td> */
+    width: 150px;
+    text-align: center;
   }
 `;
 
-export default NoticeTable;
+export default OnlineCounselTable;

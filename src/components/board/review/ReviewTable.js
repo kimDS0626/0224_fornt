@@ -4,7 +4,7 @@ import axios from "axios";
 import Pagination from "react-js-pagination";
 import search from "./imgs/search.png";
 
-function ReviewTable() {
+function NoticeTable() {
   //BbsList
   const [bbsList, setBbsList] = useState([]);
 
@@ -46,7 +46,6 @@ function ReviewTable() {
 
   const notices = [
     { id: 1, title: "제목", date: "2025-02-20", views: 11 },
-    { id: 2, title: "제목", date: "2025-02-20", views: 10 },
     { id: 2, title: "제목", date: "2025-02-20", views: 10 },
     { id: 3, title: "제목", date: "2025-02-20", views: 10 },
     { id: 4, title: "제목", date: "2025-02-20", views: 10 },
@@ -105,24 +104,15 @@ function ReviewTable() {
           </tbody>
         </NoticeTabled>
       </NoticeTableBox>
-
-      <PaginationBox>
-          <Pagination
-            className="pagination"
-            activePage={page}
-            itemsCountPerPage={pageSize}
-            totalitemsCount={totalPages}
-            prevPageText={"<"}
-            nextPageText={">"}
-            onChange={changePage}
-          />
-        </PaginationBox>
     </Container>
   );
 }
 
 // 컨테이너
-const Container = styled.div``;
+const Container = styled.div`
+  width:100%
+  max-width: 1920px;
+`;
 
 //  검색 박스
 const NoticeSearchBox = styled.div`
@@ -133,7 +123,7 @@ const NoticeSearchBox = styled.div`
   position: relative;
   img {
     position: absolute;
-    left: 40px;
+    left: 180px;
     top: 35px;
     width: 30px;
     height: 30px;
@@ -146,11 +136,10 @@ const NoticeSearchBox = styled.div`
     outline: none;
   }
 `;
-
 //  검색 필드 스타일
 const SearchField = styled.input`
   margin-top: 25px;
-  width: 1200px;
+  width: 920px;
   height: 55px;
   border: none;
   border-bottom: 1px solid #ccc;
@@ -161,12 +150,14 @@ const SearchField = styled.input`
 
 //  공지사항 테이블 박스
 const NoticeTableBox = styled.div`
-  width: 1280px;
-  height: 1220px;
+  width: 100%;
+  max-width: 1280px;
   margin-top: 20px;
   display: flex;
   justify-content: center;
   overflow-x: auto;
+  padding-left: 140px;
+  padding-right: 140px;
 `;
 
 //  공지사항 테이블
@@ -206,7 +197,7 @@ const NoticeTabled = styled.table`
     font-weight: regular;
     font-size: 20px;
     font-family: "Noto Sans KR", serif;
-     vertical-align: middle;
+    vertical-align: middle;
   &:nth-of-type(1) {  /* 첫 번째 <td> */
     width: 80px;
     text-align: center;
@@ -226,31 +217,6 @@ const NoticeTabled = styled.table`
     width: 100px;
     text-align: center;
   }
-
-`
-  //페이지네이션
-const PaginationBox = styled.div`
-  padding: 10px;
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center;
-  width: 1280px;
-  height: 50px;
-  background-color: #ffffff;
-  flex-direction: row;
-
-  /* Pagination 스타일 */
-  .pagination {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
-
-  .pagination li {
-    display: inline-block;
-    margin: 0 5px;
-  }
 `;
 
-export default ReviewTable;
+export default NoticeTable;

@@ -3,78 +3,6 @@ import styled from "styled-components";
 import axios from "axios";
 import Pagination from "react-js-pagination";
 
-// 컨테이너
-const Container = styled.div`
-  width: 100%;
-  max-width: 1920px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-//  내부 콘텐츠
-const ContentWrapper = styled.div`
-  width: 100%;
-  max-width: 1280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-//   테이블 박스
-const NoticeTableBox = styled.div`
-  width: 100%;
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-`;
-
-//   테이블
-const NoticeTable = styled.table`
-  border: 1px solid black;
-  width: 100%;
-  height: 400px;
-  border-radius: 15px;
-  text-align: center;
-`;
-
-//  검색 박스
-const NoticeSearchBox = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
-`;
-
-//  검색 필드 스타일
-const SearchField = styled.input`
-  padding: 5px;
-  margin-left: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-`;
-const PaginationBox = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 20px;
-`;
-
-const SearchButton = styled.button`
-  margin-left: 10px;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
 function AdminReservationList() {
   //BbsList
   // const [bbsList, setBbsList] = useState([]);
@@ -159,5 +87,77 @@ function AdminReservationList() {
     </Container>
   );
 }
+
+// 컨테이너
+const Container = styled.div`
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+//  내부 콘텐츠
+const ContentWrapper = styled.div`
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+//   테이블 박스
+const NoticeTableBox = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+`;
+
+//   테이블
+const NoticeTable = styled.table`
+  border: 1px solid black;
+  width: 100%;
+  height: 400px;
+  border-radius: 15px;
+  text-align: center;
+`;
+
+//  검색 박스
+const NoticeSearchBox = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+//  검색 필드 스타일
+const SearchField = styled.input`
+  padding: 5px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
+const PaginationBox = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+const SearchButton = styled.button`
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 
 export default AdminReservationList;

@@ -136,8 +136,10 @@ function AdminUserList() {
 }
 
 // 컨테이너
-const Container = styled.div``;
-
+const Container = styled.div`  
+width:100%
+  max-width: 1920px;
+`;
 //  검색 박스
 const SearchBox = styled.div`
   display: flex;
@@ -147,7 +149,7 @@ const SearchBox = styled.div`
   position: relative;
   img {
     position: absolute;
-    left: 40px;
+    left: 180px;
     top: 35px;
     width: 30px;
     height: 30px;
@@ -164,27 +166,28 @@ const SearchBox = styled.div`
 //  검색 필드 스타일
 const SearchField = styled.input`
   margin-top: 25px;
-  width: 1200px;
+  width: 920px;
   height: 55px;
   border: none;
   border-bottom: 1px solid #ccc;
-  font-weight: 400;
+  font-weight: regular;
   font-size: 36px;
   font-family: "Noto Sans KR", serif;
 `;
 
 const NoticeTableBox = styled.div`
-  width: 1280px;
-  height: 1220px;
+  width: 100%;
+  max-width: 1280px;
   margin-top: 20px;
   display: flex;
   justify-content: center;
   overflow-x: auto;
+  padding-left: 140px;
+  padding-right: 140px;
 `;
-
 const NoticeTabled = styled.table`
   width: 100%;
-  
+ 
   border-collapse: collapse;
   
 
@@ -250,12 +253,20 @@ const NoticeTabled = styled.table`
 `;
 //페이지네이션
 const PaginationBox = styled.div`
+  height: 100%;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 10px;
+
   margin-bottom: 40px;
   display: flex;
   justify-content: center; /* 중앙 정렬 */
   align-items: center;
-  width: 1280px;
+  width: 1000px;
   height: 50px;
   background-color: #ffffff;
   flex-direction: row;

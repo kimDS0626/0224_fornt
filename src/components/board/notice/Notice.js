@@ -1,50 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import Pagination from "react-js-pagination";
-import search from "./imgs/search.png";
 import NoticeTable from "./NoticeTable";
+import NoticePagination from "./NoticePagination";
 
 function Notice() {
-  //BbsList
-  const [bbsList, setBbsList] = useState([]);
-
-  //검색용 Hook
-  //게시글 조회
-  const [choiceVal, setChoiceVal] = useState("");
-  const [searchVal, setSearchVal] = useState("");
-
-  //Paging
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalCnt, setTotalCnt] = useState(0);
-
-  const getBbsList = async (page) => {
-    try {
-      const response = await axios.get("http://localhost:8080/board/list", {
-        params: { page: page - 1 },
-      });
-
-      console.log("[BbsList.js] useEffect() success :D");
-      console.log(response.data);
-
-      setBbsList(response.data.content);
-      setPageSize(response.data.pageSize);
-      setTotalPages(response.data.totalPages);
-      setTotalCnt(response.data.totalElements); //★
-    } catch (error) {
-      console.log("[BbsList.js] useEffect() error :<");
-      console.log(error);
-    }
-  };
-
-  //페이징 보여주기
-  const changePage = (page) => {
-    setPage(page);
-    getBbsList(page);
-  };
-
   return (
     <Container>
       <ContentWrapper>
@@ -55,15 +14,7 @@ function Notice() {
         <NoticeTable />
 
         <PaginationBox>
-          <Pagination
-            className="pagination"
-            activePage={page}
-            itemsCountPerPage={pageSize}
-            totalitemsCount={totalPages}
-            prevPageText={"<"}
-            nextPageText={">"}
-            onChange={changePage}
-          />
+          <NoticePagination />
         </PaginationBox>
       </ContentWrapper>
     </Container>
@@ -104,29 +55,6 @@ const NoticeTitle = styled.div`
   }
 `;
 
-//페이지네이션
-const PaginationBox = styled.div`
-  padding: 10px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center;
-  width: 1000px;
-  height: 50px;
-  background-color: #ffffff;
-  flex-direction: row;
+const PaginationBox = styled.div``;
 
-  /* Pagination 스타일 */
-  .pagination {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-  }
-
-  .pagination li {
-    display: inline-block;
-    margin: 0 5px;
-  }
-`;
 export default Notice;

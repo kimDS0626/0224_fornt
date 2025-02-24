@@ -1,10 +1,79 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext, HttpHeadersContext } from "../../../context";
+import axios from "axios";
+
 
 
 
 function OnlineCounselWrite() {
+  const { auth, setAuth } = useContext(AuthContext);
+  const { headers, setHeaders } = useContext(HttpHeadersContext);
+
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [password, setPassword] = useState("");
+
+    const changeTitle = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const changeContent = (event) => {
+    setContent(event.target.value);
+  };
+  const chsangePassword = (event) => {
+    setPassword(event.target.value);
+  };
+
+
+    const createBbs = async () => {
+      const req = {
+
+      title: title,
+      content: content,
+      // password: password,
+
+    };
+
+    await axios
+      .post("/api/admin/question/write", req, { headers: headers })
+      .then((resp) => {
+        console.log("[onlineCounselWrite.js] createBbs() success :D");
+        console.log(resp.data);
+
+        const boardId = resp.data.boardId;
+
+        console.log("boardId:", boardId);
+
+
+        alert("새로운 게시글을 성공적으로 등록했습니다 :D");
+        navigate(`/bbsdetail/${resp.data.boardId}`);
+      })
+      .catch((err) => {
+        console.log("[onlineCounselWrite.js] createBbs() error :<");
+        console.log(err);
+      });
+  };
+
+
+
+  useEffect(() => {
+    // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
+    setHeaders({
+      Authorization: `Bearer ${localStorage.getItem("user_token")}`,
+    });
+
+    // 로그인한 사용자인지 체크
+    if (!auth) {
+      alert("로그인 한 사용자만 게시글을 작성할 수 있습니다 !");
+      navigate(-1);
+    }
+  }, []);
+
+
   return (
     <Container>
       <ContentWrapper>
@@ -19,23 +88,27 @@ function OnlineCounselWrite() {
             <tbody>
               <tr>
                 <td>
-                  <TableTitle type="text" placeholder="제목" />
+                  <TableTitle type="text" placeholder="제목" value={title} onChange={changeTitle} />
                 </td>
               </tr>
               <tr>
                 <td>
-                  <TableContent placeholder="내용" />
+                  <TableContent placeholder="내용" value={content} onChange={changeContent} />
                 </td>
               </tr>
             </tbody>
           </Table>
         </TableBox>
-        
+
 
         <BottomBox>
-          <PasswordInput type="password" placeholder="비밀번호" />
+          <PasswordInput type="password" placeholder="비밀번호" value={password} onChange={chsangePassword} />
           <div>
-            <Button>등록</Button>
+            <Button
+              onClick={createBbs}
+            >
+              등록
+            </Button>
             <Link to="/OnlineCounsel">
               <Button>취소</Button>
             </Link>
