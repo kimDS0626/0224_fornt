@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -19,8 +19,40 @@ import youtube from "./imgs/youtube.png";
 import main_body_bg from "./imgs/main_body_bg.png";
 import kakaomap from "./imgs/kakaomap.png";
 import directions from "./imgs/directions.png";
+import axios from "axios";
 
 function Home() {
+
+    const [bbsList, setBbsList] = useState([]);
+
+
+
+
+  const getBbsList = async (page) => {
+    try {
+      const response = await axios.get("/api/redis/notices", {
+        params: { page: page - 1 },
+      });
+      console.log(response.data.content);
+      setBbsList(response.data.content);
+
+      console.log("notice seccess")
+      console.log(response);
+
+    } catch (error) {
+      console.log("Error fetching board data:", error);
+    }
+  };
+
+    useEffect(() => {
+      getBbsList();
+    }, []);
+
+
+
+
+
+
   // const onPlayerReady = (e) => {
   //   e.target.pauseVideo();
   // };
