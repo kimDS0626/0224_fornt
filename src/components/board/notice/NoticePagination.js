@@ -15,7 +15,7 @@ function OnlineCounselPagination({ page, setPage, pageSize, totalCnt }) {
           className="pagination"
           activePage={page}
           itemsCountPerPage={pageSize}
-          totalItemsCount={totalCnt}
+          totalItemsCount={totalCnt > pageSize ? totalCnt : pageSize + 1}
           prevPageText={"<"}
           nextPageText={">"}
           onChange={changePage}

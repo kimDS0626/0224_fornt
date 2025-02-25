@@ -17,9 +17,11 @@ function Notice() {
       });
       console.log(response.data.content);
       setBbsList(response.data.content);
-      setPageSize(response.data.pageSize);
+      setPageSize(response.data.pageSize || 10);
       setTotalCnt(response.data.totalElements);
+      console.log("notice seccess")
       console.log(response);
+      console.log("총 개수:", totalCnt);
     } catch (error) {
       console.log("Error fetching board data:", error);
     }
@@ -42,7 +44,13 @@ function Notice() {
         />
 
         <PaginationBox>
-          <NoticePagination />
+          <NoticePagination
+            page={page}
+            setPage={setPage}
+            pageSize={pageSize}
+            totalCnt={totalCnt}
+          />
+
         </PaginationBox>
       </ContentWrapper>
     </Container>

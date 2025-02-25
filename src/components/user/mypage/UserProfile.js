@@ -1,115 +1,114 @@
 import React from "react";
 import styled from "styled-components";
 
-
 function UserProfile() {
   return (
     <ProfileContainer>
-      <ProfileUserBox>
-        <ProfileUserTable>
-          <thead>
-            <tr>
-              <th colSpan="2">회원 정보</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>이름</th>
-              <td>김김김</td>
-            </tr>
-            <tr>
-              <th>닉네임</th>
-              <td>믹믹믹</td>
-            </tr>
-            <tr>
-              <th>주소</th>
-              <td>우리집</td>
-            </tr>
-            <tr>
-              <th>휴대폰번호</th>
-              <td>000-0000-0000</td>
-            </tr>
-          </tbody>
-        </ProfileUserTable>
-      </ProfileUserBox>
+      <TableBase>
+        <thead>
+          <tr>
+            <TableHeader colSpan="2">회원 정보</TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          <TableRow>
+            <TableHead>이름</TableHead>
+            <TableData>김김김</TableData>
+          </TableRow>
+          <TableRow>
+            <TableHead>닉네임</TableHead>
+            <TableData>믹믹믹</TableData>
+          </TableRow>
+          <TableRow>
+            <TableHead>주소</TableHead>
+            <TableData>우리집</TableData>
+          </TableRow>
+          <TableRow>
+            <TableHead>휴대폰번호</TableHead>
+            <TableData>000-0000-0000</TableData>
+          </TableRow>
+        </tbody>
+      </TableBase>
 
-      <ProfileAnimalBox>
-        <ProfileAnimalTable>
-          <thead>
-            <tr>
-              <th colSpan="2">반려동물 정보</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>이름</th>
-              <td>김김김</td>
-            </tr>
-            <tr>
-              <th>종류</th>
-              <td>고양이</td>
-            </tr>
-            <tr>
-              <th>나이</th>
-              <td>11</td>
-            </tr>
-            <tr>
-              <th>무게</th>
-              <td>5.2</td>
-            </tr>
-          </tbody>
-        </ProfileAnimalTable>
-      </ProfileAnimalBox>
+      <TableBase>
+        <thead>
+          <tr>
+            <TableHeader colSpan="2">반려동물 정보</TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          <TableRow>
+            <TableHead>이름</TableHead>
+            <TableData>김김김</TableData>
+          </TableRow>
+          <TableRow>
+            <TableHead>종류</TableHead>
+            <TableData>고양이</TableData>
+          </TableRow>
+          <TableRow>
+            <TableHead>나이</TableHead>
+            <TableData>11</TableData>
+          </TableRow>
+          <TableRow>
+            <TableHead>무게</TableHead>
+            <TableData>5.2kg</TableData>
+          </TableRow>
+        </tbody>
+      </TableBase>
     </ProfileContainer>
   );
 }
 
-
 const ProfileContainer = styled.div`
   width: 100%;
-  max-width: 1920px; /* 최대 너비 1920px */
-  height: 600px;
-  border: 1px solid black;
+  max-width: 1280px;
+  padding: 20px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  gap: 40px;
 `;
 
-const ProfileUserBox = styled.div`
+const TableBase = styled.table`
   width: 100%;
-  max-width: 1280px; /* 최대 너비 1280px */
-  height: 200px;
-  margin-top: 20px;
-margin-left: 20%;
-  paddig 
-`;
-
-const ProfileUserTable = styled.table`
-  width: 80%;
-  border: 1px solid black;
-  text-align: left;
+  max-width: 500px;
   border-collapse: collapse;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 `;
 
-const ProfileAnimalBox = styled.div`
-  width: 100%;
-  max-width: 1280px; /* 최대 너비 1280px */
-  height: 200px;
 
-margin-left: 20%;
 
-  margin-top: 20px;
-
-  
+const TableHeader = styled.th`
+  font-size: 22px;
+  padding: 12px;
+  text-align: center;
+  background-color: #111111;
+  color: white;
+  border: 1px solid #ddd;
 `;
 
-const ProfileAnimalTable = styled.table`
-  width: 80%;
-  border: 1px solid black;
+const TableRow = styled.tr`
+  &:nth-child(even) {
+    background-color: #f4f4f4;
+  }
+`;
+
+const TableHead = styled.th`
+  font-size: 18px;
+  padding: 10px;
   text-align: left;
-  border-collapse: collapse;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
 `;
 
+const TableData = styled.td`
+  font-size: 16px;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+`;
 
 export default UserProfile;

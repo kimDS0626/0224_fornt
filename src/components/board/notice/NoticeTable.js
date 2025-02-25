@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import search from "./imgs/search.png";
+import { Link } from "react-router-dom";
 
 function NoticeTable({ bbsList }) {
    console.log(bbsList);  // bbsList가 전달되고 있는지 확인
@@ -58,7 +59,9 @@ const addEmptyRows = (data) => {
                   // 데이터가 있을 때
                   <>
                     <td>{response.id}</td>
-                    <td>{response.title}</td>
+                    <Link to={`/noticedetail/${response.id}`}>
+                      <td>{response.title}</td>
+                     </Link>
                     <td>{response.date}</td>
 
                   </>

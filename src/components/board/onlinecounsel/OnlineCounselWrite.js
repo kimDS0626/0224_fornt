@@ -41,7 +41,7 @@ function OnlineCounselWrite() {
     await axios
       .post("/api/admin/notice/write", req, { headers: headers })
       .then((resp) => {
-        console.log("[onlineCounselWrite.js] createBbs() success :D");
+
         console.log(resp.data);
 
         const boardId = resp.data.boardId;
@@ -50,10 +50,10 @@ function OnlineCounselWrite() {
 
 
         alert("새로운 게시글을 성공적으로 등록했습니다 :D");
-        navigate(`/bbsdetail/${resp.data.boardId}`);
+        navigate(`/noticedetail/${resp.data.boardId}`);
       })
       .catch((err) => {
-        console.log("[onlineCounselWrite.js] createBbs() error :<");
+        console.log("[noticeWrite.js] createBbs() error :<");
         console.log(err);
       });
   };

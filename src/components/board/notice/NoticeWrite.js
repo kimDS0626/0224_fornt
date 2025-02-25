@@ -1,58 +1,205 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext, HttpHeadersContext } from "../../../context";
 import axios from "axios";
 
-function NoticeWrite({ onSubmit }) {
+
+//관리자 공지작성으로
+
+function NoticelWrite() {
+  const { auth, setAuth } = useContext(AuthContext);
+  const { headers, setHeaders } = useContext(HttpHeadersContext);
+
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [file, setFile] = useState(null);
+  const [password, setPassword] = useState("");
+   const [files, setFiles] = useState([]); // 추가: 파일 목록 상태 추가
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const changeTitle = (event) => {
+    setTitle(event.target.value);
   };
+
+  const changeContent = (event) => {
+    setContent(event.target.value);
+  };
+  const chsangePassword = (event) => {
+    setPassword(event.target.value);
+  };
+
+
+
+  const handleChangeFile = (event) => {
+    // 총 5개까지만 허용
+    const selectedFiles = Array.from(event.target.files).slice(0, 5);
+    setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+  };
+
+  // 주어진 배열의 일부에 대한 얕은 복사본을 생성
+  const handleRemoveFile = (index) => {
+    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
+ /* 파일 업로드 */
+  const fileUpload = async (noticeId) => {
+
+	console.log("업로드할 파일 목록:", files);
+    // 파일 데이터 저장
+    const fd = new FormData();
+    files.forEach((file) => fd.append("file", file));
+
+     for (let pair of fd.entries()) {
+    console.log(`✅ FormData 확인 -> ${pair[0]}:`, pair[1]);
+  }
+
+    await axios
+      .post(`/api/admin/notice/${noticeId}/file/upload`, fd, { headers: headers })
+      .then((resp) => {
+        console.log("[file.js] fileUpload() success :D");
+        console.log(resp.data);
+
+        alert("파일 업로드 성공 :D");
+      })
+      .catch((err) => {
+        console.log("[FileData.js] fileUpload() error :<");
+        console.log(err);
+      });
+  };
+
+
+
+
+
+    const createBbs = async () => {
+      const req = {
+
+      title: title,
+      content: content,
+      // password: password,
+
+    };
+
+await axios
+  .post("/api/admin/notice/write", req, { headers: headers })
+  .then((resp) => {
+    console.log("응답 데이터:", resp.data); // 응답 데이터 확인
+    const noticeId = resp.data.id; // `noticeId` 대신 `id` 사용
+    console.log("추출한 noticeId:", noticeId);
+    alert("새로운 게시글을 성공적으로 등록했습니다 :D");
+    navigate(`/noticedetail/${noticeId}`);
+
+
+    if (noticeId) {
+      fileUpload(noticeId); // 올바른 ID를 전달하여 파일 업로드 실행
+    } else {
+      console.error("❌ noticeId가 응답 데이터에 포함되지 않음!");
+    }
+  })
+  .catch((err) => {
+    console.error("[NoticeWrite.js] createBbs() error:", err);
+  });
+
+    // await axios
+    //   .post("/api/admin/notice/write", req, { headers: headers })
+    //   .then((resp) => {
+
+    //     console.log(resp.data);
+
+    //     const noticeId = resp.data.noticeId;
+
+    //     console.log("noticeId:", noticeId);
+    //     fileUpload(noticeId);
+
+
+    //     alert("새로운 게시글을 성공적으로 등록했습니다 :D");
+    //     navigate(`/noticedetail/${noticeId}`);
+    //   })
+    //   .catch((err) => {
+    //     console.log("[noticeWrite.js] createBbs() error :<");
+    //     console.log(err);
+    //   });
+    };
+
+
+
+
+
+  useEffect(() => {
+    // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
+    setHeaders({
+      Authorization: `Bearer ${localStorage.getItem("user_token")}`,
+    });
+
+    // 로그인한 사용자인지 체크
+    if (!auth) {
+      alert("로그인 한 사용자만 게시글을 작성할 수 있습니다 !");
+      navigate(-1);
+    }
+  }, []);
+
 
   return (
     <Container>
       <ContentWrapper>
+
+        <Title>
+          <h1>공지사항</h1>
+        </Title>
+
+
         <TableBox>
           <Table>
             <tbody>
               <tr>
                 <td>
-                  <TableTitle
-                    type="text"
-                    placeholder="제목"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
+                  <TableTitle type="text" placeholder="제목" value={title} onChange={changeTitle} />
                 </td>
-              </tr>
-              <tr>
-                <UploadWrapper>
-                  <FileInputWrapper>
-                    <FileLabel htmlFor="fileInput">파일 선택</FileLabel>
-                    <InputFile
-                      id="fileInput"
-                      type="file"
-                      onChange={handleFileChange}
-                    />
-                    {file && <FileName>{file.name}</FileName>}
-                  </FileInputWrapper>
-                </UploadWrapper>
               </tr>
               <tr>
                 <td>
-                  <TableContent
-                    placeholder="내용"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                  />
+                  <TableContent placeholder="내용" value={content} onChange={changeContent} />
                 </td>
               </tr>
+              <tr>
+
+            <td>
+              {files.map((file, index) => (
+                <div key={index} style={{ display: "flex", alignItems: "center" }}>
+                  <p>
+                    <strong>FileName:</strong> {file.name}
+                  </p>
+                  <button className="delete-button" type="button" onClick={() => handleRemoveFile(index)}>
+                    x
+                  </button>
+                </div>
+              ))}
+              {files.length < 5 && (
+                <div>
+                  <input type="file" name="file" onChange={handleChangeFile} multiple="multiple" />
+                </div>
+              )}
+            </td>
+          </tr>
             </tbody>
           </Table>
         </TableBox>
+
+
+        <BottomBox>
+          {/* <PasswordInput type="password" placeholder="비밀번호" value={password} onChange={chsangePassword} /> */}
+          <div>
+            <Button
+              onClick={createBbs}
+            >
+              등록
+            </Button>
+            <Link to="/OnlineCounsel">
+              <Button>취소</Button>
+            </Link>
+          </div>
+        </BottomBox>
       </ContentWrapper>
     </Container>
   );
@@ -78,55 +225,14 @@ const ContentWrapper = styled.div`
   gap: 20px;
 `;
 
-// 업로드 영역
-const UploadWrapper = styled.div`
-  margin-bottom: 10px;
-`;
-
-// 파일 업로드 영역 스타일
-const FileInputWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  padding: 10px;
-  border: 2px dashed #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  width: 30%;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-`;
-
-// 파일 선택 버튼 스타일
-const FileLabel = styled.label`
-  font-size: 16px;
-  color: #111111;
-  cursor: pointer;
-
-  padding: 10px 20px;
-  border: 1px solid #111111;
-  border-radius: 5px;
-  background-color: white;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #f0f8f0;
-  }
-`;
-
-// 파일 입력 스타일
-const InputFile = styled.input`
-  display: none;
-`;
-
-// 파일 이름 텍스트 스타일
-const FileName = styled.div`
-  font-size: 16px;
-  color: #333;
-  padding: 10px;
-  font-weight: 500;
+//  제목 섹션
+const Title = styled.div`
+  margin-top: 100px;
+  width: 100%;
+  text-align: left;
+  font-size: 36px;
+  font-weight: bold;
+  font-family: "Noto Sans KR", serif;
 `;
 
 //  테이블 박스
@@ -146,29 +252,66 @@ const TableTitle = styled.input`
   width: 100%;
   height: 40px;
   padding: 5px;
-  border: none;
+  border:none;
   border-bottom: 1px solid #111111;
   font-size: 20px;
   font-weight: medium;
   font-family: "Noto Sans KR", serif;
   margin-bottom: 30px;
 
+
+
   outline: none;
+
 `;
 
 const TableContent = styled.textarea`
   width: 100%;
   min-height: 400px;
   padding: 5px;
-  border: none;
+  border:none;
   font-size: 16px;
   font-weight: 300;
   font-family: "Noto Sans KR", serif;
-  border: none;
+  border:none;
   border-bottom: 1px solid #111111;
   outline: none;
   resize: none;
-  overflow-x: hidden;
+ overflow-x: hidden
 `;
 
-export default NoticeWrite;
+//  하단 버튼 박스
+const BottomBox = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom:100px;
+`;
+
+// 버튼 스타일
+const Button = styled.button`
+  width: 50px;
+  height: 30px;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: "Noto Sans KR", serif;
+  background-color: #f4f4f4;
+  border: 1px solid #111111;
+  margin-left:20px;
+
+
+`;
+
+// 비밀번호 입력 필드
+const PasswordInput = styled.input`
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: "Noto Sans KR", serif;
+  outline: none;
+`;
+
+export default NoticelWrite;

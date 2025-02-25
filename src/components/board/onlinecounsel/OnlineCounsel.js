@@ -21,6 +21,7 @@ function OnlineCounsel() {
       setPageSize(response.data.pageSize);
       setTotalCnt(response.data.totalElements);
       console.log("onlineCounselList success")
+      console.log(response)
     } catch (error) {
       console.log("Error fetching board data:", error);
     }
