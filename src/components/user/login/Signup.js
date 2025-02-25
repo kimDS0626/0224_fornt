@@ -1,160 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import {
-  idDuplicateCheck,
-  nicknameDuplicateCheck,
-  sendVerificationCode,
-} from "./mail";
+import axios from "axios";
 import logo_b from "./imgs/logo_b.png";
-import { sendVerificationEmail } from "./mail"; // 수정된 import
+import DaumPostcode from "react-daum-postcode";
 
-function SignUp() {
-  const [id, setId] = useState("");
-  const [idError, setIdError] = useState("");
-  const [isIdAvailable, setIsIdAvailable] = useState(false);
-
-  const [nickname, setNickname] = useState("");
-  const [nicknameError, setNicknameError] = useState("");
-  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
-
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [confirmError, setConfirmError] = useState("");
-
-  const [verificationCode, setVerificationCode] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
-
+function SignUp({ onSignupSuccess }) {
   const [forms, setForms] = useState([
     { id: Date.now(), petName: "", species: "", age: "" },
   ]);
-
-  const handleVerification = async () => {
-    if (!isIdAvailable) {
-      setIdError("이메일 중복 확인을 먼저 진행해주세요.");
-      return;
-    }
-    if (!id) {
-      setIdError("이메일을 입력해주세요.");
-      return;
-    }
-
-    try {
-      await sendVerificationEmail(id); // 인증 코드 전송
-      alert("인증 코드가 이메일로 전송되었습니다.");
-    } catch (error) {
-      setIdError("인증 코드 전송에 실패했습니다.");
-    }
-  };
-
-  const handleIdChange = (e) => {
-    const idValue = e.target.value;
-    setId(idValue);
-
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!idValue) {
-      setIdError("이메일을 입력해주세요.");
-    } else if (!emailRegex.test(idValue)) {
-      setIdError("올바른 이메일 형식이 아닙니다.");
-    } else {
-      setIdError(""); // 유효한 이메일 형식이면 오류 메시지 제거
-    }
-    setIsIdAvailable(false); // 이메일 확인 버튼을 클릭하기 전 이메일을 재검토
-  };
-
-  const handleNicknameChange = (e) => {
-    setNickname(e.target.value);
-    setNicknameError("");
-    setIsNicknameAvailable(false);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    if (e.target.value.length < 8) {
-      setPasswordError("비밀번호는 8자리 이상이어야 합니다.");
-    } else {
-      setPasswordError("");
-    }
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    const value = e.target.value;
-    setConfirmPassword(value);
-
-    // 비밀번호와 확인 비밀번호를 비교하여 오류 메시지를 설정
-    if (password !== value) {
-      setConfirmError("비밀번호가 일치하지 않습니다.");
-    } else {
-      setConfirmError(""); // 비밀번호가 일치하면 오류 메시지 제거
-    }
-  };
-
-  const handleIdCheck = async () => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!id) {
-      setIdError("이메일을 입력해주세요.");
-    }
-    if (!emailRegex.test(id)) {
-      setIdError("올바른 이메일 형식이 아닙니다.");
-    }
-
-    try {
-      const available = await idDuplicateCheck(id);
-      if (available) {
-        setIdError("사용 가능한 이메일입니다.");
-        setIsIdAvailable(true);
-      } else {
-        setIdError("이미 사용 중인 이메일입니다.");
-        setIsIdAvailable(false);
-      }
-    } catch (error) {
-      setIdError("서버 오류가 발생했습니다.");
-    }
-  };
-
-  const handleNicknameCheck = async () => {
-    if (!nickname) {
-      setNicknameError("닉네임을 입력해주세요.");
-      return;
-    }
-
-    try {
-      const available = await nicknameDuplicateCheck(nickname);
-      if (available) {
-        setNicknameError("사용 가능한 닉네임입니다.");
-        setIsNicknameAvailable(true);
-      } else {
-        setNicknameError("이미 사용 중인 닉네임입니다.");
-        setIsNicknameAvailable(false);
-      }
-    } catch (error) {
-      setNicknameError("서버 오류가 발생했습니다.");
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // 비밀번호 확인 오류가 있는지 체크
-    if (password !== confirmPassword) {
-      setConfirmError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    // 나머지 유효성 검사와 제출 로직
-    if (
-      !isIdAvailable ||
-      !isNicknameAvailable ||
-      passwordError ||
-      confirmError
-    ) {
-      alert("모든 항목을 올바르게 입력해주세요.");
-      return;
-    }
-
-    alert("회원가입 성공!");
-  };
+  const [hasPet, setHasPet] = useState(false); // 반려동물 유무 상태 추가
 
   const addForm = () => {
     setForms([
@@ -173,6 +27,209 @@ function SignUp() {
       forms.map((form) => (form.id === id ? { ...form, [field]: value } : form))
     );
   };
+  // --------------------------------------------------------------------------
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setpasswordCheck] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [codeError, setCodeError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordCheckError, setpasswordCheckError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleEmailChange = (e) => {
+    const emailValue = e.target.value;
+    setEmail(emailValue);
+
+    // 이메일 형식 체크
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailValue)) {
+      setEmailError("이메일 형식이 올바르지 않습니다.");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleCodeChange = (e) => {
+    const codeValue = e.target.value;
+    setCode(codeValue);
+
+    if (codeValue.length < 6) {
+      setCodeError("인증 코드는 6자 이상이어야 합니다.");
+    } else {
+      setCodeError("");
+    }
+  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    // 비밀번호 유효성 검사 (예: 길이, 특수 문자 포함 여부 등)
+    const passwordRegex = /^(?=.*[0-9]).{8,}$/;
+    if (!passwordRegex.test(e.target.value)) {
+      setPasswordError("비밀번호는 8자 이상, 숫자를 포함해야 합니다.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const handlepasswordCheckdChange = (e) => {
+    setpasswordCheck(e.target.value);
+    // 비밀번호 확인 값 일치 여부 검사
+    if (password !== e.target.value) {
+      setpasswordCheckError("비밀번호가 일치하지 않습니다.");
+    } else {
+      setpasswordCheckError("");
+    }
+  };
+
+  const handleSendVerificationEmail = async () => {
+    if (emailError) {
+      return; // 이메일 형식이 잘못되었으면 전송하지 않음
+    }
+
+    try {
+      const response = await axios.post("/api/email/send", null, {
+        params: { receiver: email },
+      });
+      setMessage(response.data);
+    } catch (error) {
+      setMessage("메일 전송 실패");
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    if (codeError || !code) {
+      return; // 코드가 없거나 형식에 오류가 있으면 전송하지 않음
+    }
+
+    try {
+      const response = await axios.post("/api/email/verify", null, {
+        params: { receiver: email, code: code },
+      });
+      setMessage(response.data);
+    } catch (error) {
+      setMessage("인증 코드 확인 실패");
+    }
+  };
+
+  const [nickName, setNickName] = useState("");
+  const [nickNameError, setNickNameError] = useState("");
+  const [nickNameMessage, setNickNameMessage] = useState("");
+
+  const handleNickNameChange = (e) => {
+    setNickName(e.target.value);
+  };
+
+  const handleNickNameCheck = async () => {
+    if (!nickName) {
+      setNickNameError("닉네임을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await axios.get("/api/checkNickName", {
+        params: { nickName },
+      });
+
+      // 중복되지 않으면 성공 메시지
+      if (response.status === 200) {
+        setNickNameMessage("사용 가능한 닉네임입니다.");
+        setNickNameError("");
+      }
+    } catch (error) {
+      // 중복일 경우 처리
+      if (error.response && error.response.status === 400) {
+        setNickNameMessage("이미 존재하는 닉네임입니다.");
+        setNickNameError("닉네임을 다시 입력해주세요.");
+      } else {
+        setNickNameMessage("서버 오류가 발생했습니다.");
+        setNickNameError("");
+      }
+    }
+  };
+  const [name, setName] = useState("");
+  const [addr, setAddr] = useState("");
+  const [birth, setBirth] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleBirthChange = (e) => {
+    setBirth(e.target.value);
+  };
+
+  const handlePhoneNumChange = (e) => {
+    setPhoneNum(e.target.value);
+  };
+  const handleSubmit = async () => {
+    if (passwordError || passwordCheckError) {
+      return;
+    }
+    if (
+      emailError ||
+      codeError ||
+      passwordError ||
+      passwordCheckError ||
+      nickNameError ||
+      !email ||
+      !password ||
+      !passwordCheck ||
+      !nickName ||
+      !name ||
+      !addr ||
+      !birth ||
+      !phoneNum
+    ) {
+      return;
+    }
+
+    const memberData = {
+      email,
+      password: password,
+      nickName,
+      name,
+      addr: addr,
+      birth,
+      phoneNum,
+      pets: hasPet
+        ? forms.map((form) => ({
+            petName: form.petName,
+            species: form.species,
+            age: form.age,
+          }))
+        : [], // hasPet 상태에 따라 pets 정보 포함 여부 결정
+    };
+
+    try {
+      const response = await axios.post("/api/register", memberData);
+      if (response.status === 200) {
+        onSignupSuccess();
+      }
+    } catch (error) {
+      console.error("회원가입 실패:", error);
+      alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
+  const [postcode, setPostcode] = useState(""); // 우편번호
+  const [address, setAddress] = useState(""); // 우편번호 검색 결과 주소
+  const [detailAddress, setDetailAddress] = useState(""); // 상세 주소
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleComplete = (data) => {
+    setPostcode(data.zonecode); // 우편번호 저장
+    setAddress(data.address); // 우편번호 검색 결과 주소 저장
+    setAddr(data.zonecode + " " + data.address); // addr에 우편번호 + 검색 주소 저장
+    setIsOpen(false);
+  };
+
+  const handleDetailAddressChange = (e) => {
+    setDetailAddress(e.target.value);
+    setAddr(postcode + " " + address + " " + e.target.value); // addr 업데이트 (우편번호 + 검색 주소 + 상세 주소)
+  };
+
   return (
     <SignupContainer>
       <SignupSection>
@@ -185,17 +242,21 @@ function SignUp() {
         </SignupTitle>
 
         <MailBox>
-          <table onSubmit={handleSubmit}>
+          <table>
             <tr></tr>
             <tr>
               <td>
                 <input
                   type="text"
-                  value={id}
-                  onChange={handleIdChange}
                   placeholder="이메일"
+                  value={email}
+                  onChange={handleEmailChange}
                 />
-                <button type="button" onClick={handleIdCheck}>
+                <button
+                  type="button"
+                  onClick={handleSendVerificationEmail}
+                  disabled={emailError}
+                >
                   인증
                 </button>
               </td>
@@ -205,20 +266,20 @@ function SignUp() {
               <td>
                 <input
                   type="text"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
                   placeholder="인증 코드"
+                  value={code}
+                  onChange={handleCodeChange}
                 />
-                <button type="button" onClick={handleVerification}>
+                <button type="button" onClick={handleVerifyCode}>
                   확인
                 </button>
               </td>
             </tr>
             <tr>
               <td className="idError">
-                {idError && (
-                  <small className={isIdAvailable ? "idAvailable" : ""}>
-                    {idError}
+                {(emailError || message) && (
+                  <small style={{ color: emailError ? "red" : "green" }}>
+                    {emailError || message}
                   </small>
                 )}
               </td>
@@ -231,11 +292,9 @@ function SignUp() {
             <tr>
               <td>
                 <input
-                  onChange={handlePasswordChange}
                   type="password"
-                  id="password"
-                  name="password"
                   value={password}
+                  onChange={handlePasswordChange}
                   placeholder="비밀번호 "
                   theme="underLine"
                   maxLength={16}
@@ -246,11 +305,9 @@ function SignUp() {
             <tr>
               <td>
                 <input
-                  onChange={handleConfirmPasswordChange}
                   type="password"
-                  id="confirm"
-                  name="confirm"
-                  value={confirmPassword}
+                  value={passwordCheck}
+                  onChange={handlepasswordCheckdChange}
                   placeholder="비밀번호 확인"
                   theme="underLine"
                   maxLength={16}
@@ -259,10 +316,12 @@ function SignUp() {
             </tr>
             <tr>
               <td>
-                {" "}
                 <td>
-                  {passwordError && <small>{passwordError}</small>}
-                  {confirmError && <small>{confirmError}</small>}{" "}
+                  {(passwordError || passwordCheckError) && (
+                    <small style={{ color: "red" }}>
+                      {passwordError || passwordCheckError}
+                    </small>
+                  )}
                 </td>
               </td>
             </tr>
@@ -276,18 +335,25 @@ function SignUp() {
                 {" "}
                 <input
                   type="text"
-                  value={nickname}
-                  onChange={handleNicknameChange}
+                  value={nickName}
+                  onChange={handleNickNameChange}
                   placeholder="닉네임을 입력하세요"
                 />
-                <button type="button" onClick={handleNicknameCheck}>
+                <button type="button" onClick={handleNickNameCheck}>
                   확인
                 </button>
               </td>
             </tr>
             <tr>
               <td className="idError">
-                {nicknameError && <small>{nicknameError}</small>}
+                {nickNameError && (
+                  <small style={{ color: "red" }}>{nickNameError}</small>
+                )}
+                {nickNameMessage && (
+                  <small style={{ color: nickNameError ? "red" : "green" }}>
+                    {nickNameMessage}
+                  </small>
+                )}
               </td>
             </tr>
           </table>
@@ -296,32 +362,64 @@ function SignUp() {
           <table>
             <tr>
               <td>
-                <input type="text" placeholder="이름" />
+                <input
+                  type="text"
+                  placeholder="이름"
+                  value={name}
+                  onChange={handleNameChange}
+                />
               </td>
             </tr>
             <tr>
-              {" "}
               <td>
-                <input type="text" placeholder="주소" />
-                <button>검색</button>
+                <input
+                  type="text"
+                  value={address} // 우편번호 검색 결과 주소 표시
+                  placeholder="주소"
+                  readOnly
+                />
+                <button type="button" onClick={() => setIsOpen(true)}>
+                  검색
+                </button>
               </td>
             </tr>
             <tr>
-              {" "}
               <td>
-                {" "}
-                <input type="text" placeholder="상세주소" />
+                <input
+                  type="text"
+                  value={detailAddress} // 상세 주소 표시 및 변경 가능
+                  onChange={handleDetailAddressChange} // 상세 주소 변경 시 addr 업데이트
+                  placeholder="상세주소"
+                />
+                {isOpen && (
+                  <Modal>
+                    <Overlay onClick={() => setIsOpen(false)} />
+                    <PostcodeWrapper>
+                      <DaumPostcode onComplete={handleComplete} />
+                    </PostcodeWrapper>
+                  </Modal>
+                )}
               </td>
             </tr>
 
             <tr>
               <td>
-                <input type="text" placeholder="생년월일" />
+                <input
+                  type="text"
+                  placeholder="생년월일"
+                  value={birth}
+                  onChange={handleBirthChange}
+                />
               </td>
             </tr>
             <tr>
               <td>
-                <input type="text" placeholder="전화번호" />
+                <input
+                  type="text"
+                  placeholder="전화번호"
+                  value={phoneNum}
+                  onChange={handlePhoneNumChange}
+                />
               </td>
             </tr>
           </table>
@@ -390,8 +488,9 @@ function SignUp() {
           ))}
         </AnimalBox>
         <SignupSectionE>
-          <button type="submit">회원가입</button>
-          {/* {setOpenModal ? openModal && <SignupModal /> : null} */}
+          <button type="submit" onClick={handleSubmit}>
+            회원가입
+          </button>
         </SignupSectionE>
       </SignupSection>
     </SignupContainer>
@@ -703,6 +802,32 @@ const SignupSectionE = styled.div`
     background-color: #111111;
     color: #fff;
   }
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+`;
+
+const PostcodeWrapper = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
 `;
 
 export default SignUp;
