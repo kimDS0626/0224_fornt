@@ -16,12 +16,13 @@ function OnlineCounsel() {
       const response = await axios.get("/api/member/question/list", {
         params: { page: page - 1 },
       });
-
+      console.log(response.data.content);
       setBbsList(response.data.content);
-      setPageSize(response.data.pageSize);
-      setTotalCnt(response.data.totalElements);
-      console.log("onlineCounselList success")
-      console.log(response)
+      setPageSize(response.data.pageSize || 10);
+      setTotalCnt(response.data.totalElements > 0 ? response.data.totalElements : 1);
+      console.log("onlinecounsel seccess")
+      console.log(response);
+      console.log("총 개수:", totalCnt);
     } catch (error) {
       console.log("Error fetching board data:", error);
     }
@@ -36,6 +37,7 @@ function OnlineCounsel() {
 
 
 
+
   return (
     <Container>
       <ContentWrapper>
@@ -43,7 +45,9 @@ function OnlineCounsel() {
           <h1>온라인상담</h1>
         </NoticeTitle>
 
-        <OnlineCounselTable />
+        <OnlineCounselTable
+          bbsList={bbsList}
+        />
         <WriteBtnBox>
           <Link to="/onlineCounselWrite">
             <WriteBtn>작성</WriteBtn>

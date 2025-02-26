@@ -18,7 +18,7 @@ function Notice() {
       console.log(response.data.content);
       setBbsList(response.data.content);
       setPageSize(response.data.pageSize || 10);
-      setTotalCnt(response.data.totalElements);
+      setTotalCnt(response.data.totalElements > 0 ? response.data.totalElements : 1);
       console.log("notice seccess")
       console.log(response);
       console.log("총 개수:", totalCnt);
@@ -26,7 +26,6 @@ function Notice() {
       console.log("Error fetching board data:", error);
     }
   };
-
   useEffect(() => {
     getBbsList(page);
   }, [page]);

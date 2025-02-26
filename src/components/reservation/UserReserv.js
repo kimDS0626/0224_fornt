@@ -17,6 +17,7 @@ function UserReserv() {
   const [selectedPet, setSelectedPet] = useState([]);
 
 
+
   useEffect(() => {
   console.log("selectedTime:", selectedTime);
 }, [selectedTime]);  // selectedTime 상태를 추적
@@ -93,7 +94,7 @@ useEffect(() => {
                   active={selectedTime === slot.slotTime}
                   onClick={() => setSelectedTime(slot.slotTime)}
                 >
-                {slot.slotTime}
+                {slot.slotTime.slice(0, 5)}
               </TimeButton>
             ))
           ) : (

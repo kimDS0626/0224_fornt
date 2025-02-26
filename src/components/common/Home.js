@@ -23,18 +23,19 @@ import axios from "axios";
 
 function Home() {
 
-    const [bbsList, setBbsList] = useState([]);
+  const [noticeList, setNoticeList] = useState([]);
+  const [reviewList, setReviewList] = useState([]);
 
 
 
 
-  const getBbsList = async (page) => {
+  const getNoticeList = async (page) => {
     try {
       const response = await axios.get("/api/redis/notices", {
         params: { page: page - 1 },
       });
       console.log(response.data.content);
-      setBbsList(response.data.content);
+      setNoticeList(response.data.content);
 
       console.log("notice seccess")
       console.log(response);
@@ -45,8 +46,29 @@ function Home() {
   };
 
     useEffect(() => {
-      getBbsList();
+      getNoticeList();
     }, []);
+
+   const getReviewList = async (page) => {
+    try {
+      const response = await axios.get("/api/redis/reviews", {
+        params: { page: page - 1 },
+      });
+      console.log(response.data.content);
+      setReviewList(response.data.content);
+
+      console.log("review seccess")
+      console.log(response);
+
+    } catch (error) {
+      console.log("Error fetching board data:", error);
+    }
+  };
+
+    useEffect(() => {
+      getReviewList();
+    }, []);
+
 
 
 
@@ -233,6 +255,7 @@ function Home() {
                 </div>
               </BoardTitleBox>
               <BoardContentBox>
+
                 <BoardContentTitle>강아지 경련 진료 후기</BoardContentTitle>
                 <BoardContent>(2/17) 홍길동 보호자님</BoardContent>
               </BoardContentBox>
@@ -267,6 +290,14 @@ function Home() {
                 </div>
               </BoardTitleBox>
               <BoardContentBox>
+                {/* {noticeList.map((notice) => (
+                  <BoardContentBox key={notice.id}>
+                    <BoardContentTitle>{notice.title}</BoardContentTitle>
+                    <BoardContent>{notice.content }</BoardContent>
+
+                  </BoardContentBox>
+
+                ))} */}
                 <BoardContentTitle>
                   1월 27일(월) 임시공휴일 정상 진료 안내
                 </BoardContentTitle>

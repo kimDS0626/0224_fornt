@@ -4,8 +4,10 @@ import styled from "styled-components";
 import search from "./imgs/search.png";
 import { Link } from "react-router-dom";
 
+
+
 function NoticeTable({ bbsList }) {
-   console.log(bbsList);  // bbsList가 전달되고 있는지 확인
+   console.log("bbsList여부", bbsList);  // bbsList가 전달되고 있는지 확인
   // const notices = [
   //   { id: 1, title: "제목", date: "2025-02-20", views: 11 },
   //   { id: 2, title: "제목", date: "2025-02-20", views: 10 },
@@ -17,7 +19,8 @@ function NoticeTable({ bbsList }) {
   //   { id: 8, title: "제목", date: "2025-02-20", views: 10 },
   // ];
 
-const addEmptyRows = (data) => {
+  const addEmptyRows = (data) => {
+
   // 데이터가 배열인지 확인하고, 배열이 아니면 빈 배열을 반환
   if (!Array.isArray(data)) {
     return [];
@@ -47,7 +50,7 @@ const addEmptyRows = (data) => {
             <tr>
               <th>번호</th>
               <th>제목</th>
-              <th>등록일</th>
+
 
             </tr>
           </thead>
@@ -62,7 +65,7 @@ const addEmptyRows = (data) => {
                     <Link to={`/noticedetail/${response.id}`}>
                       <td>{response.title}</td>
                      </Link>
-                    <td>{response.date}</td>
+
 
                   </>
                 ) : (
@@ -136,9 +139,9 @@ const NoticeTableBox = styled.div`
 //  공지사항 테이블
 const NoticeTabled = styled.table`
   width: 100%;
-  
+
   border-collapse: collapse;
-  
+
 
   thead {
     background-color: #f4f4f4;
@@ -152,44 +155,35 @@ const NoticeTabled = styled.table`
     font-family: "Noto Sans KR", serif;
   }
 
-  tbody tr {
-    &:nth-child(odd) {
-      border: none;
-      height: 40px;
-    }
-    &:nth-child(even) {
-      background-color: #f4f4f4;
-      border-bottom: 1px solid #111111;
-      height: 70px;
-    }
-    width: 1280px;
+tbody tr {
+  &:nth-child(odd) {
+    border: none;
+    height: 40px;
   }
-
-  tbody td {
-    padding: 10px;
-    font-weight: regular;
-    font-size: 20px;
-    font-family: "Noto Sans KR", serif;
-    vertical-align: middle;
-  &:nth-of-type(1) {  /* 첫 번째 <td> */
-    width: 80px;
-    text-align: center;
+  &:nth-child(even) {
+    background-color: #f4f4f4;
+    border-bottom: 1px solid #111111;
+    height: 70px;
   }
+}
 
-  &:nth-of-type(2) {  /* 두 번째 <td> */
-    width: 920px;
-    text-align: center;
-  }
+tbody td {
+  padding: 10px;
+  font-weight: regular;
+  font-size: 20px;
+  font-family: "Noto Sans KR", serif;
+  vertical-align: middle;
+  text-align: center;  /* 기본적으로 가운데 정렬 */
+}
 
-  &:nth-of-type(3) {  /* 세 번째 <td> */
-    width: 180px;
-    text-align: center;
-  }
+tbody td:nth-of-type(1) {
+  width: 80px;
+}
 
-  &:nth-of-type(4) {  /* 네 번째 <td> */
-    width: 100px;
-    text-align: center;
-  }
-`;
+tbody td:nth-of-type(2) {
+  width: 920px;
+}
 
+
+`
 export default NoticeTable;

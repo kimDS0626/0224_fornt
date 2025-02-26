@@ -1,8 +1,53 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext, HttpHeadersContext } from "../../../context";
+import axios from "axios";
 
-function OnlineCounselWrite() {
+function ReviewWrite() {
+  const { auth, setAuth } = useContext(AuthContext);
+  const { headers, setHeaders } = useContext(HttpHeadersContext);
+  const navigate = useNavigate();
+
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const changeTitle = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const changeContent = (event) => {
+    setContent(event.target.value);
+  };
+
+  const createReview = async () => {
+    const req = {
+      title: title,
+      content: content,
+      nickName: auth ? auth.nickName : "",
+
+    };
+    console.log("보내는 데이터", req)
+
+
+    await axios
+      .post("/review/write", req, { headers: headers })
+      .then((response) => {
+        console.log("리뷰 작성 성공", response.data);
+        alert("리뷰가 성공적으로 작성되었습니다.");
+      })
+      .catch((error) => {
+        console.error("리뷰 작성 실패", error);
+        alert("리뷰 작성에 실패했습니다.");
+      });
+  };
+
+
+
+
+
+
   return (
     <Container>
       <ContentWrapper>
@@ -15,12 +60,21 @@ function OnlineCounselWrite() {
             <tbody>
               <tr>
                 <td>
-                  <TableTitle type="text" placeholder="제목" />
+                  <TableTitle
+                    type="text"
+                    placeholder="제목"
+                    value={title}
+                    onChange={changeTitle}
+                  />
                 </td>
               </tr>
               <tr>
                 <td>
-                  <TableContent placeholder="내용" />
+                  <TableContent
+                    placeholder="내용"
+                    value={content}
+                    onChange={changeContent}
+                  />
                 </td>
               </tr>
             </tbody>
@@ -133,4 +187,4 @@ const Button = styled.button`
   margin-left: 20px;
 `;
 
-export default OnlineCounselWrite;
+export default ReviewWrite;

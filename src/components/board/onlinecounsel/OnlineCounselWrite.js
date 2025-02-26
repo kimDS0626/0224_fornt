@@ -34,36 +34,40 @@ function OnlineCounselWrite() {
 
       title: title,
       content: content,
+
       // password: password,
 
     };
 
+    console.log("📌 보내는 데이터:", req); // 요청 데이터 확인
     await axios
-      .post("/api/admin/notice/write", req, { headers: headers })
+      .post("/api/member/question/write", req, { headers: headers })
       .then((resp) => {
 
-        console.log(resp.data);
+        console.log("받는 데이터", resp.data);
 
-        const boardId = resp.data.boardId;
+        const questionId = resp.data.id;
 
-        console.log("boardId:", boardId);
-
-
+        console.log("onlineCounselId:", questionId);
         alert("새로운 게시글을 성공적으로 등록했습니다 :D");
-        navigate(`/noticedetail/${resp.data.boardId}`);
+        navigate(`/onlineCounselDetail/${questionId}`)
+
+
       })
       .catch((err) => {
-        console.log("[noticeWrite.js] createBbs() error :<");
+        console.log("[onlineCounselWrite.js] createBbs() error :<");
         console.log(err);
+
       });
   };
 
 
 
   useEffect(() => {
+     console.log("access_token:", localStorage.getItem("access_token"));
     // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
     setHeaders({
-      Authorization: `Bearer ${localStorage.getItem("user_token")}`,
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     });
 
     // 로그인한 사용자인지 체크

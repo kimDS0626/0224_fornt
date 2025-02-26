@@ -11,17 +11,19 @@ function Review() {
   const [pageSize, setPageSize] = useState(10);
   const [totalCnt, setTotalCnt] = useState(0);
 
+
   const getBbsList = async (page) => {
     try {
       const response = await axios.get("/review/list", {
         params: { page: page - 1 },
       });
-
+      console.log(response.data.content);
       setBbsList(response.data.content);
-      setPageSize(response.data.pageSize);
-      setTotalCnt(response.data.totalElements);
-      console.log("reviewList success")
-      console.log(response)
+      setPageSize(response.data.pageSize || 10);
+      setTotalCnt(response.data.totalElements > 0 ? response.data.totalElements : 1);
+      console.log("review seccess")
+      console.log(response);
+      console.log("총 개수:", totalCnt);
     } catch (error) {
       console.log("Error fetching board data:", error);
     }
@@ -30,6 +32,8 @@ function Review() {
   useEffect(() => {
     getBbsList(page);
   }, [page]);
+
+
 
 
 
@@ -45,7 +49,7 @@ function Review() {
 
         <ReviewTable />
         <WriteBtnBox>
-          <Link to="/reviewWirte">
+          <Link to="/reviewWrite">
             <WriteBtn>작성</WriteBtn>
           </Link>
         </WriteBtnBox>

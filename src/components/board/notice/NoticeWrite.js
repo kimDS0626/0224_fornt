@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../../context";
@@ -13,6 +13,7 @@ function NoticelWrite() {
 
   const navigate = useNavigate();
 
+  const [nickName, setNickName] = useState(auth.nickName);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [password, setPassword] = useState("");
@@ -71,7 +72,7 @@ function NoticelWrite() {
 
 
 
-
+  //게시글 작성
     const createBbs = async () => {
       const req = {
 
@@ -129,9 +130,9 @@ await axios
   useEffect(() => {
     // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
     setHeaders({
-      Authorization: `Bearer ${localStorage.getItem("user_token")}`,
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     });
-
+    console.log(nickName);
     // 로그인한 사용자인지 체크
     if (!auth) {
       alert("로그인 한 사용자만 게시글을 작성할 수 있습니다 !");
@@ -162,7 +163,7 @@ await axios
                   <TableContent placeholder="내용" value={content} onChange={changeContent} />
                 </td>
               </tr>
-              <tr>
+
 
             <td>
               {files.map((file, index) => (
@@ -181,7 +182,7 @@ await axios
                 </div>
               )}
             </td>
-          </tr>
+
             </tbody>
           </Table>
         </TableBox>
@@ -303,15 +304,6 @@ const Button = styled.button`
 
 `;
 
-// 비밀번호 입력 필드
-const PasswordInput = styled.input`
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-weight: 400;
-  font-size: 16px;
-  font-family: "Noto Sans KR", serif;
-  outline: none;
-`;
+
 
 export default NoticelWrite;

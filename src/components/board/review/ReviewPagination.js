@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Pagination from "react-js-pagination";
 
-function OnlineCounselPagination({ page, setPage, pageSize, totalCnt }) {
+function ReviewPagination({ page, setPage, pageSize, totalCnt }) {
   // 페이지 변경 처리
   const changePage = (page) => {
     setPage(page); // 부모에서 관리하는 setPage를 사용
@@ -15,7 +15,7 @@ function OnlineCounselPagination({ page, setPage, pageSize, totalCnt }) {
           className="pagination"
           activePage={page}
           itemsCountPerPage={pageSize}
-          totalItemsCount={totalCnt}
+         totalItemsCount={totalCnt === 0 ? 1 : totalCnt}
           prevPageText={"<"}
           nextPageText={">"}
           onChange={changePage}
@@ -58,4 +58,4 @@ const PaginationBox = styled.div`
   }
 `;
 
-export default OnlineCounselPagination;
+export default ReviewPagination;

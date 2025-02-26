@@ -4,9 +4,12 @@ import styled from "styled-components";
 import ReservationCheck from "./ReservationCheck";
 import UserProfile from "./UserProfile";
 import UserUpdate from "./UserUpdate";
+import Notice from "../../board/notice/Notice";
 
 function MyPage() {
   const [page, setPage] = useState('1');
+
+
 
   return (
     <MyPageContainer>
@@ -18,12 +21,15 @@ function MyPage() {
         <MyPageButton  onClick={() => setPage('1')}>프로필</MyPageButton>
         <MyPageButton className="middle" onClick={() => setPage('2')}>회원정보수정</MyPageButton>
         <MyPageButton onClick={() => setPage('3')}>예약확인</MyPageButton>
+
       </ButtonContainer>
 
       <MyPageContentBox>
+
         {page === '1' && <UserProfile />}
         {page === '2' && <UserUpdate />}
         {page === '3' && <ReservationCheck />}
+
       </MyPageContentBox>
     </MyPageContainer>
   );
