@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../../context";
-import File from "../../file/File";
+import File from "../file/File";
 
 
 

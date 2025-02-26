@@ -10,6 +10,7 @@
     "react": "^18.2.0",
     "react-calendar": "^4.5.0",
     "react-datepicker": "^8.0.0",
+    "react-daum-postcode": "^3.2.0",
     "react-dom": "^18.2.0",
     "react-hooks": "^1.0.1",
     "react-js-pagination": "^3.0.3",
@@ -47,5 +48,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy" : "http://172.16.6.153:8080"
+  "proxy": "http://172.16.6.153:8080"
 }

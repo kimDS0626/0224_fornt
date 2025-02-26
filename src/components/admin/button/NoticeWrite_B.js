@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import File from "../../board/file/File";
 
 function NoticeWrite_B({ handleChangeClick }) {
-  const handleSubmit = async (title, content, file) => {
+  const [title, setTitle] = useState("");
+  const [content, setContet] = useState("");
+
+  const handleSubmit = async (title, content) => {
     if (!title || !content) {
       alert("제목과 내용을 입력해주세요.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", file);
+
     formData.append("title", title);
     formData.append("content", content);
 
@@ -35,7 +39,7 @@ function NoticeWrite_B({ handleChangeClick }) {
   return (
     <NoticeContainer>
       <WriteBox>
-        <WriteButton onClick={() => handleSubmit(title, content, file)}>
+        <WriteButton onClick={() => handleSubmit(title, content)}>
           등록
         </WriteButton>
         <WriteButton onClick={handleChangeClick}>목록</WriteButton>

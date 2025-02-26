@@ -9,6 +9,7 @@ export const HttpHeadersContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(localStorage.getItem("id"));
 
+
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {children}
