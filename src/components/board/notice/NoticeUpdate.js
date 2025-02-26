@@ -2,28 +2,23 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
-
-
 function NoticeUpdate() {
-  const location = useLocation();
-const { bbs } = location.state || {}; // 기본값을 빈 객체로 설정
+  // const location = useLocation();
+  // const { bbs } = location.state || {}; // 기본값을 빈 객체로 설정
 
-  const boardId = bbs.boardId;
-	const [title, setTitle] = useState(bbs.title);
-  const [content, setContent] = useState(bbs.content);
+  // // const boardId = bbs.boardId;
+  // const [title, setTitle] = useState(bbs.title);
+  // const [content, setContent] = useState(bbs.content);
 
+  // //changeTitle
+  // const changeTitle = (event) => {
+  //   setTitle(event.target.value);
+  // };
 
-      //changeTitle
-    const changeTitle = (event) => {
-        setTitle(event.target.value);
-    };
-
-    //changeContent
-    const changeContent = (event) => {
-        setContent(event.target.value);
-    };
-
-
+  // //changeContent
+  // const changeContent = (event) => {
+  //   setContent(event.target.value);
+  // };
 
   return (
     <Container>
@@ -37,12 +32,18 @@ const { bbs } = location.state || {}; // 기본값을 빈 객체로 설정
             <tbody>
               <tr>
                 <td>
-                  <TableTitle type="text" value={title} onChange={changeTitle}  />
+                  <TableTitle
+                    type="text"
+                    // value={title}
+                    // onChange={changeTitle}
+                  />
                 </td>
               </tr>
               <tr>
                 <td>
-                  <TableContent value={content} onChange={changeContent} />
+                  <TableContent
+                  // value={content} onChange={changeContent}
+                  />
                 </td>
               </tr>
             </tbody>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
-function NoticeWrite_B() {
+function NoticeWrite_B({ handleChangeClick }) {
   const handleSubmit = async (title, content, file) => {
     if (!title || !content) {
       alert("제목과 내용을 입력해주세요.");
@@ -37,12 +38,13 @@ function NoticeWrite_B() {
         <WriteButton onClick={() => handleSubmit(title, content, file)}>
           등록
         </WriteButton>
+        <WriteButton onClick={handleChangeClick}>목록</WriteButton>
       </WriteBox>
     </NoticeContainer>
   );
 }
 
-const NoticeContainer = styled.div`. 
+const NoticeContainer = styled.div`.
 
   margin: auto;
   display: block;
@@ -65,7 +67,7 @@ const WriteBox = styled.div`
 `;
 
 // 작성/수정 버튼 스타일
-const WriteButton = styled(Link)`
+const WriteButton = styled.button`
   margin-right: 10px;
   display: flex;
   justify-content: center;

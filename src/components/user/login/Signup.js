@@ -3,20 +3,20 @@ import styled from "styled-components";
 import axios from "axios";
 import logo_b from "./imgs/logo_b.png";
 import DaumPostcode from "react-daum-postcode";
+import { useNavigate } from "react-router-dom";
 
-function SignUp({ onSignupSuccess }) {
+function SignUp() {
   const [forms, setForms] = useState([
-    { id: Date.now(), petName: "", species: "", age: "" },
+    { id: Date.now(), petName: "", breed: "", age: "" },
   ]);
   const [hasPet, setHasPet] = useState(false); // 반려동물 유무 상태 추가
 
   const addForm = () => {
     setForms([
       ...forms,
-      { id: Date.now(), petName: "", species: "", age: "", weight: "" },
+      { id: Date.now(), petName: "", breed: "", age: "" }, // breed 값을 빈 문자열로 초기화
     ]);
   };
-
   const removeForm = (id) => {
     setForms(forms.filter((form) => form.id !== id));
   };
@@ -37,6 +37,7 @@ function SignUp({ onSignupSuccess }) {
   const [passwordError, setPasswordError] = useState("");
   const [passwordCheckError, setpasswordCheckError] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     const emailValue = e.target.value;
@@ -195,7 +196,7 @@ function SignUp({ onSignupSuccess }) {
       pets: hasPet
         ? forms.map((form) => ({
             petName: form.petName,
-            species: form.species,
+            breed: form.breed,
             age: form.age,
           }))
         : [], // hasPet 상태에 따라 pets 정보 포함 여부 결정
@@ -203,12 +204,16 @@ function SignUp({ onSignupSuccess }) {
 
     try {
       const response = await axios.post("/api/register", memberData);
-      if (response.status === 200) {
-        onSignupSuccess();
-      }
+      console.log("회원가입 성공:", response.data); // 성공 로그 추가
+
+      navigate("/signIn");
     } catch (error) {
-      console.error("회원가입 실패:", error);
-      alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.");
+      console.error("회원가입 실패:", error.response); // 오류 로그 수정
+      if (error.response && error.response.data) {
+        alert("실패"); // 서버에서 받은 오류 메시지 표시
+      } else {
+        alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.");
+      }
     }
   };
 
@@ -456,11 +461,23 @@ function SignUp({ onSignupSuccess }) {
               </tr>
               <tr>
                 <td>
+                  <select
+                    value={form.breed}
+                    onChange={(e) => handlePetInfoChange(e, form.id, "breed")}
+                  >
+                    {" "}
+                    <option value="선택" disabled>
+                      선택
+                    </option>
+                    <option value="DOG">DOG</option>
+                    <option value="CAT">CAT</option>
+                  </select>
                   <input
+                    className="selectInput"
                     type="text"
-                    placeholder="동물종류"
-                    value={form.species}
-                    onChange={(e) => handlePetInfoChange(e, form.id, "species")}
+                    value={form.breed}
+                    disabled // input을 disabled 상태로 변경
+                    placeholder="종류 (선택)" // placeholder 변경
                   />
                 </td>
               </tr>
@@ -730,6 +747,20 @@ const AnimalBox = styled.div`
   flex-direction: column; /* 세로 정렬 */
   align-items: center;
   justify-content: center;
+
+  select {
+    position: relative;
+    left: 420px;
+    top: 0px;
+    z-index: 1;
+    width: 70px;
+    height: 26px;
+  }
+
+  .selectInput {
+    position: relative;
+    left: -35px;
+  }
 `;
 
 const AnimalBoxButton = styled.div`

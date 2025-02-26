@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 
 import { Link } from "react-router-dom";
@@ -10,6 +11,8 @@ import searchIcon from "./imgs/header_search.png";
 import { useNavigate } from "react-router-dom";
 // import AdminHome from "../admin/adminHome";
 import styled from "styled-components";
+import axios from "axios";
+import { AuthContext } from "../../context";
 // --------------------------------------------------------------------------------------------------------------------
 
 function Header() {
@@ -42,6 +45,8 @@ function Header() {
   ];
 
   const [showBox, setShowBox] = useState(true);
+  const navigate = useNavigate();
+  const { auth, setAuth } = useContext(AuthContext);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +63,22 @@ function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
+    if (confirmLogout) {
+      localStorage.removeItem("user_token");
+      localStorage.removeItem("id");
+      setAuth(false);
+      navigate("/");
+    }
+  };
+  const handleMyPageClick = (e) => {
+    if (!auth) {
+      e.preventDefault(); // 기본 링크 동작 방지
+      alert("로그인이 필요합니다! 로그인 페이지로 이동합니다.");
+      navigate("/signIn");
+    }
+  };
 
   return (
     <HeaderContainer>
@@ -98,14 +119,22 @@ function Header() {
         </Navigation>
         <HederSectionB>
           <LoginBox>
-            <Link to="/mypage">
-              <img src={myIcon} />
+            <Link to="/mypage" onClick={handleMyPageClick}>
+              <img src={myIcon} alt="마이페이지" />
               <LoginButton>마이페이지</LoginButton>
             </Link>
-            <Link to="/signIn">
-              <img src={userIcon} />
-              <LoginButton>로그인</LoginButton>
-            </Link>
+
+            {auth ? (
+              <Link to="/" onClick={handleLogout}>
+                <img src={userIcon} />
+                <LoginButton>로그아웃</LoginButton>
+              </Link>
+            ) : (
+              <Link to="/signIn">
+                <img src={userIcon} />
+                <LoginButton>로그인</LoginButton>
+              </Link>
+            )}
           </LoginBox>
           <SearchBox>
             <Link to="/">
