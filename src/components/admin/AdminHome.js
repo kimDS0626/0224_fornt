@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import AdminUserList from "./user/AdminUserList";
+
+import AdminUser from "./user/AdminUser";
 import AdminUserDetail_B from "./user/AdminUserDetail_B";
 
 import Notice from "../board/notice/Notice";
-import NoticePagination from "../board/notice/NoticePagination";
+
 import NoticeList_B from "./button/NoticeList_B";
 import NoticeWrite from "../board/notice/NoticeWrite";
 import NoticeWrite_B from "./button/NoticeWrite_B";
@@ -13,16 +14,15 @@ import NoticeDetail_B from "./button/NoticeDetail_B";
 import NoticeUpdate from "../board/notice/NoticeUpdate";
 import NoticeUpdate_B from "./button/NoticeUpdate_B";
 
-import OnlineCounselTable from "../board/onlinecounsel/OnlineCounselTable";
-import OnlineCounselPagination from "../board/onlinecounsel/OnlineCounselPagination";
+import OnlineCounsel from "../board/onlinecounsel/OnlineCounsel";
+
 import OnlineCounselDetail from "../board/onlinecounsel/OnlineCounselDetail";
 
 import ReviewTable from "../board/review/ReviewTable";
-import ReviewPagination from "../board/review/ReviewPagination";
+
 import ReviewDetail from "../board/review/ReviewDetail";
 
 import ReviewUpdate from "../board/review/ReviewUpdate";
-import NoticeTable from "../board/notice/NoticeTable";
 
 function AdminHome() {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -50,7 +50,7 @@ function AdminHome() {
     {
       title: "회원 관리",
       content: {
-        list: <AdminUserList />,
+        list: <AdminUser />,
         detail: <NoticeDetail />,
         update: <NoticeUpdate />,
       },
@@ -74,13 +74,12 @@ function AdminHome() {
         update: <NoticeUpdate_B />,
       },
 
-      page: <NoticePagination />,
       hideTitleForContent: ["list"],
     },
     {
       title: "온라인예약 관리",
       content: {
-        list: <OnlineCounselTable />,
+        list: <OnlineCounsel />,
         detail: <NoticeDetail />,
         update: <NoticeUpdate />,
       },
@@ -92,14 +91,12 @@ function AdminHome() {
     {
       title: "온라인상담 관리",
       content: {
-        list: <OnlineCounselTable />,
+        list: <OnlineCounsel />,
         detail: <OnlineCounselDetail />,
       },
       buttons: {
         detail: <NoticeDetail_B />,
       },
-
-      page: <OnlineCounselPagination />,
     },
     {
       title: "고객 리뷰 관리",
@@ -112,8 +109,6 @@ function AdminHome() {
         detail: <NoticeDetail_B />,
         update: <NoticeUpdate_B />,
       },
-
-      page: <ReviewPagination />,
     },
   ];
 
@@ -165,8 +160,7 @@ function AdminHome() {
               hideTitle: hideTitleForContent,
             })}
         </HomeSectionB>
-        <HomeSectionC>{data[selectedIndex].page}</HomeSectionC>
-        <HomeSectionD>{data[selectedIndex].buttons[currentView]}</HomeSectionD>
+        <HomeSectionC>{data[selectedIndex].buttons[currentView]}</HomeSectionC>
       </HomeSection>
     </HomeContainer>
   );
@@ -272,24 +266,16 @@ const HomeTitle = styled.div`
 // ------------------------------------------------------------------------
 const HomeSectionB = styled.div`
   position: relative;
-  top: -100px;
+  top: 60px;
   height: 1000px;
   grid-column: 3;
   grid-row: 2;
   transform: scale(1);
   display: flex;
 `;
+
 // ------------------------------------------------------------------------------
 const HomeSectionC = styled.div`
-  position: relative;
-  top: -250px;
-  height: 65px;
-  width: 1000px;
-  grid-column: 3;
-  grid-row: 3;
-`;
-// ------------------------------------------------------------------------------
-const HomeSectionD = styled.div`
   position: relative;
   top: -230px;
   background: #111111;

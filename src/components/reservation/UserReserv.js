@@ -1,30 +1,98 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import styled from "styled-components";
+import { useNavigate, useParams } from "react-router-dom";
+import { AuthContext, HttpHeadersContext } from "../../context";
 
 
 
 
 
 function UserReserv() {
+  const { auth, setAuth } = useContext(AuthContext);
+  const { headers, setHeaders } = useContext(HttpHeadersContext);
+
+
+  // const { memberId } = useParams();
+  // console.log("회원 ID:", memberId);
+
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [timeSlots, setTimeSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDepartment, setSelectedDepartment] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedPet, setSelectedPet] = useState([]);
+  const [petList, setPetList] = useState([]);
+
+  const navigate = useNavigate();
 
 
-
-  useEffect(() => {
-  console.log("selectedTime:", selectedTime);
-}, [selectedTime]);  // selectedTime 상태를 추적
 
 useEffect(() => {
-  console.log("타임슬롯 데이터:", timeSlots);  // 타임슬롯 데이터 확인
-}, [timeSlots]);
+  console.log("access_token:", localStorage.getItem("access_token"));
+
+  // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
+  setHeaders({
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  });
+
+  // 로그인한 사용자인지 체크
+  if (!auth) {
+    alert("로그인 한 사용자만 게시글을 작성할 수 있습니다 !");
+    navigate(-1);
+  }
+}, []);
+
+
+
+
+
+useEffect(() => {
+  const getPetList = async () => {
+    try {
+      if (headers.Authorization) {  // memberId와 Authorization이 존재하는지 확인
+        // API 요청 시 memberId를 URL에 동적으로 삽입
+        const response = await axios.get("/api/pet/list", { headers: headers });
+        console.log("펫 리스트:", response.data);
+        setPetList(response.data);  // 받은 데이터를 상태에 저장
+      }
+    } catch (error) {
+      console.log("❌ Error:", error);  // 에러 처리
+    }
+  };
+
+
+    getPetList();  // memberId가 존재할 때만 API 호출
+
+}, [headers]);  // headers와 memberId가 변경될 때마다 호출
+
+
+
+
+
+useEffect(() => {
+  if (selectedTime !== null) { // selectedTime이 null이 아닌 경우에만 실행
+    const selectedSlot = timeSlots[selectedTime];
+    if (selectedSlot) {
+      console.log("selectedTimeId:", selectedSlot.id); // timeSlots 배열에서 선택한 슬롯의 id 값을 출력
+    }
+  }
+}, [selectedTime, timeSlots]);
+
+  useEffect(() => {
+  if (selectedPet !== null) { // selectedTime이 null이 아닌 경우에만 실행
+    const selectedPetName = petList[selectedPet];
+    if (selectedPetName) {
+      console.log("selectedPetName:", selectedPetName.name); // timeSlots 배열에서 선택한 슬롯의 id 값을 출력
+    }
+  }
+}, [selectedPet, petList]);
+
+
+
 
 
 
@@ -51,6 +119,39 @@ useEffect(() => {
       setTimeSlots([]);
     }
   }, [selectedDate, selectedDepartment]);
+
+
+  //예약등록
+  const createReserve = async () => {
+    const selectedPetData = petList[selectedPet];
+    console.log(selectedPetData.name)
+  // 선택한 시간 슬롯의 ID 가져오기
+  const selectedSlotData = timeSlots[selectedTime];
+  console.log("Selected Slot ID:", selectedSlotData.id);
+   const req = {
+    pet: selectedPetData.name,
+    slot: selectedSlotData.id
+   };
+   await axios
+     .post("/api/member/reservation/register", req, )
+     .then((response) => {
+       console.log("응답 데이터: ", response.data);
+       const reserveId = response.data.id;
+       console.log("reserveId: ", reserveId);
+
+       alert("예약이 등록되었습니다.");
+       navigate("/");
+     })
+     .catch((err) => {
+       console.log("reserve error", err)
+
+     })
+
+ }
+
+
+
+
 
   return (
     <Container>
@@ -91,8 +192,8 @@ useEffect(() => {
                 <TimeButton
                   key={index}
                   disabled={!slot.isAvailable}
-                  active={selectedTime === slot.slotTime}
-                  onClick={() => setSelectedTime(slot.slotTime)}
+                  active={selectedTime === index}
+                  onClick={() => setSelectedTime(index)}
                 >
                 {slot.slotTime.slice(0, 5)}
               </TimeButton>
@@ -105,18 +206,23 @@ useEffect(() => {
 
 
       )}
+      {petList.map((response, index) => (
 
-      <AnimalInfoBox
+        <AnimalInfoBox
+          key={index}
+          active={selectedPet === index}
+          onClick={() => setSelectedPet(index)}
+        >
+          <p className="title">반려동물정보</p>
+          <p className="content">{response.name}</p>
+          <p className="content">{response.breed}</p>
+          <p className="content">{response.age}</p>
+        </AnimalInfoBox>
+      ))}
 
-      >
-        <p className="title"><strong>반려동물 정보</strong></p>
-        <p className="content">구름이</p>
-        <p className="content">7세</p>
-        <p className="content">고양이</p>
-        <p className="content">5.2kg</p>
-      </AnimalInfoBox>
 
-      <ReserveBtn>예약하기</ReserveBtn>
+
+      <ReserveBtn onClick={createReserve}>예약하기</ReserveBtn>
     </Container>
   );
 }

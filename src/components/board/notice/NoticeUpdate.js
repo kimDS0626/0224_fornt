@@ -23,9 +23,7 @@ function NoticeUpdate() {
   return (
     <Container>
       <ContentWrapper>
-        <Title>
-          <h1>공지사항</h1>
-        </Title>
+
 
         <TableBox>
           <Table>
@@ -81,15 +79,7 @@ const ContentWrapper = styled.div`
   gap: 20px;
 `;
 
-//  제목 섹션
-const Title = styled.div`
-  margin-top: 100px;
-  width: 100%;
-  text-align: left;
-  font-size: 36px;
-  font-weight: bold;
-  font-family: "Noto Sans KR", serif;
-`;
+
 
 //  테이블 박스
 const TableBox = styled.div`

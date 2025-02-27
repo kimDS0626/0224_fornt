@@ -3,9 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../../context";
-import File from "../file/File";
-
-
+import File from "../../file/File";
 
 function NoticeDetail() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -13,8 +11,7 @@ function NoticeDetail() {
   const { noticeId } = useParams();
   const navigate = useNavigate();
 
-
-    const getBbsDetail = async () => {
+  const getBbsDetail = async () => {
     try {
       const response = await axios.get(`/api/member/notice/${noticeId}`);
 
@@ -30,9 +27,11 @@ function NoticeDetail() {
 
   const deleteNotice = async () => {
     try {
-      const response = await axios.delete(`/api/admin/notice/${noticeId}/delete`);
+      const response = await axios.delete(
+        `/api/admin/notice/${noticeId}/delete`
+      );
       console.log(response);
-      console.log('deleteNotice seccess');
+      console.log("deleteNotice seccess");
       if (response.status == 200) {
         alert("게시글을 삭제 하였습니다.");
         navigate("/notice");
@@ -40,45 +39,34 @@ function NoticeDetail() {
     } catch (error) {
       console.log("deleteNotice error");
       console.error(error);
-
     }
-
-
   };
 
-    useEffect(() => {
-	// 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
-	setHeaders({
-		"Authorization": `Bearer ${localStorage.getItem("user_token")}`
-	});
+  useEffect(() => {
+    // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
+    setHeaders({
+      Authorization: `Bearer ${localStorage.getItem("user_token")}`,
+    });
     getBbsDetail();
-    }, []);
+  }, []);
 
   useEffect(() => {
-       console.log("noticeId:", noticeId); // 콘솔로 확인
+    console.log("noticeId:", noticeId); // 콘솔로 확인
     if (!noticeId) return;
-  console.log("noticeId:", noticeId);
-  getBbsDetail();
-}, []);
-
-
-
-
-
+    console.log("noticeId:", noticeId);
+    getBbsDetail();
+  }, []);
 
   return (
     <Container>
       <ContentWrapper>
-        <Title>
-          <h1>공지사항</h1>
-        </Title>
 
 
         <TableBox>
           <Table>
             <tbody>
               <tr>
-                  <TableTitle>{notice.title}</TableTitle>
+                <TableTitle>{notice.title}</TableTitle>
               </tr>
               <tr>
                 <td>
@@ -86,25 +74,20 @@ function NoticeDetail() {
                 </td>
               </tr>
               <tr>
-
-                  <TableContent>{notice.content} </TableContent>
-
+                <TableContent>{notice.content} </TableContent>
               </tr>
-
             </tbody>
           </Table>
         </TableBox>
 
-
         <coment></coment>
 
         <BottomBox>
-
-            <Button onClick={deleteNotice}>삭제</Button>
+          <Button onClick={deleteNotice}>삭제</Button>
 
           <Link to="/noticeUpdate">
             <Button>수정</Button>
-            </Link>
+          </Link>
           <Link to="/notice">
             <Button>취소</Button>
           </Link>
@@ -134,17 +117,6 @@ const ContentWrapper = styled.div`
   gap: 20px;
 `;
 
-// 제목 섹션
-const Title = styled.div`
-  margin-top: 100px;
-  width: 100%;
-  max-width: 1000px;
-  text-align: left;
-  font-weight: bold;
-  font-size: 36px;
-  font-family: "Noto Sans KR", serif;
-
-`;
 
 //  테이블 박스
 const TableBox = styled.div`
@@ -158,8 +130,8 @@ const TableBox = styled.div`
 const Table = styled.table`
   width: 100%;
 
-     border-collapse: separate;
-   border-spacing: 10px 10px;
+  border-collapse: separate;
+  border-spacing: 10px 10px;
 `;
 
 // 입력 필드
@@ -170,10 +142,10 @@ const TableTitle = styled.td`
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
-      font-weight: medium;
-    font-size: 20px;
-    font-family: "Noto Sans KR", serif;
-    margin-bottom: 30px;
+  font-weight: medium;
+  font-size: 20px;
+  font-family: "Noto Sans KR", serif;
+  margin-bottom: 30px;
 `;
 
 const TableContent = styled.td`
@@ -184,9 +156,9 @@ const TableContent = styled.td`
   border: 1px solid #ccc;
   border-radius: 5px;
   resize: none;
-      font-weight: regular;
-    font-size: 16px;
-    font-family: "Noto Sans KR", serif;
+  font-weight: regular;
+  font-size: 16px;
+  font-family: "Noto Sans KR", serif;
 `;
 
 // 하단 버튼 박스

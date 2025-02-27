@@ -38,6 +38,7 @@ function SignUp() {
   const [passwordCheckError, setpasswordCheckError] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleEmailChange = (e) => {
     const emailValue = e.target.value;
@@ -85,19 +86,35 @@ function SignUp() {
 
   const handleSendVerificationEmail = async () => {
     if (emailError) {
-      return; // 이메일 형식이 잘못되었으면 전송하지 않음
+      return; // 이메일 형식이 잘못되었으면 실행 안 함
     }
+
+    setIsLoading(true); // 로딩 시작
 
     try {
-      const response = await axios.post("/api/email/send", null, {
+      // 🔹 1. 이메일 중복 체크
+      await axios.get("/api/checkEmail", { params: { email } });
+
+      // 🔹 2. 중복이 아니면 인증 메일 전송
+      const sendResponse = await axios.post("/api/email/send", null, {
         params: { receiver: email },
       });
-      setMessage(response.data);
+
+      setMessage(sendResponse.data); // 성공 메시지 표시
     } catch (error) {
-      setMessage("메일 전송 실패");
+      if (error.response && error.response.status === 400) {
+        console.error("메일 전송 실패:", error);
+        setMessage("메일 전송 실패");
+      } else {
+        console.log("이미 사용 중인 이메일 주소입니다.");
+        alert("이미 사용 중인 이메일 주소입니다.");
+        setMessage("이미 사용 중인 이메일 주소입니다.");
+      }
+    } finally {
+      setIsLoading(false); // 로딩 종료
     }
   };
-
+  // ---------------------------------------------------------
   const handleVerifyCode = async () => {
     if (codeError || !code) {
       return; // 코드가 없거나 형식에 오류가 있으면 전송하지 않음
@@ -105,9 +122,12 @@ function SignUp() {
 
     try {
       const response = await axios.post("/api/email/verify", null, {
-        params: { receiver: email, code: code },
+        params: { receiver: email, code: code }, // 사용자가 입력한 코드 검증
       });
-      setMessage(response.data);
+
+      if (response.status === 200) {
+        setMessage("인증이 완료되었습니다.");
+      }
     } catch (error) {
       setMessage("인증 코드 확인 실패");
     }
@@ -140,11 +160,11 @@ function SignUp() {
     } catch (error) {
       // 중복일 경우 처리
       if (error.response && error.response.status === 400) {
-        setNickNameMessage("이미 존재하는 닉네임입니다.");
-        setNickNameError("닉네임을 다시 입력해주세요.");
-      } else {
         setNickNameMessage("서버 오류가 발생했습니다.");
         setNickNameError("");
+      } else {
+        setNickNameMessage("이미 존재하는 닉네임입니다.");
+        setNickNameError("닉네임을 다시 입력해주세요.");
       }
     }
   };
@@ -157,14 +177,17 @@ function SignUp() {
   };
 
   const handleBirthChange = (e) => {
-    setBirth(e.target.value);
+    const value = e.target.value.replace(/[^0-9]/g, "").slice(0, 8);
+    setBirth(value);
   };
 
   const handlePhoneNumChange = (e) => {
-    setPhoneNum(e.target.value);
+    const value = e.target.value.replace(/[^0-9]/g, "").slice(0, 11);
+    setPhoneNum(value);
   };
   const handleSubmit = async () => {
     if (passwordError || passwordCheckError) {
+      alert("비밀번호가 유효하지 않습니다.");
       return;
     }
     if (
@@ -182,9 +205,21 @@ function SignUp() {
       !birth ||
       !phoneNum
     ) {
+      let missingFields = [];
+
+      if (!email || emailError) missingFields.push("이메일");
+      if (!password || passwordError) missingFields.push("비밀번호");
+      if (!passwordCheck || passwordCheckError)
+        missingFields.push("비밀번호 확인");
+      if (!nickName || nickNameError) missingFields.push("닉네임");
+      if (!name) missingFields.push("이름");
+      if (!addr) missingFields.push("주소");
+      if (!birth) missingFields.push("생년월일");
+      if (!phoneNum) missingFields.push("전화번호");
+
+      alert(`${missingFields.join(", ")}을(를) 모두 입력해주세요.`);
       return;
     }
-
     const memberData = {
       email,
       password: password,
@@ -205,6 +240,20 @@ function SignUp() {
     try {
       const response = await axios.post("/api/register", memberData);
       console.log("회원가입 성공:", response.data); // 성공 로그 추가
+      alert("회원가입이 성공적으로 완료되었습니다.");
+
+      // 펫 정보 등록
+      if (hasPet) {
+        await Promise.all(
+          forms.map(async (pet) => {
+            await axios.post(`/api/member/${response.data.memberId}/pet`, {
+              petName: pet.petName,
+              breed: pet.breed,
+              age: pet.age,
+            });
+          })
+        );
+      }
 
       navigate("/signIn");
     } catch (error) {
@@ -411,9 +460,10 @@ function SignUp() {
               <td>
                 <input
                   type="text"
-                  placeholder="생년월일"
+                  placeholder="생년월일(8자리)"
                   value={birth}
                   onChange={handleBirthChange}
+                  maxLength={8}
                 />
               </td>
             </tr>
@@ -424,6 +474,7 @@ function SignUp() {
                   placeholder="전화번호"
                   value={phoneNum}
                   onChange={handlePhoneNumChange}
+                  maxLength={11}
                 />
               </td>
             </tr>
@@ -466,7 +517,7 @@ function SignUp() {
                     onChange={(e) => handlePetInfoChange(e, form.id, "breed")}
                   >
                     {" "}
-                    <option value="선택" disabled>
+                    <option value="" disabled>
                       선택
                     </option>
                     <option value="DOG">DOG</option>
@@ -495,7 +546,7 @@ function SignUp() {
               <tr>
                 <td>
                   <AnimalBoxButton>
-                    <button danger onClick={() => removeForm(form.id)}>
+                    <button danger="true" onClick={() => removeForm(form.id)}>
                       삭제
                     </button>
                   </AnimalBoxButton>{" "}

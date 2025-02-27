@@ -1,7 +1,6 @@
-
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, use } from "react";
 import { useLocation } from "react-router-dom";
-
+import { jwtDecode } from "jwt-decode"; // jwt-decode 라이브러리 import
 import { Link } from "react-router-dom";
 import header_logo from "./imgs/header_logo.png";
 import header_menu_stroke from "./imgs/header_menu_stroke.png";
@@ -29,11 +28,11 @@ function Header() {
         { path: "/department", name: "진료과 소개" },
       ],
     },
-    { name: "공지사항", submenu: [{ path: "/notice", name: "공지사항" }] },
+    { name: "공지사항", submenu: [{ path: "/notice/list", name: "공지사항" }] },
     {
       name: "온라인예약",
       submenu: [
-        { path: "/userreserv", name: "회원예약" },
+        { path: "/user/:memberId", name: "회원예약" },
         { path: "#/nonuserreserve", name: "비회원예약" },
       ],
     },
@@ -47,7 +46,19 @@ function Header() {
   const [showBox, setShowBox] = useState(true);
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-
+  const token = localStorage.getItem("access_token");
+  let useRole = null;
+  if (token) {
+    try {
+      // 토큰 디코딩
+      console.log(token);
+      const decodedToken = jwtDecode(token);
+      console.log(decodedToken);
+      useRole = decodedToken.roles;
+    } catch (e) {
+      console.log("토큰 디코딩 오류 : ", e);
+    }
+  }
   useEffect(() => {
     const handleScroll = () => {
       // 100px 아래로 스크롤하면 박스 숨기기
@@ -66,8 +77,8 @@ function Header() {
   const handleLogout = () => {
     const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
     if (confirmLogout) {
-      localStorage.removeItem("user_token");
-      localStorage.removeItem("id");
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("nick_name");
       setAuth(false);
       navigate("/");
     }
@@ -77,6 +88,13 @@ function Header() {
       e.preventDefault(); // 기본 링크 동작 방지
       alert("로그인이 필요합니다! 로그인 페이지로 이동합니다.");
       navigate("/signIn");
+    }
+  };
+  const handleAdminPageClick = (e) => {
+    if (useRole !== "ROLE_ADMIN") {
+      e.preventDefault(); // 기본 링크 동작 방지
+      alert("관리자만 접근 가능합니다!");
+      navigate("/");
     }
   };
 
@@ -119,10 +137,21 @@ function Header() {
         </Navigation>
         <HederSectionB>
           <LoginBox>
-            <Link to="/mypage" onClick={handleMyPageClick}>
-              <img src={myIcon} alt="마이페이지" />
-              <LoginButton>마이페이지</LoginButton>
-            </Link>
+            {useRole === "ROLE_ADMIN" ? (
+              <>
+                <Link to="/adminhome" onClick={handleAdminPageClick}>
+                  <img src={myIcon} alt="관리자페이지" />
+                  <LoginButton>관리자</LoginButton>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/mypage" onClick={handleMyPageClick}>
+                  <img src={myIcon} alt="마이페이지" />
+                  <LoginButton>마이페이지</LoginButton>
+                </Link>
+              </>
+            )}
 
             {auth ? (
               <Link to="/" onClick={handleLogout}>

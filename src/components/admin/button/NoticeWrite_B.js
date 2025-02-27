@@ -1,45 +1,29 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext, HttpHeadersContext } from "../../../context"; // 두 context import
 import axios from "axios";
-import File from "../../board/file/File";
 
-function NoticeWrite_B({ handleChangeClick }) {
-  const [title, setTitle] = useState("");
-  const [content, setContet] = useState("");
-
-  const handleSubmit = async (title, content) => {
-    if (!title || !content) {
-      alert("제목과 내용을 입력해주세요.");
+function NoticeWrite_B({
+  createBbs,
+  handleChangeClick,
+  files,
+  title,
+  content,
+}) {
+  const handleSubmit = () => {
+    if (!title || !content || !title.trim() || !content.trim()) {
+      alert("제목과 내용을 입력해주세요."); // 제목이나 내용이 비었을 경우 얼러트 표시
       return;
     }
-
-    const formData = new FormData();
-
-    formData.append("title", title);
-    formData.append("content", content);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      alert(response.data.message);
-    } catch (error) {
-      alert("공지사항 등록 실패");
-      console.error(error);
-    }
+    createBbs(); // 제목과 내용이 비지 않으면 createBbs 호출
   };
 
   return (
     <NoticeContainer>
       <WriteBox>
-        <WriteButton onClick={() => handleSubmit(title, content)}>
+        <WriteButton o onClick={handleSubmit}>
           등록
         </WriteButton>
         <WriteButton onClick={handleChangeClick}>목록</WriteButton>
@@ -48,7 +32,7 @@ function NoticeWrite_B({ handleChangeClick }) {
   );
 }
 
-const NoticeContainer = styled.div`.
+const NoticeContainer = styled.div`. 
 
   margin: auto;
   display: block;

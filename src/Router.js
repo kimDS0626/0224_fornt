@@ -7,7 +7,6 @@ import Introduce from "./components/introduce/Introduce.js";
 import Directions from "./components/introduce/Directions.js";
 import Department from "./components/introduce/Department.js";
 
-import Notice from "./components/board/notice/Notice.js";
 
 import UserReserv from "./components/reservation/UserReserv.js";
 import NonUserReserve from "./components/reservation/NonUserReserve.js";
@@ -18,8 +17,9 @@ import OnlineCounselUpdate from "./components/board/onlinecounsel/OnlineCounselU
 import OnlineCounselDetail from "./components/board/onlinecounsel/OnlineCounselDetail.js";
 
 import Review from "./components/board/review/Review.js";
-import ReviewUpdate from "./components/board/review/ReviewUpdate.js";
+import ReviewUpdate from "./components/board/review/ReviewUpdate.js"
 import ReviewWrite from "./components/board/review/ReviewWrite.js";
+
 
 import SignIn from "./components/user/login/SignIn.js";
 import SignUp from "./components/user/login/SignUp.js";
@@ -29,32 +29,38 @@ import FindPw from "./components/user/login/FindPw.js";
 import MyPage from "./components/user/mypage/MyPage.js";
 
 import AdminHome from "./components/admin/AdminHome.js";
+
 import Footer from "./components/common/Footer.js";
 
-import NoticeUpdate from "./components/board/notice/NoticeUpdate.js";
+import Notice from "./components/board/notice/Notice.js";
+import NoticeLayout from "./components/board/notice/NoticeLayout.js";
+import NoticeUpdate from "./components/board/notice/NoticeUpdate.js"
 import NoticeWrite from "./components/board/notice/NoticeWrite.js";
 import NoticeDetail from "./components/board/notice/NoticeDetail.js";
 
 const Router = () => {
   return (
-    <BrowserRouter>
+          <BrowserRouter>
       <Header />
       <Routes>
+
+        {/* ✅ 공지사항 관련 페이지 */}
+        <Route path="/notice" element={<NoticeLayout />}>
+          <Route path="list" element={<Notice />} />
+          <Route path="write" element={<NoticeWrite />} />
+          <Route path="update" element={<NoticeUpdate />} />
+          <Route path="detail/:noticeId" element={<NoticeDetail />} />
+        </Route>
         <Route path="/" element={<Home />}></Route>
+
         <Route path="/introduce" element={<Introduce />} />
         <Route path="/directions" element={<Directions />} />
         <Route path="/department" element={<Department />} />
-        <Route path="/notice" element={<Notice />}></Route>
 
-        <Route path="/noticeUpdate" element={<NoticeUpdate />}></Route>
-        <Route path="/noticeWrite" element={<NoticeWrite />}></Route>
-        <Route
-          path="/noticedetail/:noticeId"
-          element={<NoticeDetail />}
-        ></Route>
 
-        <Route path="/userreserv" element={<UserReserv />}></Route>
+         <Route path="/user/:memberId" element={<UserReserv />}></Route>
         <Route path="/nonuserreserve" element={<NonUserReserve />}></Route>
+
         <Route path="/onlineCounsel" element={<OnlineCounsel />}></Route>
         <Route
           path="/onlineCounselWrite"
@@ -64,10 +70,11 @@ const Router = () => {
           path="/onlienCounselUpdate"
           element={<OnlineCounselUpdate />}
         ></Route>
-        <Route
+         <Route
           path="/onlineCounselDetail"
           element={<OnlineCounselDetail />}
         ></Route>
+
 
         <Route path="/review" element={<Review />}></Route>
 
@@ -80,10 +87,27 @@ const Router = () => {
         <Route path="/findPw" element={<FindPw />} />
         <Route path="/mypage" element={<MyPage />}></Route>
         <Route path="/adminhome" element={<AdminHome />}></Route>
-      </Routes>
 
+
+
+
+      </Routes>
       <Footer />
     </BrowserRouter>
+
+
+
+
+
+
+    // <BrowserRouter>
+    //   <Header />
+    //   <Routes>
+
+    //   </Routes>
+
+    //   <Footer />
+    // </BrowserRouter>
   );
 };
 export default Router;

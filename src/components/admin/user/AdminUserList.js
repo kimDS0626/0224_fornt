@@ -1,82 +1,89 @@
-import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Pagination from "react-js-pagination";
 import search from "./imgs/search.png";
+import React, { useState, useEffect } from "react";
 
 function AdminUserList() {
-  //BbsList
+  // BbsList
   const [bbsList, setBbsList] = useState([]);
 
-  //검색용 Hook
-  //게시글 조회
+  // 검색용 Hook
   const [choiceVal, setChoiceVal] = useState("");
   const [searchVal, setSearchVal] = useState("");
 
-  //Paging
+  // Paging
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCnt, setTotalCnt] = useState(0);
 
+  // 회원 정보 조회
   const getBbsList = async (page) => {
     try {
-      const response = await axios.get("http://localhost:8080/board/list", {
+      const response = await axios.get("/api/admin/member/Member", {
         params: { page: page - 1 },
       });
-
-      console.log("[BbsList.js] useEffect() success :D");
-      console.log(response.data);
-
+      console.log(response.data.content);
       setBbsList(response.data.content);
-      setPageSize(response.data.pageSize);
-      setTotalPages(response.data.totalPages);
-      setTotalCnt(response.data.totalElements); //★
+      setPageSize(response.data.pageSize || 10);
+      setTotalCnt(response.data.totalElements);
+      console.log("member seccess");
+      console.log(response);
+      console.log("총 개수:", totalCnt);
     } catch (error) {
-      console.log("[BbsList.js] useEffect() error :<");
-      console.log(error);
+      console.log("Error fetching board data:", error);
     }
   };
 
-  //페이징 보여주기
+  // 페이지 변경
   const changePage = (page) => {
     setPage(page);
     getBbsList(page);
   };
 
-  const [notices, setNotices] = useState([
-    { id: 1, email: "user1@email.com", nick: "nick1", tel: "01012341234" },
-    { id: 2, email: "user2@email.com", nick: "nick2", tel: "01056785678" },
-    { id: 3, email: "user3@email.com", nick: "nick3", tel: "01099998888" },
-    { id: 4, email: "user4@email.com", nick: "nick4", tel: "01011112222" },
-    { id: 5, email: "user5@email.com", nick: "nick5", tel: "01033334444" },
-    { id: 6, email: "user6@email.com", nick: "nick6", tel: "01055556666" },
-    { id: 7, email: "user7@email.com", nick: "nick7", tel: "01077778888" },
-    { id: 8, email: "user8@email.com", nick: "nick8", tel: "01099990000" },
-  ]);
+  // 컴포넌트가 처음 렌더링될 때 게시글 목록을 가져옴
+  useEffect(() => {
+    getBbsList(page);
+  }, [page]);
 
+  // ----------------------------------------------------------------
   const addEmptyRows = (data) => {
+    // 데이터가 배열인지 확인하고, 배열이 아니면 빈 배열을 반환
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
     const rowsWithEmpty = [];
     data.forEach((item, index) => {
-      rowsWithEmpty.push({}); // 데이터 행 추가
-      rowsWithEmpty.push(item); // 빈 데이터 행 추가 (공백 행)
+      rowsWithEmpty.push({}); // 빈 데이터 행 추가
+      rowsWithEmpty.push(item); // 실제 데이터 행 추가
     });
     return rowsWithEmpty;
   };
-  const noticesWithEmptyRows = addEmptyRows(notices);
+  const noticesWithEmptyRows = addEmptyRows(bbsList);
 
+  // 삭제 처리
   const handleDelete = (id) => {
     const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
     if (confirmDelete) {
-      setNotices(notices.filter((notice) => notice.id !== id));
+      setBbsList(bbsList.filter((notice) => notice.id !== id));
     }
   };
+  useEffect(() => {
+    console.log(bbsList);
+  }, [bbsList]); // bbsList 상태가 변경될 때마다 실행
 
   return (
     <Container>
       <SearchBox>
         <img src={search} />
-        <SearchField type="text" placeholder="검색 할 것을 적어보세요." />
+        <SearchField
+          type="text"
+          placeholder="검색 할 것을 적어보세요."
+          value={searchVal}
+          onChange={(e) => setSearchVal(e.target.value)}
+        />
       </SearchBox>
 
       <NoticeTableBox>
@@ -92,24 +99,21 @@ function AdminUserList() {
           </thead>
 
           <tbody>
-            {noticesWithEmptyRows.map((notice, index) => (
+            {noticesWithEmptyRows.map((response, index) => (
               <tr key={index}>
-                {notice.id ? (
-                  // 데이터가 있을 때
+                {response.id ? (
                   <>
-                    <td>{notice.id}</td>
-                    <td>{notice.email}</td>
-                    <td>{notice.nick}</td>
-                    <td>{notice.tel}</td>
+                    <td>{response.id}</td>
+                    <td>{response.email}</td>
+                    <td>{response.nick}</td>
+                    <td>{response.tel}</td>
                     <td>
-                      {" "}
-                      <button onClick={() => handleDelete(notice.id)}>
+                      <button onClick={() => handleDelete(response.id)}>
                         삭제
                       </button>
                     </td>
                   </>
                 ) : (
-                  // 빈 데이터 행일 때 (공백 행)
                   <>
                     <td colSpan={4}>&nbsp;</td>
                   </>

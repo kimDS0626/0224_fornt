@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import NoticeTable from "./NoticeTable";
-import NoticePagination from "./NoticePagination";
+import AdminUserList from "./AdminUserList";
+
 import axios from "axios";
 
-function Notice({ hideTitle }) {
+function AdminUser({ hideTitle }) {
   const [bbsList, setBbsList] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -34,18 +34,7 @@ function Notice({ hideTitle }) {
   return (
     <Container>
       <ContentWrapper>
-
-
-        <NoticeTable bbsList={bbsList} />
-
-        <PaginationBox>
-          <NoticePagination
-            page={page}
-            setPage={setPage}
-            pageSize={pageSize}
-            totalCnt={totalCnt}
-          />
-        </PaginationBox>
+        <AdminUserList />
       </ContentWrapper>
     </Container>
   );
@@ -72,8 +61,6 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
-
-
 const PaginationBox = styled.div``;
 
-export default Notice;
+export default AdminUser;

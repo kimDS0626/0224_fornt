@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -204,8 +203,7 @@ const Container = styled.div`
 
 //  내부 콘텐츠
 const ContentWrapper = styled.div`
-  position: relative;
-  left: 140px;
+
   width: 100%;
   max-width: 1000px;
   display: flex;

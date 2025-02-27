@@ -24,37 +24,11 @@ function SignIn() {
     setPwd(event.target.value);
   };
 
-
-
-
-  const googleLogin = async() => {
-
-
-      try {
-      const resp = await axios.get(`/api/auth/google-login`);
-        console.log(resp.data);
-        console.log("[✅ 응답 데이터]", resp.data);
-
-      alert(resp.data.email + "님, 성공적으로 로그인 되었습니다요");
-
-      // JWT 토큰 저장
-      localStorage.setItem("access_token", resp.data.token);
-      localStorage.setItem("id", resp.data.email);
-
-      setAuth(resp.data.email);
-      setHeaders({ Authorization: `Bearer ${resp.data.token}` }); // HttpHeadersContext에 Authorization 헤더 저장
-
-      navigate("/"); // 로그인 후 홈으로 리다이렉트
-    } catch (err) {
-      console.log("Login failed");
-      console.error("Error Details:", err); // 전체 오류 객체 출력
-
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      login();
     }
   };
-
-
-
-
   const login = async () => {
     const req = {
       email: id,
@@ -66,14 +40,13 @@ function SignIn() {
       console.log("Login OK");
       console.log(resp.data);
 
-
-      alert(resp.data.email + "님, 성공적으로 로그인 되었습니다요");
+      alert(resp.data.nickName + "님, 성공적으로 로그인 되었습니다요");
 
       // JWT 토큰 저장
       localStorage.setItem("access_token", resp.data.token);
-      localStorage.setItem("id", resp.data.email);
+      localStorage.setItem("nick_name", resp.data.nickName);
 
-      setAuth(resp.data.email);
+      setAuth(resp.data.nickName);
       setHeaders({ Authorization: `Bearer ${resp.data.token}` }); // HttpHeadersContext에 Authorization 헤더 저장
 
       navigate("/"); // 로그인 후 홈으로 리다이렉트
@@ -85,8 +58,12 @@ function SignIn() {
       const errorMessage = err.response?.data
         ? JSON.stringify(err.response?.data)
         : "알 수 없는 오류 발생";
-      alert("로그인 실패! " + (err.response?.data ? JSON.stringify(err.response?.data) : "알 수 없는 오류 발생"));
-
+      alert(
+        "로그인 실패! " +
+          (err.response?.data
+            ? JSON.stringify(err.response?.data)
+            : "알 수 없는 오류 발생")
+      );
     }
   };
 
@@ -97,7 +74,6 @@ function SignIn() {
         <LoginTitle>
           <h1>로그인</h1>
         </LoginTitle>
-
         <InputBox>
           <input
             type="text"
@@ -110,6 +86,7 @@ function SignIn() {
             placeholder="비밀번호"
             value={pwd}
             onChange={changePwd}
+            onKeyDown={handleKeyDown}
           />
           <IdFind>
             <Link to="/findId">
@@ -125,9 +102,6 @@ function SignIn() {
           <SignupButton>
             <Link to="/signup">회원가입</Link>
           </SignupButton>
-          <button onClick={googleLogin}>
-            구글 로그인
-          </button>
         </InputBox>
       </LoginSection>
     </LoginContainer>
