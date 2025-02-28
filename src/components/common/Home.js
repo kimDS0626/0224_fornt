@@ -2,32 +2,28 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Youtube from "react-youtube";
 import KakaoMap from "../map/KakaoMap";
 import styled from "styled-components";
 
-import main_banner_01 from "./imgs/main_banner_01.png";
-import main_banner_02 from "./imgs/main_banner_02.png";
-import main_banner_03 from "./imgs/main_banner_03.png";
-import body_01_arrow from "./imgs/body_01_arrow.png";
-import a_192_124 from "./imgs/a_192_124.png";
-import b_192_124 from "./imgs/b_192_124.png";
-import c_192_124 from "./imgs/c_192_124.png";
-import more from "./imgs/more.png";
-import youtube from "./imgs/youtube.png";
-import main_body_bg from "./imgs/main_body_bg.png";
-import kakaomap from "./imgs/kakaomap.png";
-import directions from "./imgs/directions.png";
+import main_banner_01 from "../../assets/imgs/main_banner_01.png";
+import main_banner_02 from "../../assets/imgs/main_banner_02.png";
+import main_banner_03 from "../../assets/imgs/main_banner_03.png";
+import body_01_arrow from "../../assets/imgs/body_01_arrow.png";
+import a_192_124 from "../../assets/imgs/a_192_124.png";
+import b_192_124 from "../../assets/imgs/b_192_124.png";
+import c_192_124 from "../../assets/imgs/c_192_124.png";
+import more from "../../assets/imgs/more.png";
+import youtube from "../../assets/imgs/youtube.png";
+import main_body_bg from "../../assets/imgs/main_body_bg.png";
+import kakaomap from "../../assets/imgs/kakaomap.png";
+import directions from "../../assets/imgs/directions.png";
 import axios from "axios";
 
 function Home() {
-
   const [noticeList, setNoticeList] = useState([]);
   const [reviewList, setReviewList] = useState([]);
-
-
-
 
   const getNoticeList = async (page) => {
     try {
@@ -37,19 +33,14 @@ function Home() {
       console.log(response.data.content);
       setNoticeList(response.data.content);
 
-      console.log("notice seccess")
+      console.log("notice seccess");
       console.log(response);
-
     } catch (error) {
       console.log("Error fetching board data:", error);
     }
   };
 
-    useEffect(() => {
-      getNoticeList();
-    }, []);
-
-   const getReviewList = async (page) => {
+  const getReviewList = async (page) => {
     try {
       const response = await axios.get("/api/redis/reviews", {
         params: { page: page - 1 },
@@ -57,23 +48,17 @@ function Home() {
       console.log(response.data.content);
       setReviewList(response.data.content);
 
-      console.log("review seccess")
+      console.log("review seccess");
       console.log(response);
-
     } catch (error) {
       console.log("Error fetching board data:", error);
     }
   };
 
-    useEffect(() => {
-      getReviewList();
-    }, []);
-
-
-
-
-
-
+  useEffect(() => {
+    getNoticeList();
+    getReviewList();
+  }, []);
 
   // const onPlayerReady = (e) => {
   //   e.target.pauseVideo();
@@ -255,7 +240,6 @@ function Home() {
                 </div>
               </BoardTitleBox>
               <BoardContentBox>
-
                 <BoardContentTitle>강아지 경련 진료 후기</BoardContentTitle>
                 <BoardContent>(2/17) 홍길동 보호자님</BoardContent>
               </BoardContentBox>
@@ -296,7 +280,7 @@ function Home() {
                     <BoardContent>{notice.content }</BoardContent>
 
                   </BoardContentBox>
-
+                  
                 ))} */}
                 <BoardContentTitle>
                   1월 27일(월) 임시공휴일 정상 진료 안내

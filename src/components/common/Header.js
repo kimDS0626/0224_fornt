@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext, use } from "react";
 import { useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // jwt-decode 라이브러리 import
 import { Link } from "react-router-dom";
-import header_logo from "./imgs/header_logo.png";
-import header_menu_stroke from "./imgs/header_menu_stroke.png";
-import myIcon from "./imgs/header_mypage.png";
-import userIcon from "./imgs/header_user.png";
-import searchIcon from "./imgs/header_search.png";
+import header_logo from "../../assets/imgs/header_logo.png";
+import header_menu_stroke from "../../assets/imgs/header_menu_stroke.png";
+import myIcon from "../../assets/imgs/header_mypage.png";
+import userIcon from "../../assets/imgs/header_user.png";
+import searchIcon from "../../assets/imgs/header_search.png";
 import { useNavigate } from "react-router-dom";
 // import AdminHome from "../admin/adminHome";
 import styled from "styled-components";
@@ -15,54 +15,10 @@ import { AuthContext } from "../../context";
 // --------------------------------------------------------------------------------------------------------------------
 
 function Header() {
-  const navItems = [
-    {
-      name: "홈",
-      path: "/",
-    },
-    {
-      name: "병원 소개",
-      submenu: [
-        { path: "/introduce", name: "개요" },
-        { path: "/directions", name: "오시는 길" },
-        { path: "/department", name: "진료과 소개" },
-      ],
-    },
-    { name: "공지사항", submenu: [{ path: "/notice/list", name: "공지사항" }] },
-    {
-      name: "온라인예약",
-      submenu: [
-        { path: "/user/:memberId", name: "회원예약" },
-        { path: "#/nonuserreserve", name: "비회원예약" },
-      ],
-    },
-    {
-      name: "온라인상담",
-      submenu: [{ path: "/onlineCounsel", name: "온라인상담" }],
-    },
-    { name: "고객 리뷰", submenu: [{ path: "/review", name: "리뷰" }] },
-  ];
-
-  const [showBox, setShowBox] = useState(true);
-  const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
-  const token = localStorage.getItem("access_token");
-  let useRole = null;
-  if (token) {
-    try {
-      // 토큰 디코딩
-      console.log(token);
-      const decodedToken = jwtDecode(token);
-      console.log(decodedToken);
-      useRole = decodedToken.roles;
-    } catch (e) {
-      console.log("토큰 디코딩 오류 : ", e);
-    }
-  }
   useEffect(() => {
     const handleScroll = () => {
       // 100px 아래로 스크롤하면 박스 숨기기
-      if (window.scrollY > 0) {
+      if (window.scrollY > 2000) {
         setShowBox(false);
       } else {
         setShowBox(true);
@@ -74,12 +30,63 @@ function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const navItems = [
+    {
+      name: "홈",
+      path: "/",
+    },
+    {
+      name: "병원 소개",path:"/introduce",
+      submenu: [
+        { path: "/introduce", name: "개요" },
+        { path: "/directions", name: "오시는 길" },
+        { path: "/department", name: "진료과 소개" },
+      ],
+    },
+    { name: "공지사항", path:"/notice", submenu: [{ path: "/notice", name: "공지사항" }] },
+    {
+      name: "온라인예약",path:"/userreserv",
+      submenu: [
+        { path: "/userreserv", name: "회원예약" },
+        { path: "#/nonuserreserve", name: "비회원예약" },
+      ],
+    },
+    {
+      name: "온라인상담",path:"/onlineCounsel",
+      submenu: [{ path: "/onlineCounsel", name: "온라인상담" }],
+    },
+    { name: "고객 리뷰",path:"/review", submenu: [{ path: "/review", name: "리뷰" }] },
+  ];
+
+  const [showBox, setShowBox] = useState(true);
+  const [useRole, setUseRole] = useState(null);
+  const navigate = useNavigate();
+  const { auth, setAuth } = useContext(AuthContext);
+  const token = localStorage.getItem("access_token");
+
+  // 토큰이 있을 경우 상태 업데이트
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUseRole(decodedToken.roles);
+        setAuth(true); // 로그인 상태로 설정
+      } catch (e) {
+        console.log("토큰 디코딩 오류 : ", e);
+      }
+    } else {
+      setAuth(false); // 토큰이 없으면 로그아웃 상태
+    }
+  }, [token]);
+
   const handleLogout = () => {
     const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
     if (confirmLogout) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("nick_name");
       setAuth(false);
+      setUseRole(null);
       navigate("/");
     }
   };
@@ -118,7 +125,6 @@ function Header() {
             {navItems.map((item) => (
               <li key={item.name}>
                 <article>
-                  {" "}
                   <MenuLink to={item.path || "#"}>{item.name}</MenuLink>
                 </article>
                 {item.submenu && showBox && (
@@ -139,7 +145,7 @@ function Header() {
           <LoginBox>
             {useRole === "ROLE_ADMIN" ? (
               <>
-                <Link to="/adminhome" onClick={handleAdminPageClick}>
+                <Link to="/admin" onClick={handleAdminPageClick}>
                   <img src={myIcon} alt="관리자페이지" />
                   <LoginButton>관리자</LoginButton>
                 </Link>
