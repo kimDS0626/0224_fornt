@@ -4,8 +4,6 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../context";
 import File from "../file/File";
-import CommentList from "../commnet/CommentList";
-import CommentWrite from "../commnet/CommentWrite";
 
 function NoticeDetail() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
@@ -33,7 +31,7 @@ function NoticeDetail() {
         `/api/admin/notice/${noticeId}/delete`
       );
       console.log(response);
-      console.log("deleteNotice seccess");
+      console.log("deleteNotice success");
       if (response.status == 200) {
         alert("게시글을 삭제 하였습니다.");
         navigate("/notice");
@@ -52,7 +50,12 @@ function NoticeDetail() {
     getBbsDetail();
   }, []);
 
-
+  useEffect(() => {
+    console.log("noticeId:", noticeId); // 콘솔로 확인
+    if (!noticeId) return;
+    console.log("noticeId:", noticeId);
+    getBbsDetail();
+  }, []);
 
   return (
     <Container>
@@ -75,7 +78,8 @@ function NoticeDetail() {
           </Table>
         </TableBox>
 
-      
+        <coment></coment>
+
         <BottomBox>
           <Button onClick={deleteNotice}>삭제</Button>
 

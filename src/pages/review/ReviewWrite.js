@@ -24,12 +24,12 @@ function ReviewWrite() {
     const req = {
       title: title,
       content: content,
-      // nickName: auth ? auth.nickName : "",
+      nickName: auth ? auth.nickName : "",
     };
     console.log("보내는 데이터", req);
 
     await axios
-      .post("/api/review/write", req, { headers: headers })
+      .post("/review/write", req, { headers: headers })
       .then((response) => {
         console.log("리뷰 작성 성공", response.data);
         alert("리뷰가 성공적으로 작성되었습니다.");
@@ -75,9 +75,7 @@ function ReviewWrite() {
 
         <BottomBox>
           <div>
-            <Button
-              onClick={createReview}
-            >등록</Button>
+            <Button>등록</Button>
             <Link to="/review">
               <Button>취소</Button>
             </Link>

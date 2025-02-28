@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Pagination from "react-js-pagination";
-import search from "./imgs/search.png";
+import search from "../../../assets/imgs/header_search.png";
 
 function AdminUserList() {
   //BbsList
@@ -74,6 +74,12 @@ function AdminUserList() {
 
   return (
     <Container>
+      {/* 제목 표시 */}
+      <HomeSectionA>
+        <HomeTitle>
+          <h1>회원 관리</h1>
+        </HomeTitle>
+      </HomeSectionA>
       <SearchBox>
         <img src={search} />
         <SearchField type="text" placeholder="검색 할 것을 적어보세요." />
@@ -136,7 +142,7 @@ function AdminUserList() {
 }
 
 // 컨테이너
-const Container = styled.div`  
+const Container = styled.div`
 width:100%
   max-width: 1920px;
 `;
@@ -163,6 +169,27 @@ const SearchBox = styled.div`
   }
 `;
 
+const HomeSectionA = styled.div`
+  background-color: #111111;
+  grid-column: 3;
+  grid-row: 1;
+  top: 50px;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 1000px;
+  height: 70px;
+`;
+
+const HomeTitle = styled.div`
+  color: #ffffff;
+  padding: 20px;
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+`;
+
 //  검색 필드 스타일
 const SearchField = styled.input`
   margin-top: 25px;
@@ -187,9 +214,9 @@ const NoticeTableBox = styled.div`
 `;
 const NoticeTabled = styled.table`
   width: 100%;
- 
+
   border-collapse: collapse;
-  
+
 
   thead {
     background-color: #f4f4f4;
@@ -197,7 +224,7 @@ const NoticeTabled = styled.table`
   }
 
   thead th {
-  
+
     padding: 10px;
     font-weight: medium;
     font-size: 20px;
@@ -218,7 +245,7 @@ const NoticeTabled = styled.table`
     width: 1280px;
   }
 
-  
+
   tbody td {
     padding: 10px;
     font-weight: regular;

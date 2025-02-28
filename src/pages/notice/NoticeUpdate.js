@@ -6,7 +6,7 @@ import styled from "styled-components";
 function NoticeUpdate() {
   const location = useLocation();
   const { bbs } = location.state || {};
-
+  console.log(bbs);
   // const boardId = bbs.boardId;
   const [title, setTitle] = useState(bbs.title);
   const [content, setContent] = useState(bbs.content);

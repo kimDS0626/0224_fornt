@@ -3,22 +3,36 @@ import styled from "styled-components";
 import axios from "axios";
 import CommonTable from "../../components/common/CommonTable";
 import CustomPagination from "../../components/common/CustomPagination";
+import { jwtDecode } from "jwt-decode"; // jwt-decode 라이브러리 import
 
 function OnlineCounsel() {
   const [bbsList, setBbsList] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalCnt, setTotalCnt] = useState(0);
-
+  const token = localStorage.getItem("access_token");
+  let useRole = null;
+  if (token) {
+    try {
+      // 토큰 디코딩
+      console.log(token);
+      const decodedToken = jwtDecode(token);
+      console.log(decodedToken);
+      useRole = decodedToken.roles;
+    } catch (e) {
+      console.log("토큰 디코딩 오류 : ", e);
+    }
+  }
+  const linkValue = useRole === "ROLE_ADMIN" ? "/admin/notice" : "/notice";
   const columns = [
     { label: "No", field: "id" },
     { label: "제목", field: "title", link: true },
-    { label: "작성자", field: "nickName" },
+    { label: "작성자", field: "writerName" },
     { label: "작성일", field: "createdDate" },
   ];
   const getBbsList = async (page) => {
     try {
-      const response = await axios.get("/api/member/question/list", {
+      const response = await axios.get("/api/member/question", {
         params: { page: page - 1 },
       });
       setBbsList(response.data.content || []); // 응답이 없을 경우 빈 배열 처리
@@ -28,16 +42,19 @@ function OnlineCounsel() {
       console.error("Error fetching board data:", error);
     }
   };
-    const linkValue = "/onlineCounsel";
-    useEffect(() => {
-      getBbsList(page);
-    }, [page]);
 
+  useEffect(() => {
+    getBbsList(page);
+  }, [page]);
 
   return (
     <Container>
       <ContentWrapper>
-        <CommonTable bbsList={bbsList} columns={columns} />
+        <CommonTable
+          bbsList={bbsList}
+          columns={columns}
+          linkPrefix={linkValue}
+        />
         <PaginationBox>
           <CustomPagination
             page={page}

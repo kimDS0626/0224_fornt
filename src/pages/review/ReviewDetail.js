@@ -4,45 +4,40 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../context";
 import File from "../file/File";
-import CommentList from "../commnet/CommentList";
-import CommentWrite from "../commnet/CommentWrite";
 
 function ReviewDetail() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
   const [review, setReview] = useState({});
   const { reviewId } = useParams();
-  console.log(reviewId)
-   const [comments, setComments] = useState([]);
   const navigate = useNavigate();
 
   const getBbsDetail = async () => {
     try {
       const response = await axios.get(`/api/member/review/${reviewId}`);
 
-      console.log("[ReviewDetail.js] getBbsDetail() success :D");
+      console.log("[reviewDetail.js] getBbsDetail() success :D");
       console.log(response.data);
 
       setReview(response.data);
-      setComments(response.data.comments)
     } catch (error) {
-      console.log("[ReviewDetail.js] getBbsDetail() error :<");
+      console.log("[reviewDetail.js] getBbsDetail() error :<");
       console.error(error);
     }
   };
 
-  const deleteNotice = async () => {
+  const deleteReview = async () => {
     try {
       const response = await axios.delete(
-        `/api/admin/notice/${reviewId}/delete`
+        `/api/member/review/${reviewId}/delete`
       );
       console.log(response);
-      console.log("deleteNotice seccess");
+      console.log("deleteReview success");
       if (response.status == 200) {
         alert("게시글을 삭제 하였습니다.");
         navigate("/review");
       }
     } catch (error) {
-      console.log("deleteNotice error");
+      console.log("deleteReview error");
       console.error(error);
     }
   };
@@ -55,8 +50,13 @@ function ReviewDetail() {
     getBbsDetail();
   }, []);
 
+  useEffect(() => {
+    console.log("reviewId:", reviewId); // 콘솔로 확인
+    if (!reviewId) return;
+    console.log("reviewId:", reviewId);
+    getBbsDetail();
+  }, []);
 
-  
   return (
     <Container>
       <ContentWrapper>
@@ -66,7 +66,6 @@ function ReviewDetail() {
               <tr>
                 <TableTitle>{review.title}</TableTitle>
               </tr>
-
               <tr>
                 <TableContent>{review.content} </TableContent>
               </tr>
@@ -74,14 +73,12 @@ function ReviewDetail() {
           </Table>
         </TableBox>
 
-        <CommentList reviewId={reviewId} comments={comments} />
-
-        <CommentWrite reviewId={reviewId} />
+        <coment></coment>
 
         <BottomBox>
-          <Button onClick={deleteNotice}>삭제</Button>
+          <Button onClick={deleteReview}>삭제</Button>
 
-          <Link to={`/review/${reviewId}/update`} state={{bbs: review}}>
+          <Link to={`/review/${reviewId}/update`} state={{ bbs: review }}>
             <Button>수정</Button>
           </Link>
           <Link to="/review">
