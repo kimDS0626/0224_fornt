@@ -1,24 +1,90 @@
-import React, { useState, useEffect, useContext, use } from "react";
-import { useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // jwt-decode 라이브러리 import
 import { Link } from "react-router-dom";
-import header_logo from "../../assets/imgs/header_logo.png";
-import header_menu_stroke from "../../assets/imgs/header_menu_stroke.png";
-import myIcon from "../../assets/imgs/header_mypage.png";
-import userIcon from "../../assets/imgs/header_user.png";
-import searchIcon from "../../assets/imgs/header_search.png";
+import React, { useState, useEffect, useContext } from "react";
+import { jwtDecode } from "jwt-decode"; // jwt-decode 라이브러리 import
+import header_logo from "../../assets/imgs/logo_w.svg";
+import header_menu_stroke from "../../assets/imgs/header_menu.svg";
+import myIcon from "../../assets/imgs/header_mypage.svg";
+import userIcon from "../../assets/imgs/header_user.svg";
+import searchIcon from "../../assets/imgs/header_search.svg";
 import { useNavigate } from "react-router-dom";
 // import AdminHome from "../admin/adminHome";
 import styled from "styled-components";
-import axios from "axios";
 import { AuthContext } from "../../context";
 // --------------------------------------------------------------------------------------------------------------------
 
 function Header() {
+  const navItems = [
+    {
+      name: "홈",
+      path: "/",
+    },
+    {
+      name: "병원 소개",
+      submenu: [
+        { path: "/home", name: "병원 소개" },
+        { path: "/introduce", name: "개요" },
+        { path: "/directions", name: "오시는 길" },
+        { path: "/department", name: "진료과 소개" },
+      ],
+    },
+    {
+      name: "공지사항",
+      path: "/notice",
+      submenu: [
+        { path: "/notice", name: "공지 사항" },
+        { path: "/notice", name: "목록" },
+        { path: "/notice", name: "관리자" },
+      ],
+    },
+    {
+      name: "온라인예약",
+      submenu: [
+        { path: "/userreserv", name: "온라인 예약" },
+        { path: "/userreserv", name: "회원 예약" },
+        { path: "#/nonuserreserve", name: "비회원 예약" },
+      ],
+    },
+    {
+      name: "온라인상담",
+      path: "/onlineCounsel",
+      submenu: [
+        { path: "/onlineCounsel", name: "온라인 상담" },
+        { path: "/onlineCounsel", name: "목록" },
+        { path: "/onlineCounsel", name: "관리자" },
+      ],
+    },
+
+    {
+      name: "고객 리뷰",
+      submenu: [
+        { path: "/review", name: "고객 리뷰" },
+        { path: "/review", name: "목록" },
+        { path: "/review", name: "관리자" },
+      ],
+    },
+  ];
+
+  const [showBox, setShowBox] = useState(true);
+  const navigate = useNavigate();
+  const { auth, setAuth } = useContext(AuthContext);
+  const token = localStorage.getItem("access_token");
+
+  let useRole = null;
+  if (token) {
+    try {
+      // 토큰 디코딩
+      console.log(token);
+      const decodedToken = jwtDecode(token);
+      console.log(decodedToken);
+      useRole = decodedToken.roles;
+    } catch (e) {
+      console.log("토큰 디코딩 오류 : ", e);
+    }
+  }
   useEffect(() => {
     const handleScroll = () => {
       // 100px 아래로 스크롤하면 박스 숨기기
-      if (window.scrollY > 2000) {
+      if (window.scrollY > 0) {
         setShowBox(false);
       } else {
         setShowBox(true);
@@ -31,65 +97,16 @@ function Header() {
     };
   }, []);
 
-  const navItems = [
-    {
-      name: "홈",
-      path: "/",
-    },
-    {
-      name: "병원 소개",path:"/introduce",
-      submenu: [
-        { path: "/introduce", name: "개요" },
-        { path: "/directions", name: "오시는 길" },
-        { path: "/department", name: "진료과 소개" },
-      ],
-    },
-    { name: "공지사항", path:"/notice", submenu: [{ path: "/notice", name: "공지사항" }] },
-    {
-      name: "온라인예약",path:"/userreserv",
-      submenu: [
-        { path: "/userreserv", name: "회원예약" },
-        { path: "#/nonuserreserve", name: "비회원예약" },
-      ],
-    },
-    {
-      name: "온라인상담",path:"/onlineCounsel",
-      submenu: [{ path: "/onlineCounsel", name: "온라인상담" }],
-    },
-    { name: "고객 리뷰",path:"/review", submenu: [{ path: "/review", name: "리뷰" }] },
-  ];
-
-  const [showBox, setShowBox] = useState(true);
-  const [useRole, setUseRole] = useState(null);
-  const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
-  const token = localStorage.getItem("access_token");
-
-  // 토큰이 있을 경우 상태 업데이트
-  useEffect(() => {
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        setUseRole(decodedToken.roles);
-        setAuth(true); // 로그인 상태로 설정
-      } catch (e) {
-        console.log("토큰 디코딩 오류 : ", e);
-      }
-    } else {
-      setAuth(false); // 토큰이 없으면 로그아웃 상태
-    }
-  }, [token]);
-
   const handleLogout = () => {
     const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
     if (confirmLogout) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("nick_name");
       setAuth(false);
-      setUseRole(null);
       navigate("/");
     }
   };
+
   const handleMyPageClick = (e) => {
     if (!auth) {
       e.preventDefault(); // 기본 링크 동작 방지
@@ -97,6 +114,7 @@ function Header() {
       navigate("/signIn");
     }
   };
+
   const handleAdminPageClick = (e) => {
     if (useRole !== "ROLE_ADMIN") {
       e.preventDefault(); // 기본 링크 동작 방지
@@ -152,7 +170,7 @@ function Header() {
               </>
             ) : (
               <>
-                <Link to="/mypage" onClick={handleMyPageClick}>
+                <Link to="/mypage/Check" onClick={handleMyPageClick}>
                   <img src={myIcon} alt="마이페이지" />
                   <LoginButton>마이페이지</LoginButton>
                 </Link>
@@ -189,35 +207,47 @@ function Header() {
 const HeaderContainer = styled.div`
   display: block;
   width: 100%;
-  height: 122px;
-  border-bottom: 1px solid #111111;
+  height: 100px;
+  background-color: #0d326f;
 `;
 
 const HeaderSection = styled.div`
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
+  //min-width: 1480px;
+  //height: 122px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 1280px;
-  height: 122px;
+  //min-width: 1440px;
+  height: 100px;
+  float: left;
+  //margin-left: 120px;
+  width: 100%;
+  position: fixed;
+  z-index: 999999999;
+  background-color: #0d326f;
+  //backdrop-filter: blur(20px);
 `;
 
 const Logo = styled.h1`
   display: flex;
   align-items: center;
   width: 150px;
-  height: 122px;
+  height: 100px;
   img {
     margin-left: 5px;
     margin-top: 5px;
   }
 `;
 
-// ---------------------------------------------------------------------------------------------
+//
 const Navigation = styled.nav`
 
    z-index: 99 ;
-  width: 820px;
-  height: 122px;
+// width: 820px;
+  height: 100px;
   font-weight: 500;
   text-align: center;
   position: relative;
@@ -232,80 +262,99 @@ const Navigation = styled.nav`
     list-style: none;
   }
   ul:first-child {
-    padding: 50px 50px 20px 50px;
+    padding: 40px 50px 20px 20px;
 
   }
-  a{   
-  font-family: "Nanum Gothic", serif;
-  font-weight: 600;
+  a{
+    font-family: "Noto Sans KR", serif;
   }
   ul li {
-  
-    width: 140px;
+    //width: 140px;
     position: relative;
+    margin-left: 20px;
+    
     &:hover ul {
       display: block;
     }
   }
-
+  ul ul li a{
+    margin-right: 20px;
+  }
+  
   ul ul {
     display: none;
     position: absolute;
     top: 80px;
     left: 0;
-    background-color: #fff;
-    width: 360px;
-
-    
+    //background: rgb(255, 255, 255);
+    width: 100%;
     visibility: hidden;
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-
-    li{
-    border-bottom:1px solid black;
-    //font-family: "Nanum Gothic", serif;
     text-align: left;
-    right:-15px;
-    position: relative;
-    width: 95px;
-    padding-top:20px;
+    padding: 15px 50px 40px 20px;
+
+    //하위메뉴 스타일
+    li{
+      width: 100px;
+      //position: relative;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: rgb(0, 0, 0);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      border:none;
+      text-align: left;
+      float: left;
+      
+    //border-bottom:1px solid black;
+    //text-align: left;
+    //right:-15px;
+    //position: relative;
+    //width: 95px;
+    //padding-top:20px;
     }
   }
-
+  li:first-child{
+    font-size: 16px;
+    font-weight: 700;
+  }
   li:hover ul,
   &:hover ul ul {
     display: block;
-   
     visibility: visible;
   }
 
+ //서브메누
  div {
- background-color: #ffffff;
+   background-color: #F6F7F8;
       display: none;
       position: fixed;
-      height: 225px;
-      top: 122px;
+      height: 180px;
+      top: 100px;
       left:0px;
       min-width :100vw;
       width: 100%;
-  border-bottom: 1px solid #111111;
       z-index: -1;
       flex-direction: row;
       padding: 10px;
       box-sizing: border-box;
+   
+ 
     }
     &:hover div {
-
       display: block;
     }
   }
 `;
+
 const MenuLink = styled(Link)`
   text-decoration: none;
-  color: #111111;
-  font-size: 18px;
-  lineheight: 16;
+  color: #fff;
+  font-size: 16px;
+  //lineheight: 16;
 
   &:hover {
+    color: #ffa228;
   }
 `;
 
@@ -314,35 +363,55 @@ const SubLink = styled(Link)`
   color: #111;
 
   &:hover {
-    color: #fc9664;
+    color: #ffa228;
+  }
+`;
+//네비)오른쪽
+const HederSectionB = styled.div`
+  //width: 230px;
+  //height: 122px;
+  //padding: 45px 50px 20px 20px;
+  margin-bottom: 25px;
+
+  &:hover {
+    color: #ffa228;
   }
 `;
 
-const HederSectionB = styled.div`
-  width: 230px;
-  height: 122px;
-`;
-
 const LoginBox = styled.div`
-  padding-top: 22px;
-  font-size: 12ppx;
+  padding-top: 25px;
+  font-size: 12px;
   float: right;
   position: relative;
-  color: #111111;
-  lineheight: 16;
+  color: #fff;
+  //lineheight: 16;
+  margin-left: 40px;
+
+  a {
+    &:hover {
+      color: #ffa228;
+    }
+  }
+
   a:first-child {
     padding: 16px;
+    &:hover {
+      color: #ffa228;
+    }
   }
 
   a:nth-child(2) img {
     top: 3px;
     position: relative;
+    &:hover {
+      color: #ffa228;
+    }
   }
 `;
 // ---------------------------------------------------------------
 const LoginButton = styled.button`
-  font-family: "Nanum Gothic", serif;
-  margin-left: 20px;
+  font-family: "Noto Sans KR", serif;
+  margin-left: 8px;
   background-color: transparent;
   border: none;
   font-size: 14px;
@@ -351,32 +420,46 @@ const LoginButton = styled.button`
 `;
 
 const SearchBox = styled.button`
-  right: 5px;
-  top: 22px;
+  //right: 5px;
+  top: 20px;
   float: right;
-  width: 190px;
-  height: 25px;
-  background-color: transparent;
+  //width: 190px;
+  //height: 25px;
+  //background-color: transparent;
   border: none;
   font-size: 12px;
   cursor: pointer;
   position: relative;
+
+  width: 260px;
+  height: 30px;
+  border-radius: 15px 13px;
+
+  outline: none;
   input {
-    letter-spacing: 0.1em;
-    height: 25px;
-    font-size: 12px;
-    width: 190px;
-    font-family: "Nanum Gothic", serif;
+    //height: 25px;
+    //width: 190px;
+    //border: none;
+    //border-bottom: 1px solid rgba(0,0,0,0.2);
+    //padding-bottom: 2px;
+
+    font-size: 13px;
+    font-weight: 300;
     border: none;
-    border-bottom: 1px solid #666;
-    padding-bottom: 5px;
+    background: rgb(255, 255, 255);
+    width: 260px;
+    height: 30px;
+    border-radius: 15px 13px;
+    outline: none;
+    text-align: end;
   }
   input:focus {
     outline: none;
   }
   img {
     bottom: 5px;
-    right: -2px;
+    left: 0px;
+    padding-left: 10px;
     position: absolute;
   }
 `;

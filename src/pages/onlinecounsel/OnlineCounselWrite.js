@@ -37,7 +37,7 @@ function OnlineCounselWrite() {
 
     console.log("📌 보내는 데이터:", req); // 요청 데이터 확인
     await axios
-      .post("/api/member/question/write", req, { headers: headers })
+      .post("/api/question", req, { headers: headers })
       .then((resp) => {
         console.log("받는 데이터", resp.data);
 

@@ -20,7 +20,7 @@ function KakaoMap() {
 
 const markerStyle = {
   background: "#ffffff",
-  padding: "7px 10px 3px 10px",
+  padding: "10px 13px 9px 15px",
   borderRadius: "8px",
 
   color: "#333",

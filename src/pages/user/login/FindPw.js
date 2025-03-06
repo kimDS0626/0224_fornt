@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
 import logo_b from "../../../assets/imgs/logo_b.png";
 
 function FindPassword() {
@@ -12,57 +9,42 @@ function FindPassword() {
   const [isCodeSent, setIsCodeSent] = useState(false);
   const [isCodeVerified, setIsCodeVerified] = useState(false);
   const [newPassword, setNewPassword] = useState("");
-  const [newPasswordCheck, setNewPasswordCheck] = useState("");
-  const navigate = useNavigate();
-  const handleSendCode = async () => {
-    try {
-      await axios.post("/api/findPw", { email });
-      alert("인증 메일이 전송되었습니다.");
-      setIsCodeSent(true);
-    } catch (error) {
-      alert(error.response?.data || "이메일 전송에 실패했습니다.");
-    }
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
-  const handleVerifyCode = async () => {
-    console.log("Email:", email);
-    console.log("Verification Code:", verificationCode); // 입력된 인증코드 확인
-    try {
-      await axios.post("api/findPw/verify", { email, code: verificationCode });
+
+  const handleSendCode = () => {
+    setIsCodeSent(true);
+  };
+
+  const handleCodeChange = (e) => {
+    setVerificationCode(e.target.value);
+  };
+
+  const handleVerifyCode = () => {
+    if (verificationCode === "123456") {
       alert("인증번호가 확인되었습니다.");
       setIsCodeVerified(true);
-    } catch (error) {
-      console.error(error);
-      alert(error.response?.data || "잘못된 인증번호입니다.");
+    } else {
+      alert("인증번호가 잘못되었습니다.");
     }
   };
 
-  const handleSubmit = async () => {
-    if (newPassword !== newPasswordCheck) {
+  const handlePasswordChange = (e) => {
+    setNewPassword(e.target.value);
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (newPassword === confirmPassword) {
+      alert("비밀번호가 변경되었습니다.");
+    } else {
       alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    if (newPassword.length < 8) {
-      alert("비밀번호는 8자 이상이어야 합니다.");
-      return;
-    }
-
-    if (!/[A-Za-z]/.test(newPassword) || !/\d/.test(newPassword)) {
-      alert("비밀번호는 문자와 숫자를 포함해야 합니다.");
-      return;
-    }
-
-    try {
-      await axios.post("api/findPw/resetPw", {
-        email,
-        code: verificationCode,
-        newPassword,
-        newPasswordCheck,
-      });
-      alert("비밀번호가 성공적으로 변경되었습니다.");
-      navigate("/signIn"); // 로그인 화면으로 이동
-    } catch (error) {
-      alert(error.response?.data || "비밀번호 변경에 실패했습니다.");
     }
   };
 
@@ -83,7 +65,7 @@ function FindPassword() {
               type="email"
               placeholder="이메일"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
             />
             <button onClick={handleSendCode}>발송</button>
           </div>
@@ -96,7 +78,7 @@ function FindPassword() {
                 type="text"
                 placeholder="인증번호"
                 value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
+                onChange={handleCodeChange}
               />
               <button onClick={handleVerifyCode}>인증번호 확인</button>
             </div>
@@ -109,13 +91,13 @@ function FindPassword() {
                 type="password"
                 placeholder="새 비밀번호"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={handlePasswordChange}
               />
               <input
                 type="password"
                 placeholder="새 비밀번호 확인"
-                value={newPasswordCheck}
-                onChange={(e) => setNewPasswordCheck(e.target.value)}
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
               />
             </div>
           </PasswordSection>

@@ -1,7 +1,54 @@
-import React from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import CustomPagination from "../../../components/common/CustomPagination";
+import { AuthContext, HttpHeadersContext } from "../../../context";
+import { useNavigate } from "react-router-dom";
 
 function ReservationCheck() {
+  const navigate = useNavigate();
+    const { auth, setAuth } = useContext(AuthContext);
+    const { headers, setHeaders } = useContext(HttpHeadersContext);
+    const [reserveList, setReserveList] = useState([]);
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(8);
+    const [totalCnt, setTotalCnt] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+
+
+
+      useEffect(() => {
+        // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
+        setHeaders({
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        });
+        const nick_name = localStorage.getItem("nick_name");
+        console.log("LocalStorage ID:", localStorage.getItem("nick_name"));
+        // 로그인한 사용자인지 체크
+        if (!auth) {
+          alert("로그인 한 사용자만 게시글을 작성할 수 있습니다 !");
+          navigate(-1);
+        }
+      }, []);
+  const getReserveList = async()=>{
+    try {
+      const response = await axios.get("/api/reservation", {params:{page:page -1},});
+      console.log("예약 리스트", response.data);
+      setReserveList(response.data.content || []); // 응답이 없을 경우 빈 배열 처리
+      setPageSize(response.data.pageSize || 8);
+      setTotalCnt(response.data.totalElements);
+      setTotalPages(response.data.totalPages);      
+    }catch(error){
+      console.error("예약 리스트 불러오시 실패", error);
+    }
+  };
+  useEffect(()=> {
+    getReserveList();
+
+  }, [page]);
+
+
+
   return (
     <ReservCheckContainer>
       <ReservCheckTableBox>
@@ -17,11 +64,30 @@ function ReservationCheck() {
               <TableHeader>예약 삭제</TableHeader>
             </TableRow>
           </thead>
-          <tbody>
-            {/* 데이터 추가 예정 */}
+          
+            {reserveList.map((response, index)=>(
+          <tbody
+          key={index}
+          >              
+              <tr>
+                <td>{response.id}</td>
+
+              </tr>
           </tbody>
+            ))}
+          
         </ReservCheckTable>
       </ReservCheckTableBox>
+
+       <PaginationBox>
+          <CustomPagination
+            page={page}
+            setPage={setPage}
+            pageSize={pageSize}
+            totalCnt={totalCnt}
+            totalPages={totalPages}
+          />
+        </PaginationBox> 
     </ReservCheckContainer>
   );
 }
@@ -62,6 +128,28 @@ const TableHeader = styled.th`
   padding: 12px;
   text-align: center;
   border: 1px solid #ddd;
+`;
+const PaginationBox = styled.div`
+  padding: 10px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1000px;
+  height: 50px;
+  background-color: #ffffff;
+  flex-direction: row;
+
+  .pagination {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .pagination li {
+    display: inline-block;
+    margin: 0 5px;
+  }
 `;
 
 export default ReservationCheck;

@@ -142,7 +142,7 @@ function AdminUserList() {
 }
 
 // 컨테이너
-const Container = styled.div`
+const Container = styled.div`  
 width:100%
   max-width: 1920px;
 `;
@@ -214,9 +214,9 @@ const NoticeTableBox = styled.div`
 `;
 const NoticeTabled = styled.table`
   width: 100%;
-
+ 
   border-collapse: collapse;
-
+  
 
   thead {
     background-color: #f4f4f4;
@@ -224,7 +224,7 @@ const NoticeTabled = styled.table`
   }
 
   thead th {
-
+  
     padding: 10px;
     font-weight: medium;
     font-size: 20px;
@@ -245,7 +245,7 @@ const NoticeTabled = styled.table`
     width: 1280px;
   }
 
-
+  
   tbody td {
     padding: 10px;
     font-weight: regular;

@@ -14,7 +14,7 @@ function Footer() {
       <FooterSection>
         <FooterBoxA>
           <FooterLogo>
-            <img src={footer_logo} width="221px" height="62px" />
+            <img src={footer_logo} width="180px" height="" />
           </FooterLogo>
           <Footertel>
             <p>하이펫 동물의료센터 긴급전화</p>
@@ -28,6 +28,7 @@ function Footer() {
               <tr>
                 <td>문의</td>
                 <td>
+                  {" "}
                   대표번호 : 02-837-9922 팩스 : 02-3482-8835 이메일:
                   saff@saff.kr
                 </td>
@@ -35,6 +36,7 @@ function Footer() {
               <tr>
                 <td>주소</td>
                 <td>
+                  {" "}
                   서울특별시 구로구 시흥대로 163길 33 2층, 3층 (주호타워)
                   사업자등록번호 : 203-87-00672
                 </td>
@@ -56,8 +58,8 @@ function Footer() {
             </a>
           </FooterIcon>
           <Copy>
-            <p>©Copyright 2025 HIPAT. All Rights Reserved</p>
-          </Copy>
+            <p>©&nbsp;Copyright 2025 HIPAT. All Rights Reserved</p>
+          </Copy>{" "}
         </FooterBoxB>
       </FooterSection>
     </FooterContainer>
@@ -65,13 +67,11 @@ function Footer() {
 }
 
 const FooterContainer = styled.div`
-     position: sticky;
-
-  width: 100%
+  position: sticky;
+  width: 100%;
   height: 265px;
-  background-color: #0E0E0E;
-
- `;
+  background-color: #0e0e0e;
+`;
 
 const FooterSection = styled.div`
   margin: auto;
@@ -92,8 +92,8 @@ const FooterBoxA = styled.div`
 const FooterLogo = styled.div`
   margin-top: 67px;
   margin-left: 18px;
-  width: 221px;
-  height: 62px;
+  //width: 221px;
+  //height: 62px;
   display: flex;
   position: relative;
   top: 0px;
@@ -114,9 +114,9 @@ const Footertel = styled.div`
   }
   p {
     font-family: "Montserrat", serif;
-    font-weight: bold;
+    font-weight: 600;
     margin: 0px;
-    font-size: 30px;
+    font-size: 28px;
   }
 `;
 // -------------------------------------------------------------------------
@@ -128,7 +128,6 @@ const FooterBoxB = styled.div`
 `;
 const FooterText = styled.div`
   display: block;
-
   margin-top: 67px;
   margin-bottom: 18px;
   margin-left: 214px;
@@ -138,13 +137,10 @@ const FooterText = styled.div`
   width: 750px;
   height: 48px;
   line-height: 24px;
+  font-family: "Noto Sans KR", serif;
   td:first-child {
     padding-right: 10px;
     font-weight: 800;
-  }
-  td {
-    font-family: "Noto Sans KR", serif;
-    font-weight: medium;
   }
 `;
 const FooterIcon = styled.div`
@@ -167,12 +163,11 @@ const Copy = styled.div`
   margin-bottom: 47px;
   margin-left: 214px;
   position: relative;
-  font-size: 12px;
+  font-size: 13px;
   color: #f4f4f4;
-  width: 300px;
+  //width: 300px;
   height: 15px;
   p {
-    font-weight: reqular;
     font-family: "Montserrat", serif;
   }
 `;

@@ -1,5 +1,75 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import styled from "styled-components";
+
+function NonUserReserve() {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const changeName = (event) => {
+    setName(event.target.value);
+  };
+  const changePhone = (event) => {
+    setPhone(event.target.value);
+  };
+
+  const nonUserReserve = async () => {
+    const req = {
+      name: name,
+      phone: phone,
+    }
+    console.log("보내는 데이터", req);
+
+    await axios
+    .post("/api/nonMember", req)
+    .then((response) => {
+      console.log("응답 데이터", response.data);
+      alert("예약되었습니다. 곧 관리자가 연락드리겠습니다.")
+    })
+    .catch((error) => {
+      console.error("예약 실패", error);
+    });  
+
+  };
+  
+  return (
+    <Container>
+      <ContentWrapper>
+        <Title>
+          <h1>비회원 예약</h1>
+        </Title>
+
+        <TableBox>
+          <Table>
+            <tbody>
+              <tr>
+                <td>이름</td>
+              </tr>
+              <tr>
+                <td>
+                  <InputField value={name} onChange={changeName} type="text" placeholder="이름" />
+                </td>
+              </tr>
+              <tr>
+                <td>전화번호</td>
+              </tr>
+              <tr>
+                <td>
+                  <InputField value={phone} onChange={changePhone} type="text" placeholder="전화번호" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <SubmitButton onClick={nonUserReserve}>등록</SubmitButton>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+        </TableBox>
+      </ContentWrapper>
+    </Container>
+  );
+}
 
 // 전체 컨테이너
 const Container = styled.div`
@@ -69,45 +139,5 @@ const SubmitButton = styled.button`
     background-color: #0056b3;
   }
 `;
-
-function NonUserReserve() {
-  return (
-    <Container>
-      <ContentWrapper>
-        <Title>
-          <h1>비회원 예약</h1>
-        </Title>
-
-        <TableBox>
-          <Table>
-            <tbody>
-              <tr>
-                <td>이름</td>
-              </tr>
-              <tr>
-                <td>
-                  <InputField type="text" placeholder="이름" />
-                </td>
-              </tr>
-              <tr>
-                <td>전화번호</td>
-              </tr>
-              <tr>
-                <td>
-                  <InputField type="text" placeholder="전화번호" />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <SubmitButton>등록</SubmitButton>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </TableBox>
-      </ContentWrapper>
-    </Container>
-  );
-}
 
 export default NonUserReserve;

@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import KakaoMap from "../../components/map/KakaoMap";
-import pic from "../../assets/imgs/aniho.jpg";
 import Sub from "../../assets/imgs/sub.jpg";
 import bus from "../../assets/imgs/bus.PNG";
 
@@ -21,7 +20,12 @@ function Directions() {
 
         <InfoWrapper>
           <InfoBox>
-            <InfoImage src={pic} alt="건물 위치" width="100px" height="100px" />
+            <InfoImage
+              src="/images/building.png"
+              alt="건물 위치"
+              width="100px"
+              height="100px"
+            />
             <InfoText>
               <h2>건물 위치</h2>
               <p>서울특별시 구로구 시흥대로 163길 33 2층, 3층 (주호타워)</p>

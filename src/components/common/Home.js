@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Youtube from "react-youtube";
 import KakaoMap from "../map/KakaoMap";
 import styled from "styled-components";
@@ -327,7 +327,12 @@ function Home() {
           <Youtube videoId="cxnVFId-1Qw" opts={opts}></Youtube>
         </VideoBox>
         <MapContainer>
-          <img src={main_body_bg} alt="main_body_bg"></img>
+          <img
+            src={main_body_bg}
+            alt="main_body_bg"
+            width="1920"
+            height="400"
+          ></img>
           <SectionD>
             <MapContentBox>
               <div>
@@ -382,56 +387,57 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  //margin-bottom: 80px;
 `;
 
 //  슬라이드 섹션
 const SectionA = styled.div`
   width: 100%;
-
-  height: 694px;
+  //height: 694px;
 `;
 
 const SlidImg = styled.img`
   width: 100%;
+  height: 545px;
   max-width: 1920px;
-  height: auto;
   position: relative;
 `;
-
+//메인배너_문구
 const SlidText = styled.div`
-  width: 470px;
-  height: 284px;
+  //width: 470px;
+  //height: 284px;
   display: block;
   position: absolute;
   top: 0px;
-  margin-top: 205px;
-  margin-left: 99px;
+  margin-top: 160px;
+  //margin-left: 99px;
   margin-bottom: 205px;
   .eng {
     margin: 0;
     display: block;
-    font-family: "Noto Sans KR", serif;
-    font-weight: bold;
-    font-size: 32px;
+    font-family: "Montserrat", serif;
+    font-weight: 600;
+    font-size: 18px;
     color: #fff;
   }
   .title {
     margin: 0;
     display: block;
     font-family: "Noto Sans KR", serif;
-    font-weight: bold;
-    font-size: 62px;
-    line-height: 72px;
+    font-weight: 600;
+    font-size: 52px;
+    //line-height: 72px;
     color: #fff;
   }
   .ko {
+    width: 420px;
     margin: 0;
-    margin-top: 30px;
+    margin-top: 15px;
     display: block;
     font-family: "Noto Sans KR", serif;
     font-weight: 400;
-    font-size: 22px;
-    line-height: 32px;
+    font-size: 16px;
+    line-height: 28px;
     color: #fff;
   }
 `;
@@ -447,8 +453,9 @@ const SectionB = styled.div`
   padding-top: 50px;
   padding-bottom: 50px;
   gap: 20px;
+  margin-bottom: 50px;
 `;
-
+// 01.
 const LinkBox = styled.div`
   border-radius: 10px;
   width: 428px;
@@ -456,24 +463,40 @@ const LinkBox = styled.div`
   background-color: #ffffff;
   display: flex;
   justify-content: center;
-  gap: 30px;
+  //gap: 30px;
   padding-top: 20px;
+  text-align: left;
+
+  .totalBox {
+    padding-left: 30px;
+    padding-right: 20px;
+  }
+
+  img {
+    margin-right: 20px;
+  }
   .title {
     font-family: "Noto Sans KR", serif;
-    font-weight: bold;
-    font-size: 26px;
-    color: #111;
+    font-weight: 600;
+    font-size: 22px;
+    color: #333;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+    //margin-left: 20px;
+    text-align: left;
   }
+  //01. 소문구
   .text {
     font-family: "Noto Sans KR", serif;
     font-weight: 400;
     font-size: 12px;
     line-height: 18px;
     color: #a3a3a3;
+    //margin-left: 20px;
+    text-align: left;
+    width: 180px;
   }
 `;
 
@@ -494,20 +517,19 @@ const BoardBox = styled.div`
 `;
 const BoardTitle = styled.p`
   font-family: "Noto Sans KR", serif;
-  font-weight: 300;
+  font-weight: 600;
   font-size: 34px;
-  color: #111;
+  color: #333;
   margin: 0;
   margin-bottom: 18px;
 `;
 const BoardText = styled.p`
-  font-family: "Noto Sans KR", serif;  
-  font-weight: 400;
-  font-size: 16px;
-  color: #6d6d6d
-  line-height:42px;
-  margin:0;
-
+  font-family: "Noto Sans KR", serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #333;
+  line-height: 42px;
+  margin: 0;
 `;
 const BoardTitleBox = styled.div`
   width: 600px;
@@ -515,14 +537,22 @@ const BoardTitleBox = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 70px;
+  position: relative;
   .titleBox {
     width: 600px;
     height: 92px;
   }
   .reviewLink {
     width: 80px;
+    height: 20px;
     display: flex;
     justify-content: space-between;
+    position: absolute;
+    right: 0;
+
+    a {
+      padding-bottom: 20px;
+    }
   }
 `;
 
@@ -530,31 +560,33 @@ const ReviewLink = styled.span`
   font-family: "Noto Sans KR", serif;
   font-weight: 400;
   font-size: 14px;
-  color: #111;
+  text-align: left;
+  color: #333;
+  padding-bottom: 40px;
 `;
 const BoardContentBox = styled.div`
   width: 596px;
   height: 70px;
   margin-top: 40px;
-  background-color: #f4f4f4;
+  background-color: #f5f7f9;
 `;
 const BoardContentTitle = styled.p`
   font-family: "Noto Sans KR", serif;
-  font-weight: 300;
-  font-size: 16px;
-  color: #111;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
   margin: 0px;
-  padding-top: 10px;
-  padding-left: 10px;
+  padding-top: 15px;
+  padding-left: 15px;
 `;
 const BoardContent = styled.p`
   font-family: "Noto Sans KR", serif;
-  font-weight: 300;
+  font-weight: 600;
   font-size: 12px;
   margin: 0px;
   line-height: 24px;
-  color: #868686;
-  padding-left: 10px;
+  color: #7c6f6f;
+  padding-left: 15px;
 `;
 const VideoTitle = styled.div`
   width: 100%;
@@ -570,34 +602,37 @@ const VideoTitle = styled.div`
 const VideoTitleBox = styled.div`
   width: 1280px;
   height: 94px;
-
   display: flex;
   justify-content: space-between;
   align-items: start;
+
   .VideoImg {
-    margin-top: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .title {
     font-family: "Noto Sans KR", serif;
-    font-weight: 300;
+    font-weight: 600;
     font-size: 34px;
-    color: #111;
+    color: #333;
+    margin-bottom: 18px;
   }
   .content {
     font-family: "Noto Sans KR", serif;
-    font-weight: 400;
-    font-size: 16px;
+    font-weight: 500;
+    font-size: 18px;
+    color: #333;
     line-height: 42px;
-    color: #6d6d6d;
   }
 `;
 const VideoBox = styled.div`
   width: 100%;
   max-width: 1280px;
   height: 474px;
-  margin-top: 40px;
-  margin-bottom: 78px;
+  margin-top: 80px;
+  margin-bottom: 180px;
 `;
 
 const MapContainer = styled.div`
@@ -615,7 +650,7 @@ const SectionD = styled.div`
   display: flex;
   justify-content: space-between;
   position: absolute;
-  margin-top: 82px;
+  margin-top: 40px;
   top: 0;
 `;
 
@@ -630,53 +665,60 @@ const MapContentBox = styled.div`
   height: 286px;
   margin-top: 20px;
   margin-left: 20px;
+  font-family: "Noto Sans KR", serif;
+
   .title {
     font-family: "Noto Sans KR", serif;
-    font-weight: 400;
+    font-weight: 600;
     font-size: 22px;
     color: #fff;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
   .content {
     font-family: "Noto Sans KR", serif;
     font-weight: 400;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 25px;
     color: #fff;
   }
   .directionBox {
-    margin-top: 50px;
+    margin-top: 35px;
   }
 `;
 const Directions = styled.div`
   width: 198px;
   height: 42px;
-  border: 1px solid #fff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 
+  &:hover {
+    border: 1px solid #ffa228;
+  }
+
   .content {
-    margin-top: 5px;
+    padding-top: 6px;
     margin-right: 8px;
     font-family: "Noto Sans KR", serif;
     font-weight: 400;
-    font-size: 15px;
-    line-height: 25px;
+    font-size: 16px;
     color: #fff;
+    &:hover {
+      color: #ffa228;
+    }
   }
 `;
 const MapImg = styled.img`
   width: 67px;
   height: 16px;
-  margin-top: 10px;
-  margin-left: 8px;
+  margin-top: 12px;
+  margin-left: 12px;
 `;
 const LoadImg = styled.img`
   width: 37px;
   height: 24px;
-  margin-top: 6px;
+  margin-top: 10px;
   margin-left: 8px;
 `;
-
 export default Home;

@@ -38,7 +38,7 @@ function UserReserv() {
     const fetchPetListAndSlots = async () => {
       try {
         if (headers.Authorization) {
-          const petResponse = await axios.get("/api/pet/list", { headers });
+          const petResponse = await axios.get("/api/pet", { headers });
           setPetList(petResponse.data);
 
           if (selectedDate && selectedDepartment) {
@@ -105,7 +105,7 @@ function UserReserv() {
       slotId: selectedSlotData.id,
     };
     await axios
-      .post("/api/member/reservation/register", req)
+      .post("/api/reservation", req)
       .then((response) => {
         console.log("응답 데이터: ", response.data);
         const reserveId = response.data.id;
@@ -155,13 +155,13 @@ function UserReserv() {
           ) : timeSlots.length > 0 ? (
             timeSlots.map((slot, index) => (
               <TimeButton
-                key={index}
-                disabled={slot.isAvailable === 0}
-                active={selectedTime === index}
-                onClick={() => setSelectedTime(index)}
-              >
-                {slot.slotTime.slice(0, 5)}
-              </TimeButton>
+              key={index}
+              disabled={!slot.isAvailable} // isAvailable이 false면 비활성화
+              active={selectedTime === index && slot.isAvailable}
+              onClick={() => slot.isAvailable && setSelectedTime(index)}
+            >
+              {slot.slotTime.slice(0, 5)}
+            </TimeButton>
             ))
           ) : (
             <p>예약 가능한 시간이 없습니다.</p>
@@ -266,17 +266,20 @@ const TimeButton = styled.button`
   width: 110px; /* 버튼 크기 변경 */
   border: 1px solid #f4f4f4;
   border-radius: 5px;
-  background-color: ${(props) => (props.disabled ? "#f4f4f4" : "#fff")};
-  color: ${(props) => (props.disabled ? "#111" : "#111")};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  background-color: ${(props) => (props.active ? "#000" : "#fff")};
-  color: ${(props) => (props.active ? "#fff" : "#000")};
   font-size: 20px;
   font-family: "Noto Sans KR", serif;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+
+  /* disabled가 우선 적용됨 */
+  background-color: ${(props) =>
+    props.disabled ? "#f4f4f4" : props.active ? "#000" : "#fff"};
+  color: ${(props) =>
+    props.disabled ? "#111" : props.active ? "#fff" : "#000"};
 
   &:hover {
-    background-color: ${(props) => (props.disabled ? "#f4f4f4" : "#111111")};
-    color: ${(props) => (props.disabled ? "#111111" : "#fff")};
+    background-color: ${(props) =>
+      props.disabled ? "#f4f4f4" : "#111"};
+    color: ${(props) => (props.disabled ? "#111" : "#fff")};
   }
 `;
 
