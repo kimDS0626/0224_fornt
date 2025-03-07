@@ -1,38 +1,44 @@
-import React, { lazy, useEffect, useState } from "react";
+import React, { lazy, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import CommonTable from "../../components/common/CommonTable";
 import CustomPagination from "../../components/common/CustomPagination";
-import { jwtDecode } from "jwt-decode"; // jwt-decode 라이브러리 import
+import { AuthContext, HttpHeadersContext } from "../../context";
 import { Link } from "react-router-dom";
 
-function OnlineCounsel() {
+function Review() {
   const [bbsList, setBbsList] = useState([]);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(8);
   const [totalCnt, setTotalCnt] = useState(0);
-  const linkValue = "/onlinecounsel";
+  const [totalPages, setTotalPages] = useState(0);
+  const linkValue = "/review";
+
   const columns = [
     { label: "No", field: "id" },
     { label: "제목", field: "title", link: true },
-    { label: "작성자", field: "writerName" },
+    { label: "작성자", field: "nickName" },
     { label: "작성일", field: "createdDate" },
+    { label: "조회수", field: "views" },
+    { label: "좋아요", field: "likes" },
   ];
-  const getBbsList = async (page) => {
+
+  const getBbsList = async () => {
     try {
-      const response = await axios.get("/api/member/question", {
+      const response = await axios.get("/api/review", {
         params: { page: page - 1 },
       });
+      console.log(response.data);
       setBbsList(response.data.content || []); // 응답이 없을 경우 빈 배열 처리
-      setPageSize(response.data.pageSize || 10);
+      setPageSize(response.data.pageSize || 8);
       setTotalCnt(response.data.totalElements);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching board data:", error);
     }
   };
-
   useEffect(() => {
-    getBbsList(page);
+    getBbsList();
   }, [page]);
 
   return (
@@ -49,9 +55,10 @@ function OnlineCounsel() {
             setPage={setPage}
             pageSize={pageSize}
             totalCnt={totalCnt}
+            totalPages={totalPages}
           />
         </PaginationBox>
-        <Link to="/onlinecounsel/write">
+        <Link to="/review/write">
         <button>작성</button>
         </Link>
       </ContentWrapper>
@@ -131,4 +138,4 @@ const WriteBtnBox = styled.div`
   margin-top: 30px;
 `;
 
-export default OnlineCounsel;
+export default Review;

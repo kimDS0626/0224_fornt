@@ -4,17 +4,13 @@ import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../context";
 import axios from "axios";
 
-//관리자 공지작성으로
-
-function OnlineCounselWrite() {
+function ReviewWrite() {
   const { auth, setAuth } = useContext(AuthContext);
   const { headers, setHeaders } = useContext(HttpHeadersContext);
-
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [password, setPassword] = useState("");
 
   const changeTitle = (event) => {
     setTitle(event.target.value);
@@ -23,55 +19,44 @@ function OnlineCounselWrite() {
   const changeContent = (event) => {
     setContent(event.target.value);
   };
-  const chsangePassword = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const createBbs = async () => {
-    const req = {
-      title: title,
-      content: content,
-
-      // password: password,
-    };
-
-    console.log("📌 보내는 데이터:", req); // 요청 데이터 확인
-    await axios
-      .post("/api/member/question", req, { headers: headers })
-      .then((resp) => {
-        console.log("받는 데이터", resp.data);
-
-        const questionId = resp.data.id;
-
-        console.log("onlineCounselId:", questionId);
-        alert("새로운 게시글을 성공적으로 등록했습니다 :D");
-        navigate(`/onlineCounselDetail/${questionId}`);
-      })
-      .catch((err) => {
-        console.log("[onlineCounselWrite.js] createBbs() error :<");
-        console.log(err);
-      });
-  };
-
   useEffect(() => {
-    console.log("access_token:", localStorage.getItem("access_token"));
     // 컴포넌트가 렌더링될 때마다 localStorage의 토큰 값으로 headers를 업데이트
     setHeaders({
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     });
-
+    const nick_name = localStorage.getItem("nick_name");
+    console.log("LocalStorage ID:", localStorage.getItem("nick_name"));
     // 로그인한 사용자인지 체크
     if (!auth) {
       alert("로그인 한 사용자만 게시글을 작성할 수 있습니다 !");
       navigate(-1);
     }
   }, []);
+  const createReview = async () => {
+    const req = {
+      title: title,
+      content: content,
+    };
+    console.log("보내는 데이터", req);
+
+    await axios
+      .post("/api/member/review", req, { headers: headers })
+      .then((response) => {
+        console.log("리뷰 작성 성공", response.data);
+        alert("리뷰가 성공적으로 작성되었습니다.");
+        navigate("/review");
+      })
+      .catch((error) => {
+        console.error("리뷰 작성 실패", error);
+        alert("리뷰 작성에 실패했습니다.");
+      });
+  };
 
   return (
     <Container>
       <ContentWrapper>
         <Title>
-          <h1>온라인 상담</h1>
+          <h1>고객리뷰</h1>
         </Title>
 
         <TableBox>
@@ -101,15 +86,9 @@ function OnlineCounselWrite() {
         </TableBox>
 
         <BottomBox>
-          <PasswordInput
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onChange={chsangePassword}
-          />
           <div>
-            <Button onClick={createBbs}>등록</Button>
-            <Link to="/OnlineCounsel">
+            <Button onClick={createReview}>등록</Button>
+            <Link to="/review">
               <Button>취소</Button>
             </Link>
           </div>
@@ -195,7 +174,7 @@ const TableContent = styled.textarea`
 const BottomBox = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: 20px;
   margin-bottom: 100px;
 `;
@@ -212,15 +191,4 @@ const Button = styled.button`
   margin-left: 20px;
 `;
 
-// 비밀번호 입력 필드
-const PasswordInput = styled.input`
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-weight: 400;
-  font-size: 16px;
-  font-family: "Noto Sans KR", serif;
-  outline: none;
-`;
-
-export default OnlineCounselWrite;
+export default ReviewWrite;

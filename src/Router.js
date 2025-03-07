@@ -47,6 +47,7 @@ import MyPage from "./pages/user/mypage/MyPage";
 import UserProfile from "./pages/user/mypage/UserProfile";
 import UserUpdate from "./pages/user/mypage/UserUpdate";
 import ReservationCheck from "./pages/user/mypage/ReservationCheck";
+import ReservationDetail from "./pages/user/mypage/ReserveationDetail";
 
 // admin
 import AdminRouter from "./components/AdminRouter";
@@ -64,6 +65,10 @@ const Router = () => {
         <Route
           path="/mypage/ReservationCheck"
           element={<ReservationCheck />}
+        ></Route>
+        <Route
+          path="/mypage/ReservationDetail/:reservationId"
+          element={<ReservationDetail />}
         ></Route>
         <Route path="/" element={<Home />} />
         <Route path="introduce" element={<Introduce />} />

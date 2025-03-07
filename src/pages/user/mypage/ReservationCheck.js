@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import CustomPagination from "../../../components/common/CustomPagination";
 import { AuthContext, HttpHeadersContext } from "../../../context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function ReservationCheck() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
     const { headers, setHeaders } = useContext(HttpHeadersContext);
     const [reserveList, setReserveList] = useState([]);
@@ -14,6 +14,8 @@ function ReservationCheck() {
     const [pageSize, setPageSize] = useState(8);
     const [totalCnt, setTotalCnt] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+
+    
 
 
 
@@ -30,14 +32,20 @@ function ReservationCheck() {
           navigate(-1);
         }
       }, []);
+
+
+
   const getReserveList = async()=>{
     try {
-      const response = await axios.get("/api/reservation", {params:{page:page -1},});
+      const response = await axios.get("/api/member/reservation", {params:{page:page -1}, headers: headers } );
       console.log("예약 리스트", response.data);
-      setReserveList(response.data.content || []); // 응답이 없을 경우 빈 배열 처리
+      setReserveList(response.data.content);
       setPageSize(response.data.pageSize || 8);
       setTotalCnt(response.data.totalElements);
-      setTotalPages(response.data.totalPages);      
+      setTotalPages(response.data.totalPages);
+  
+
+      
     }catch(error){
       console.error("예약 리스트 불러오시 실패", error);
     }
@@ -47,7 +55,9 @@ function ReservationCheck() {
 
   }, [page]);
 
+// const [date, time] = reserveList.reservationDateTime.slice("T");
 
+console.log("예약정보",reserveList);
 
   return (
     <ReservCheckContainer>
@@ -55,26 +65,30 @@ function ReservationCheck() {
         <ReservCheckTable>
           <thead>
             <TableRow>
-              <TableHeader>예약번호</TableHeader>
-              <TableHeader>진료과</TableHeader>
+              <TableHeader>예약번호</TableHeader>  
+              <TableHeader>닉네임</TableHeader>
               <TableHeader>날짜</TableHeader>
               <TableHeader>시간</TableHeader>
-              <TableHeader>반려동물 이름</TableHeader>
-              <TableHeader>생성 시간</TableHeader>
-              <TableHeader>예약 삭제</TableHeader>
             </TableRow>
           </thead>
+          <tbody>              
           
-            {reserveList.map((response, index)=>(
-          <tbody
-          key={index}
-          >              
-              <tr>
+          {reserveList.map((response) => {
+            const [date, time] = response.reservationDateTime.split("T");
+            return (
+              <tr key={response.id}>
                 <td>{response.id}</td>
-
+                <td>
+                  <Link to={`/mypage/ReservationDetail/${response.id}`} >
+                  {response.nickName}
+                  </Link>
+                </td>
+                <td>{date}</td>
+                <td>{time.slice(0, 5)}</td> {/* HH:mm 형식으로 시간만 출력 */}
               </tr>
-          </tbody>
-            ))}
+            );
+          })}
+         </tbody>
           
         </ReservCheckTable>
       </ReservCheckTableBox>

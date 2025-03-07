@@ -4,38 +4,47 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AuthContext, HttpHeadersContext } from "../../context";
 import File from "../file/File";
+import CommentList from "../comment/CommentList";
+import CommentWrite from "../comment/CommentWrite";
+import ReviewLike from "./ReviewLike";
 
-function QuestionDetail() {
+
+function ReviewDetail() {
   const { headers, setHeaders } = useContext(HttpHeadersContext);
-  const [question, setQuestion] = useState({});
-  const { questionId } = useParams();
+  const [review, setReview] = useState({});
+  console.log("리뷰 데이터", review);
+  const { reviewId } = useParams();
+  const [comments, setComments] = useState([]);
+  console.log(reviewId);
+
   const navigate = useNavigate();
 
   const getBbsDetail = async () => {
     try {
-      const response = await axios.get(`/api/member/question/${questionId}`);
+      const response = await axios.get(`/api/review/${reviewId}`);
 
-      console.log("[questionDetail.js] getBbsDetail() success :D");
+      console.log("[reviewDetail.js] getBbsDetail() success :D");
       console.log(response.data);
 
-      setQuestion(response.data);
+
+      setReview(response.data);
     } catch (error) {
-      console.log("[questionDetail.js] getBbsDetail() error :<");
+      console.log("[reviewDetail.js] getBbsDetail() error :<");
       console.error(error);
     }
   };
 
-  const deleteQuestion = async () => {
+  const deleteReview = async () => {
     try {
-      const response = await axios.delete(`/api/question/${questionId}/delete`);
+      const response = await axios.delete(`/api/review/${reviewId}`,{headers:headers});
       console.log(response);
-      console.log("deletequestion seccess");
+      console.log("deleteReview success");
       if (response.status == 200) {
         alert("게시글을 삭제 하였습니다.");
-        navigate("/question");
+        navigate("/review");
       }
     } catch (error) {
-      console.log("deleteQuestion error");
+      console.log("deleteReview error");
       console.error(error);
     }
   };
@@ -49,9 +58,9 @@ function QuestionDetail() {
   }, []);
 
   useEffect(() => {
-    console.log("questionId:", questionId); // 콘솔로 확인
-    if (!questionId) return;
-    console.log("questionId:", questionId);
+    console.log("reviewId:", reviewId); // 콘솔로 확인
+    if (!reviewId) return;
+    console.log("reviewId:", reviewId);
     getBbsDetail();
   }, []);
 
@@ -62,32 +71,31 @@ function QuestionDetail() {
           <Table>
             <tbody>
               <tr>
-                <TableTitle>{question.title}</TableTitle>
+                <TableTitle>{review.title}</TableTitle>
               </tr>
               <tr>
-                <td>
-                  <File></File>
-                </td>
-              </tr>
-              <tr>
-                <TableContent>{question.content} </TableContent>
+                <TableContent>{review.content} </TableContent>
               </tr>
             </tbody>
           </Table>
         </TableBox>
-
-        <coment></coment>
-
+        <ReviewLike></ReviewLike>
         <BottomBox>
-          <Button onClick={deleteQuestion}>삭제</Button>
+          <Button onClick={deleteReview}>삭제</Button>
 
-          <Link to={`/question/${questionId}`}>
+          <Link to={`/review/${reviewId}/update`} state={{ review }}>
             <Button>수정</Button>
           </Link>
-          <Link to="/question">
+          <Link to="/review">
             <Button>취소</Button>
           </Link>
         </BottomBox>
+
+        <CommentList reviewId={reviewId} comments={comments} />
+
+        <CommentWrite reviewId={reviewId} />
+
+       
       </ContentWrapper>
     </Container>
   );
@@ -181,4 +189,4 @@ const Button = styled.button`
   }
 `;
 
-export default QuestionDetail;
+export default ReviewDetail;

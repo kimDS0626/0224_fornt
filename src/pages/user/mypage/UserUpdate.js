@@ -104,7 +104,13 @@ const handleUpdate = ()=>{
         return;
       }
 
-      const req = petData;
+      const req = petData.map(pet => ({
+        id: pet.id,       // 기존 pet ID 유지 (없으면 추가)
+        name: pet.name,
+        breed: pet.breed,
+        age: pet.age,
+        memberId: memberId, // ✅ 어떤 회원의 반려동물인지 명확히 전달
+      }));
       console.log("보내는 데이터" , req);
       await axios
       .patch(`/api/pet`, req, {headers: {Authorization: `Bearer ${token}`}}
